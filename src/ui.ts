@@ -61,6 +61,9 @@ export function icon(name: string) {
   const aliases:Record<string,string>={'mdi:heat-pump':'pump','mdi:lan-disconnect':'warning','mdi:lan-connect':'connection','mdi:volume-low':'info','mdi:snowflake-melt':'snow','mdi:speedometer-slow':'shield','mdi:alert-circle-outline':'warning','mdi:water-alert-outline':'water','mdi:battery-charging':'tank','mdi:shower':'water','mdi:information-outline':'info'};
   name=aliases[name]||name;
   const paths: Record<string, unknown> = {
+    power: svg`<path d="M12 3v9M6.3 5.8a8 8 0 1 0 11.4 0"/>`,
+    tick: svg`<path d="m5 12 4 4L19 6"/>`,
+    question: svg`<path d="M8 8a4 4 0 1 1 7 2.7c-2 1.3-3 1.8-3 4M12 19v.1"/>`,
     controls: svg`<path d="M4 7h4m4 0h8M4 17h8m4 0h4"/><circle cx="10" cy="7" r="2"/><circle cx="14" cy="17" r="2"/>`,
     pump: svg`<rect x="1.5" y="4.5" width="21" height="15" rx="1.4"/><path d="M3.5 7h5c4 0 4-1 8-1h4M3.5 9h5c4 0 4-1 8-1h4M3.5 11h5c4 0 4-1 8-1h4M3.5 13h5c4 0 4-1 8-1h4M3.5 15h5c4 0 4-1 8-1h4M2 18h6c4 0 4-2 8-2h6M4 20h2m12 0h2"/>`,
     chill: svg`<ellipse cx="12" cy="3.5" rx="5.5" ry="1.8"/><path d="M6.5 3.5v16.7c0 2.4 11 2.4 11 0V3.5M6.5 11.5c2 1.4 9 1.4 11 0M9 6v4m3-3.5V11m3-5v4"/>`,

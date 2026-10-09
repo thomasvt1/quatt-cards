@@ -4,6 +4,34 @@ import type {CardConfig,HomeAssistant} from '../../src/types';
 import type {DemoDiagnostics} from '../../src/demo/fixtures';
 type Card=HTMLElement&{hass:HomeAssistant&{__demoDiagnostics:DemoDiagnostics};setConfig(c:CardConfig):void;getCardSize():number;getGridOptions():unknown};
 const names=['overview','heat-pump','heat-battery','history','chill','status'];
+test('Chill ring combines reported status and mode without duplicate rows',async({page})=>{
+ await open(page);const card=page.locator('quatt-chill-card'),control=card.getByRole('button',{name:'Control Living room',exact:true});
+ await expect(control).toHaveClass(/cooling off/);
+ await expect(control).toHaveAccessibleDescription('Status: Off · Mode: Cooling');
+ await expect(card.locator('.fields .device-field')).toHaveCount(4);
+ await expect(control.locator('.mode-badge .icon-snow')).toHaveCount(1);
+ await expect(control.locator('.status-badge .icon-power')).toHaveCount(1);
+ await card.evaluate(e=>{const c=e as Card;const states={...c.hass.states};for(const [id,s] of Object.entries(states))if(id.includes('demo-chill-uuid-1')){if(id.endsWith('_mode'))states[id]={...s,state:'Heating'};if(id.endsWith('_status'))states[id]={...s,state:'On'};}c.hass={...c.hass,states};});
+ await expect(control).toHaveClass(/heating on/);
+ await expect(control).toHaveAccessibleDescription('Status: On · Mode: Heating');
+ await expect(control.locator('.mode-badge .icon-heat')).toHaveCount(1);
+ await expect(control.locator('.status-badge .icon-tick')).toHaveCount(1);
+ for(const theme of ['light','dark'] as const)for(const width of [1440,390]){
+  await page.setViewportSize({width,height:1000});await page.evaluate(theme=>window.demo.setTheme(theme),theme);
+  await card.screenshot({path:`.impeccable/review/chill-ring-${width}-${theme}.png`});
+ }
+ await page.evaluate(()=>window.demo.showEditor('chill'));const editor=page.locator('quatt-card-editor');
+ await editor.getByText('Displayed fields',{exact:true}).click();
+ await editor.getByRole('checkbox',{name:'Operating mode',exact:true}).uncheck();
+ await expect(card.locator('.mode-badge')).toHaveCount(0);await expect(control).toHaveClass(/neutral/);
+ await editor.getByRole('checkbox',{name:'Operating status',exact:true}).uncheck();
+ await expect(card.locator('.status-badge')).toHaveCount(0);
+ await editor.getByRole('button',{name:'Reset displayed fields',exact:true}).click();
+ await expect(card.locator('.mode-badge')).toHaveCount(2);await expect(card.locator('.status-badge')).toHaveCount(2);
+ await page.evaluate(()=>window.demo.setConfig('chill',{show_controls:false}));
+ await expect(card.getByRole('img',{name:/Living room: Status: On · Mode: Heating/})).toBeVisible();
+});
+
 test('Chill control icons are centered, touch-sized, and remain available when temperature is hidden',async({page})=>{
  await open(page);const card=page.locator('quatt-chill-card');
  for(const width of [1440,390])for(const layout of ['columns','stacked','compact'] as const){
@@ -167,7 +195,7 @@ test('editors emit config changes for titles, devices, periods and overrides',as
  expect(await page.evaluate(()=>window.demo.getConfig('overview')?.entities?.electricPower)).toBe('sensor.override');await editor.getByLabel('Electrical input',{exact:true}).fill('');await editor.getByLabel('Electrical input',{exact:true}).press('Tab');expect(await page.evaluate(()=>window.demo.getConfig('overview')?.entities?.electricPower)).toBeUndefined();
 });
 test('offline, partial, standby, defrost and cooling states remain truthful',async({page})=>{
- await open(page);await page.evaluate(()=>window.demo.setScenario('offline'));await expect(page.locator('quatt-status-card').getByText('Heat pump 2 unavailable',{exact:true})).toBeVisible();await expect(page.locator('quatt-chill-card').getByText('Offline',{exact:true})).toBeVisible();
+ await open(page);await page.evaluate(()=>window.demo.setScenario('offline'));await expect(page.locator('quatt-status-card').getByText('Heat pump 2 unavailable',{exact:true})).toBeVisible();await expect(page.locator('quatt-chill-card').getByRole('button',{name:'Control Bedroom',exact:true})).toHaveAccessibleDescription('Status: Unavailable · Mode: Cooling');
  await page.evaluate(()=>window.demo.setScenario('partial'));await expect(page.locator('quatt-heat-battery-card').getByRole('meter')).toHaveCount(0);await expect(page.locator('quatt-heat-battery-card').getByText('43 min',{exact:true})).toBeVisible();await expect(page.locator('quatt-status-card').getByText('Bedroom water tank warning',{exact:true})).toBeVisible();
  await page.evaluate(()=>window.demo.setScenario('idle'));await expect(page.locator('quatt-overview-card').getByText('Standby',{exact:true})).toBeVisible();
  await page.evaluate(()=>window.demo.setScenario('defrost'));await expect(page.locator('quatt-status-card').getByText('Heat pump 1 is defrosting',{exact:true})).toBeVisible();await expect(page.locator('quatt-heat-pump-card').getByText('-1.5 kW',{exact:true})).toBeVisible();

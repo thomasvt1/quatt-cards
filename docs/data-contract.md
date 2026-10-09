@@ -65,3 +65,5 @@ Since v0.2.0, an unambiguous enabled Quatt climate source with exact `chills` or
 ## Displayed fields and Overview storage
 
 `fields` is a presentation-only boolean map validated against a per-card catalog. Omitted keys preserve defaults. Overview storage reads `snapshot.heatBattery.metrics` and `snapshot.heatCharger.metrics`, not the heat-pump system metrics. It does not add charger power to system electrical input. No hardware or incomplete charge value is replaced with synthetic data. History requests include only selected series.
+
+The Chill ring reads mode and status independently from their discovered telemetry. Cooling/heating colour expresses the selected mode, not inferred activity. Known On/running/cooling/heating reports use a check, Off uses power, idle/standby uses a clock, and unfamiliar/missing status uses a question mark. Reported values remain in accessible descriptions and tooltips. Offline availability takes precedence over cached active status.

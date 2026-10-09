@@ -197,9 +197,9 @@ The configuration editor uses native inputs and selects with theme surface/text,
 
 Not canonized: the demo wordmark's system-font display styling is preview scaffolding, not a card display-font rule; unresolved reproduction drift and unpassed validation gates are not evidence of a reusable design decision.
 
-### Chill control access (v0.4.1)
+### Chill control access (v0.5.0)
 
-Each unit has a centered 48px by 52px equipment-icon button above its current temperature. The 28px by 42px outline uses the cooling accent, a transparent surface, an 8px corner radius, subtle hover fill, and the shared keyboard focus treatment. Activating it opens that unit’s native climate panel. There is no separate footer action or separator. Missing targets and unavailable units disable the icon with an explanatory tooltip. The icon remains available when the temperature field is hidden; disabling control access in the visual editor leaves a decorative icon. This is the explicit exception to the original display-only scope.
+Each unit has a centered 60px circular equipment-icon control above its temperature, with a 2.5px mode ring. Cooling uses bright blue (#00a9ed), heating uses red (#e34d59); both have dedicated theme overrides. A 20px mode-symbol badge sits at the upper left and a 20px status badge at the lower right. The equipment outline is 25px by 38px. Off/idle/unknown mute the equipment outline while the ring continues to show the selected mode; unavailable units use neutral colour and a warning. The 14px badge symbols distinguish modes and states without relying on colour. Status and Mode text rows are removed. Displayed fields controls these indicators. Native controls, tooltip explanations and accessible state descriptions remain available; display-only mode retains the indicators. There is no animation or separate controls footer.
 
 ### Overview storage and field selection (v0.3.0)
 

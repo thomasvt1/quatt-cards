@@ -17,7 +17,7 @@ Compact Home Assistant dashboard cards for the [Quatt integration by marcoboers]
 
 All cards have a visual configuration editor, card-picker preview, YAML configuration, and Sections/Masonry sizing. Heat pump and Chill collections support three styles: **C · Columns** by default, **A · Stacked**, and **B · Compact**. Columns uses at most three units per row; further units wrap onto new rows. A single visible unit uses two reading columns across the card.
 
-Interactions inspect chart readings or open Home Assistant sensor details. Each Chill unit has a centered, clickable **Chill icon** that opens its native Home Assistant climate panel. Use that panel to change target temperature, heating/cooling/off mode, and fan speed. Opening it does not change the unit; commands are handled by Home Assistant when you use its controls. The other cards remain display-only.
+Interactions inspect chart readings or open Home Assistant sensor details. Each Chill unit has a centered, clickable **Chill status ring** that opens its native Home Assistant climate panel. Use that panel to change target temperature, heating/cooling/off mode, and fan speed. Opening it does not change the unit; commands are handled by Home Assistant when you use its controls. The other cards remain display-only.
 
 ![The six Quatt cards in a light Home Assistant theme, using synthetic readings](docs/screenshots/desktop-light.png)
 
@@ -48,14 +48,14 @@ HACS normally registers the module automatically. If your resources are managed 
 
 1. Build the asset with `npm ci` and `npm run build`.
 2. Copy `dist/quatt-cards.js` to `/config/www/quatt-cards.js` on Home Assistant.
-3. Add a dashboard resource with URL `/local/quatt-cards.js?v=0.4.4` and resource type **JavaScript Module**.
+3. Add a dashboard resource with URL `/local/quatt-cards.js?v=0.5.0` and resource type **JavaScript Module**.
 4. Reload the browser. In **Add card**, search for **Quatt**.
 
 For dashboards with YAML-managed resources:
 
 ```yaml
 resources:
-  - url: /local/quatt-cards.js?v=0.4.4
+  - url: /local/quatt-cards.js?v=0.5.0
     type: module
 ```
 
@@ -164,6 +164,8 @@ Controls are discovered from each device’s enabled Quatt climate entity, indep
 ## Choose displayed fields
 
 Open the card editor and expand **Displayed fields** to show or hide readings, history series, or status categories. **Reset displayed fields** restores that card’s defaults and preserves other settings. Selection applies to every visible device in a collection card. Hidden readings do not leave empty columns. Field selection affects presentation only; it does not change hardware or entity settings.
+
+Chill combines status and mode in its device icon, removing the separate text rows. The ring is blue for selected cooling mode and red for heating; a snowflake or heat symbol also identifies the mode. A check means reported On/running, a power symbol means Off, a clock means idle/standby, and a question mark means unknown. Unavailable units use a neutral ring and warning badge. The ring shows the selected mode even while Off; it does not imply active cooling or heating. Tooltips and accessible descriptions retain the reported values. **Operating status** and **Operating mode** under Displayed fields toggle the icon indicators. Theme authors can override `--quatt-chill-cooling-color` (default `#00a9ed`) and `--quatt-chill-heating-color` (default `#e34d59`).
 
 Overview includes a heat-battery summary when that equipment is discovered: thermal charge with a progress bar, shower time, and operating status. In the Detailed layout, its header status is a small dot: green for On and gray for Off, unavailable, or other states. Hover or inspect the accessible label for the reported status; selecting the dot opens sensor details. The Heat battery · status field controls its visibility. Tank temperatures, charging/hot-water indicators, charger input, and water pressure can be enabled separately. Missing charge never becomes a fabricated percentage.
 

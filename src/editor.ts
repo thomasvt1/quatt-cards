@@ -221,7 +221,7 @@ export class QuattCardEditor extends LitElement {
         </select>
       </label>` : nothing}
       <details><summary>Displayed fields</summary>
-        <p class="help">Choose which readings to show. Missing optional equipment is omitted. Hiding a field does not change the equipment.</p>
+        <p class="help">Choose which readings to show. Missing optional equipment is omitted. Hiding a field does not change the equipment.</p>${isChill?html`<p class="help">Operating status and mode appear on the device icon. Blue means cooling, red means heating. Tap the icon for controls.</p>`:nothing}
         <div class="field-options">${(cardFields[config.type]||[]).map(field=>html`<label class="field-option"><input type="checkbox" aria-label=${field.label} .checked=${fieldVisible(config,field.key)} @change=${(event:Event)=>this.toggleField(field.key,(event.target as HTMLInputElement).checked)} /><span>${field.label}</span></label>`)}</div>
         <button class="reset-fields" @click=${()=>this.resetFields()}>Reset displayed fields</button>
       </details>

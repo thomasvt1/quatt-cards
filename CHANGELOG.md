@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.5.0
+
+- Integrate Chill status and mode into the clickable device ring, replacing both text rows.
+- Use bright blue for cooling and red for heating, with mode symbols and a separate on/off/idle/unknown status badge.
+- Keep selected mode distinct from operating status; unavailable units remain neutral with a warning.
+- Preserve keyboard access, native controls, display-only icons and configurable indicators. Reduce card sizing and keep the compact layout at two reading columns.
+
 ## 0.4.4
 
 - Use a neutral gray dot for heat-battery Off status instead of red, so Off does not suggest a fault. On remains green.

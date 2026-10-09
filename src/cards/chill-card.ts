@@ -1,30 +1,43 @@
 import { css, html, nothing } from 'lit';
 import { BaseCard } from '../base-card';
 import { icon } from '../ui';
+import { chillState } from '../data/chill-state';
 import type { QuattDevice } from '../types';
 export class QuattChillCard extends BaseCard {
   static getStubConfig() { return {type:'custom:quatt-chill-card'}; }
-  getCardSize(){return this.config?6+Math.max(0,Math.ceil(this.snapshot.chills.length/3)-1)*5:6;}
+  getCardSize(){return this.config?5+Math.max(0,Math.ceil(this.snapshot.chills.length/3)-1)*4:5;}
   static styles=[BaseCard.styles,css`
-    ha-card{min-height:410px}.rooms{display:grid;grid-template-columns:repeat(var(--columns,2),minmax(0,1fr));gap:24px 0}.room{min-width:0;border-left:1px solid var(--qc-line);padding:0 16px}.room.row-start{padding-left:0;border-left:0}.room:last-child{padding-right:0}
-    h3{font-size:13px;font-weight:600;margin:0 0 16px;overflow-wrap:anywhere}.summary{text-align:center}.unit-icon{color:var(--qc-cool);display:grid;place-items:center;width:48px;height:52px;margin:0 auto 10px;padding:5px;border:0;border-radius:8px;background:transparent}.unit-icon .icon{width:28px;height:42px;stroke-width:1.3}
+    :host{align-self:start}ha-card{min-height:0}.rooms{display:grid;grid-template-columns:repeat(var(--columns,2),minmax(0,1fr));gap:24px 0}.room{min-width:0;border-left:1px solid var(--qc-line);padding:0 16px}.room.row-start{padding-left:0;border-left:0}.room:last-child{padding-right:0}
+    h3{font-size:13px;font-weight:600;margin:0 0 16px;overflow-wrap:anywhere}.summary{text-align:center}
+    .unit-icon{--ring-color:var(--qc-secondary);color:var(--ring-color);position:relative;display:grid;place-items:center;width:60px;height:60px;margin:0 auto 12px;padding:7px;border:2.5px solid var(--ring-color);border-radius:50%;background:transparent}
+    .unit-icon.cooling{--ring-color:var(--quatt-chill-cooling-color,#00a9ed)}.unit-icon.heating{--ring-color:var(--quatt-chill-heating-color,#e34d59)}
+    .unit-icon>.icon{width:25px;height:38px;stroke-width:1.3}.unit-icon.off>.icon,.unit-icon.idle>.icon,.unit-icon.unknown>.icon{color:var(--qc-secondary)}
+    .icon-badge{position:absolute;display:grid;place-items:center;width:20px;height:20px;border:2px solid var(--ha-card-background,var(--card-background-color,#fff));border-radius:50%;background:var(--ha-card-background,var(--card-background-color,#fff))}
+    .icon-badge .icon{width:14px;height:14px;stroke-width:2}.mode-badge{left:-5px;top:-3px}.status-badge{right:-5px;bottom:-3px;background:var(--ring-color);color:var(--ha-card-background,var(--card-background-color,#fff))}
+    .off .status-badge,.idle .status-badge,.unknown .status-badge{background:var(--qc-secondary)}.offline .status-badge{background:var(--qc-warning)}
+    button.unit-icon:disabled{opacity:1}.icon-description{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
     button.unit-icon:hover:not(:disabled){background:var(--qc-subtle)}
     .temperature .value{font-size:23px}.temperature>.label{display:block;font-size:11px}.fields{display:grid;gap:17px;margin-top:20px}.warning{margin-top:12px;color:var(--qc-warning);font-size:12px}
     .rooms.stacked,.rooms.compact{grid-template-columns:1fr;gap:0}.stacked .room,.compact .room{padding:16px 0;border-left:0;border-top:1px solid var(--qc-line)}.stacked .room:first-child,.compact .room:first-child{padding-top:0;border-top:0}
     .stacked .fields,.compact .fields{grid-template-columns:repeat(2,minmax(0,1fr))}
-    .compact .temperature .value{font-size:20px}.compact .device-field>.icon{display:none}.compact .fields{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+    .compact .temperature .value{font-size:20px}.compact .device-field>.icon{display:none}.compact .fields{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
     .rooms.three .device-field>.icon{display:none}.rooms.three .room{padding:0 9px}.rooms.three .row-start{padding-left:0}.rooms.three .temperature .value{font-size:19px}
     .rooms.single.columns h3{text-align:center}.rooms.single.columns .summary{margin:20px 0 26px}.rooms.single.columns .fields{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 18px}
     ha-card.single-device{min-height:0}ha-card.custom-fields{min-height:0}.fields:empty{display:none}
     @container(max-width:350px){.room{padding:0 10px}.device-field{gap:8px}.device-field .value{font-size:14px}.device-field .label{font-size:10px}.temperature .value{font-size:20px}}
   `];
   private controlIcon(d:QuattDevice) {
-    if(this.config.show_controls===false)return html`<span class="unit-icon">${icon('chill')}</span>`;
+    const state=chillState(d),showStatus=this.showField('status'),showMode=this.showField('mode');
+    const description=[showStatus?`Status: ${state.statusText}`:'',showMode?`Mode: ${state.modeText}`:''].filter(Boolean).join(' · ');
+    const classes=`unit-icon ${showMode&&state.state!=='offline'?state.setting:'neutral'} ${showStatus?state.state:''}`;
+    const content=html`${icon('chill')}${showMode?html`<span class="icon-badge mode-badge" aria-hidden="true">${icon(state.modeIcon)}</span>`:nothing}${showStatus?html`<span class="icon-badge status-badge" aria-hidden="true">${icon(state.statusIcon)}</span>`:nothing}`;
+    if(this.config.show_controls===false)return html`<span class=${classes} role="img" aria-label=${`${d.name}${description?`: ${description}`:''}`} title=${description}>${content}</span>`;
     const entity=d.climateEntityId&&this.hass.states[d.climateEntityId];
     const available=d.available&&entity&&!['unknown','unavailable'].includes(entity.state);
     const hint=!d.climateEntityId?'Controls require one enabled Chill climate entity.':!available?'Unit unavailable':`Control ${d.name}`;
-    return html`<button class="unit-icon" ?disabled=${!available} aria-label=${`Control ${d.name}`} title=${hint} aria-haspopup="dialog"
-      @click=${()=>this.openControls(d.id)}>${icon('chill')}</button>`;
+    const descriptionId=`chill-state-${d.id}`;
+    return html`<button class=${classes} ?disabled=${!available} aria-label=${`Control ${d.name}`} aria-describedby=${descriptionId} title=${[hint,description].filter(Boolean).join(' · ')} aria-haspopup="dialog"
+      @click=${()=>this.openControls(d.id)}>${content}</button><span class="icon-description" id=${descriptionId}>${description}</span>`;
   }
   private openControls(deviceId:string) {
     const d=this.snapshot.chills.find(device=>device.id===deviceId);
@@ -33,10 +46,10 @@ export class QuattChillCard extends BaseCard {
     this.dispatchEvent(new CustomEvent('hass-more-info',{detail:{entityId:entity.entity_id},bubbles:true,composed:true}));
   }
   private room(d:QuattDevice,index:number,columns:number) {
-    const m=d.metrics,status=m.status?.text||(!d.available?'Unavailable':'Status unavailable');
+    const m=d.metrics;
     return html`<article class=${`room${index%columns===0?' row-start':''}`} aria-label=${d.name}><h3>${d.name}</h3><div class="summary">${this.controlIcon(d)}
       ${this.showField('roomTemperature')?html`<div class="temperature">${this.value(m.roomTemperature,`${d.name} temperature`)}<span class="label">Current temperature</span></div>`:nothing}</div><div class="fields">
-      ${this.selectedField('targetTemperature','Target temperature',m.targetTemperature,'thermometer')}${this.selectedField('fanMode','Fan speed',m.fanMode,'fan')}${this.selectedField('status','Status',{...m.status,value:null,text:status,unit:''},d.available?'dot':'warning')}${this.selectedField('mode','Mode',m.mode,m.mode?.text?.toLowerCase().includes('heat')?'heat':'snow')}
+      ${this.selectedField('targetTemperature','Target temperature',m.targetTemperature,'thermometer')}${this.selectedField('fanMode','Fan speed',m.fanMode,'fan')}
       </div>${this.showField('waterWarning')&&this.on(m.waterWarning)?html`<p class="warning">Water tank needs attention</p>`:nothing}</article>`;
   }
   protected render() {

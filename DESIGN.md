@@ -71,7 +71,7 @@ components:
 
 **Creative North Star: "Native Home Assistant instruments"**
 
-Quatt Cards extends the approved Omnibattery visual system: compact telemetry, native theme inheritance, restrained surfaces and recognizable physical equipment. Independent cards present readings for inspection. Chill adds an explicit per-unit Controls action opening the native Home Assistant climate panel.
+Quatt Cards extends the approved Omnibattery visual system: compact telemetry, native theme inheritance, restrained surfaces and recognizable physical equipment. Independent cards present readings for inspection. Chill adds a clickable equipment icon per unit opening the native Home Assistant climate panel.
 
 The system uses a quiet type hierarchy and separators to compare devices within a single card. Small inline SVG outlines identify the wave-grille outdoor heat pump, cylindrical thermal HeatBattery and vented cylindrical Chill. Their geometry carries identity without competing with the measurements.
 
@@ -197,9 +197,9 @@ The configuration editor uses native inputs and selects with theme surface/text,
 
 Not canonized: the demo wordmark's system-font display styling is preview scaffolding, not a card display-font rule; unresolved reproduction drift and unpassed validation gates are not evidence of a reusable design decision.
 
-### Chill control access (v0.2.0)
+### Chill control access (v0.4.1)
 
-Each unit has a full-width, 44px minimum-height Controls button beneath a thin separator. It inherits theme text, borders, and focus treatment; three-column layouts omit its secondary icon to retain label space. It opens the native climate panel for that unit. Missing targets show an explanation; unavailable units disable the button. The visual editor can hide control access for display-only dashboards. This is the explicit exception to the original display-only scope.
+Each unit has a centered 48px by 52px equipment-icon button above its current temperature. The 28px by 42px outline uses the cooling accent, a transparent surface, an 8px corner radius, subtle hover fill, and the shared keyboard focus treatment. Activating it opens that unit’s native climate panel. There is no separate footer action or separator. Missing targets and unavailable units disable the icon with an explanatory tooltip. The icon remains available when the temperature field is hidden; disabling control access in the visual editor leaves a decorative icon. This is the explicit exception to the original display-only scope.
 
 ### Overview storage and field selection (v0.3.0)
 

@@ -4,6 +4,19 @@ import type {CardConfig,HomeAssistant} from '../../src/types';
 import type {DemoDiagnostics} from '../../src/demo/fixtures';
 type Card=HTMLElement&{hass:HomeAssistant&{__demoDiagnostics:DemoDiagnostics};setConfig(c:CardConfig):void;getCardSize():number;getGridOptions():unknown};
 const names=['overview','heat-pump','heat-battery','history','chill','status'];
+test('Chill control icons are centered, touch-sized, and remain available when temperature is hidden',async({page})=>{
+ await open(page);const card=page.locator('quatt-chill-card');
+ for(const width of [1440,390])for(const layout of ['columns','stacked','compact'] as const){
+  await page.setViewportSize({width,height:1000});await page.evaluate(layout=>window.demo.setConfig('chill',{layout}),layout);
+  const icons=await card.locator('button.unit-icon').evaluateAll(es=>es.map(e=>{const a=e.getBoundingClientRect(),b=e.parentElement!.getBoundingClientRect();return {width:a.width,height:a.height,delta:Math.abs(a.x+a.width/2-b.x-b.width/2)};}));
+  expect(icons).toHaveLength(2);for(const i of icons){expect(i.width).toBeGreaterThanOrEqual(44);expect(i.height).toBeGreaterThanOrEqual(44);expect(i.delta).toBeLessThan(1);}
+  await expect(card.locator('.controls,.control-button')).toHaveCount(0);
+ }
+ await page.evaluate(()=>window.demo.setConfig('chill',{fields:{roomTemperature:false}}));
+ await expect(card.locator('.temperature')).toHaveCount(0);await expect(card.getByRole('button',{name:'Control Living room',exact:true})).toBeVisible();
+ await page.evaluate(()=>window.demo.setConfig('chill',{show_controls:false}));
+ await expect(card.locator('button.unit-icon')).toHaveCount(0);await expect(card.locator('span.unit-icon')).toHaveCount(2);
+});
 test('Overview minimal heat battery joins the reading grid and preserves field choices',async({page})=>{
  await open(page);await page.evaluate(()=>window.demo.showEditor('overview'));
  const card=page.locator('quatt-overview-card'),editor=page.locator('quatt-card-editor');

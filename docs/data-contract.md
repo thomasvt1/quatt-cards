@@ -60,7 +60,7 @@ Adapter tests cover exact keys, renamed entities, legacy IDs, colliding translat
 
 ## Chill control-panel targets
 
-Since v0.2.0, an unambiguous enabled Quatt climate source with exact `chills` or legacy `chills.<index>` identity is retained per installation and registry device. Reading overrides cannot retarget controls. Opening Controls emits `hass-more-info` for that climate entity; the card makes no service calls. The native panel handles target temperature, heat/cool/off mode, fan speed, permissions, and errors. Offline status or missing/unavailable climate state disables the button.
+Since v0.2.0, an unambiguous enabled Quatt climate source with exact `chills` or legacy `chills.<index>` identity is retained per installation and registry device. Reading overrides cannot retarget controls. Activating the Chill icon emits `hass-more-info` for that climate entity; the card makes no service calls. The native panel handles target temperature, heat/cool/off mode, fan speed, permissions, and errors. Offline status or missing/unavailable climate state disables the icon button.
 
 ## Displayed fields and Overview storage
 

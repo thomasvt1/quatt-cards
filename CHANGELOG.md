@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.1
+
+- Center each Chill equipment icon and make it open that unit’s native Home Assistant controls.
+- Remove the separate Controls footer button and center the current temperature beneath the icon.
+- Keep keyboard access, touch-sized targets, availability checks, and the display-only option in all layouts.
+- Keep icon controls available when the current-temperature field is hidden.
+
 ## 0.4.0
 
 - Add Detailed and Minimal heat-battery layouts to the Overview visual editor and YAML (`heat_battery_layout`).

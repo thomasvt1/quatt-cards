@@ -17,7 +17,7 @@ Compact Home Assistant dashboard cards for the [Quatt integration by marcoboers]
 
 All cards have a visual configuration editor, card-picker preview, YAML configuration, and Sections/Masonry sizing. Heat pump and Chill collections support three styles: **C · Columns** by default, **A · Stacked**, and **B · Compact**. Columns uses at most three units per row; further units wrap onto new rows. A single visible unit uses two reading columns across the card.
 
-Interactions inspect chart readings or open Home Assistant sensor details. Each Chill unit also has a **Controls** button that opens its native Home Assistant climate panel. Use that panel to change target temperature, heating/cooling/off mode, and fan speed. Opening it does not change the unit; commands are handled by Home Assistant when you use its controls. The other cards remain display-only.
+Interactions inspect chart readings or open Home Assistant sensor details. Each Chill unit has a centered, clickable **Chill icon** that opens its native Home Assistant climate panel. Use that panel to change target temperature, heating/cooling/off mode, and fan speed. Opening it does not change the unit; commands are handled by Home Assistant when you use its controls. The other cards remain display-only.
 
 ![The six Quatt cards in a light Home Assistant theme, using synthetic readings](docs/screenshots/desktop-light.png)
 
@@ -48,14 +48,14 @@ HACS normally registers the module automatically. If your resources are managed 
 
 1. Build the asset with `npm ci` and `npm run build`.
 2. Copy `dist/quatt-cards.js` to `/config/www/quatt-cards.js` on Home Assistant.
-3. Add a dashboard resource with URL `/local/quatt-cards.js?v=0.4.0` and resource type **JavaScript Module**.
+3. Add a dashboard resource with URL `/local/quatt-cards.js?v=0.4.1` and resource type **JavaScript Module**.
 4. Reload the browser. In **Add card**, search for **Quatt**.
 
 For dashboards with YAML-managed resources:
 
 ```yaml
 resources:
-  - url: /local/quatt-cards.js?v=0.4.0
+  - url: /local/quatt-cards.js?v=0.4.1
     type: module
 ```
 
@@ -97,7 +97,7 @@ layout: columns
 | `device` | Heat pumps, Chill | All units | Restrict the card to one device registry ID. |
 | `heat_battery_layout` | Overview | `detailed` | `detailed` keeps the separate section and charge bar; `minimal` puts battery readings in the main reading grid. |
 | `fields` | All cards | Card defaults | Map field keys to `true` or `false`; also available under **Displayed fields** in the visual editor. |
-| `show_controls` | Chill | `true` | Show a Controls button for each unit. Set `false` to keep the card display-only. |
+| `show_controls` | Chill | `true` | Make each Chill icon clickable to open controls. Set `false` to keep the icon decorative and the card display-only. |
 | `layout` | Heat pumps, Chill | `columns` | `columns`, `stacked`, or `compact`. |
 | `hours` | History | `24` | Recorded window: `6`, `12`, `24`, or `48`. |
 | `entities` | All | Automatic | Map supported metric roles to explicit sensor entity IDs. |
@@ -159,7 +159,7 @@ Bundled Lit license notices are preserved in [THIRD_PARTY_NOTICES.txt](THIRD_PAR
 
 ### Chill controls
 
-Controls are discovered from each device’s enabled Quatt climate entity, independently of reading overrides. They work for a selected unit or all units in the card. The integration’s Quatt Remote Mobile API configuration is required. Missing or ambiguous climate entities show an explanation; offline units have disabled buttons. Home Assistant supplies the supported modes, fan options, temperature limits, permissions, and service error handling. No command is sent when opening the panel.
+Controls are discovered from each device’s enabled Quatt climate entity, independently of reading overrides. They work for a selected unit or all units in the card. The integration’s Quatt Remote Mobile API configuration is required. Missing or ambiguous climate entities and offline units disable the icon, with an explanation in its tooltip. Home Assistant supplies the supported modes, fan options, temperature limits, permissions, and service error handling. No command is sent when opening the panel.
 
 ## Choose displayed fields
 

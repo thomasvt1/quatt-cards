@@ -211,9 +211,9 @@ export class QuattCardEditor extends LitElement {
       </label>`:nothing}
       ${isChill ? html`<label class="field" for="show-controls"><span>Unit controls</span>
         <select id="show-controls" aria-label="Unit controls" @change=${(event:Event)=>this.updateConfig('show_controls',this.inputValue(event)==='true')}>
-          <option value="true" .selected=${config.show_controls!==false}>Show Controls button</option>
-          <option value="false" .selected=${config.show_controls===false}>Hide controls (display only)</option>
-        </select><small>Open each unit’s Home Assistant climate panel for temperature, mode, and fan controls.</small>
+          <option value="true" .selected=${config.show_controls!==false}>Clickable Chill icon</option>
+          <option value="false" .selected=${config.show_controls===false}>Display only</option>
+        </select><small>Tap a Chill icon to open that unit’s Home Assistant climate panel for temperature, mode, and fan controls.</small>
       </label>`:nothing}
       ${isHistory ? html`<label class="field" for="hours"><span id="hours-label">History range</span>
         <select id="hours" aria-labelledby="hours-label" @change=${(event: Event) => this.updateConfig('hours', Number(this.inputValue(event)))}>

@@ -4,6 +4,31 @@ import type {CardConfig,HomeAssistant} from '../../src/types';
 import type {DemoDiagnostics} from '../../src/demo/fixtures';
 type Card=HTMLElement&{hass:HomeAssistant&{__demoDiagnostics:DemoDiagnostics};setConfig(c:CardConfig):void;getCardSize():number;getGridOptions():unknown};
 const names=['overview','heat-pump','heat-battery','history','chill','status'];
+test('Chill controls open the correct native climate panel by mouse and keyboard without service calls',async({page})=>{
+ await open(page);
+ await page.evaluate(()=>document.addEventListener('hass-more-info',event=>{document.body.dataset.entity=(event as CustomEvent).detail.entityId;}));
+ const card=page.locator('quatt-chill-card');
+ await card.getByRole('button',{name:'Control Living room',exact:true}).click();
+ await expect(page.locator('body')).toHaveAttribute('data-entity','climate.demo_demo-chill-uuid-1_chills');
+ const bedroom=card.getByRole('button',{name:'Control Bedroom',exact:true});await bedroom.focus();await bedroom.press('Enter');
+ await expect(page.locator('body')).toHaveAttribute('data-entity','climate.demo_demo-chill-uuid-2_chills');
+ expect(await card.evaluate(e=>(e as Card).hass.__demoDiagnostics.services)).toEqual([]);
+ await page.evaluate(()=>window.demo.showEditor('chill'));
+ await page.locator('quatt-card-editor').getByLabel('Unit controls',{exact:true}).selectOption('false');
+ await expect(card.getByRole('button',{name:/^Control /})).toHaveCount(0);
+ expect(await page.evaluate(()=>window.demo.getConfig('chill')?.show_controls)).toBe(false);
+ await page.locator('quatt-card-editor').getByLabel('Unit controls',{exact:true}).selectOption('true');
+ await expect(card.getByRole('button',{name:/^Control /})).toHaveCount(2);
+});
+test('Chill controls disable for offline or missing climate state while retaining readings',async({page})=>{
+ await open(page);await page.evaluate(()=>window.demo.setScenario('offline'));
+ const card=page.locator('quatt-chill-card');
+ await expect(card.getByRole('button',{name:'Control Bedroom',exact:true})).toBeDisabled();
+ await expect(card.getByRole('button',{name:'Control Living room',exact:true})).toBeEnabled();
+ await card.evaluate(e=>{const card=e as Card;const states={...card.hass.states};delete states['climate.demo_demo-chill-uuid-1_chills'];card.hass={...card.hass,states};});
+ await expect(card.getByRole('button',{name:'Control Living room',exact:true})).toBeDisabled();
+ await expect(card.getByRole('heading',{name:'Living room',exact:true})).toBeVisible();
+});
 async function open(page:Page){await page.goto('/');await expect(page.locator('quatt-history-card').getByRole('slider')).toBeVisible();}
 
 for(const viewport of [{name:'desktop',width:1440,height:1050},{name:'tablet',width:820,height:1100},{name:'phone',width:390,height:844}])for(const theme of ['light','dark'] as const){

@@ -1,8 +1,8 @@
 {
   "name": "quatt-cards",
-  "version": "0.1.1",
+  "version": "0.2.0",
   "type": "module",
-  "description": "Compact, display-only Home Assistant cards for Quatt heat pumps, heat storage and Chill",
+  "description": "Compact Home Assistant cards for Quatt heat pumps, heat storage and Chill, with native Chill controls",
   "license": "AGPL-3.0-or-later",
   "scripts": {
     "dev": "vite --host 127.0.0.1",

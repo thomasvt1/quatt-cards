@@ -57,3 +57,7 @@ History uses Home Assistant's read-only recorder endpoint. The public demo suppl
 ## Validation
 
 Adapter tests cover exact keys, renamed entities, legacy IDs, colliding translation keys, multiple installations, unit conversion, negative thermal power, unavailable and disabled telemetry, unsupported units, range validation, selected-device overrides, climate temperature attributes, Chill identity and offline states, status explanations, priority fallback, and duplicated source mappings. Synthetic fixtures include heating, idle, cooling, defrost, offline, partial telemetry, no installation, and five Chill devices for wrapping checks.
+
+## Chill control-panel targets
+
+Since v0.2.0, an unambiguous enabled Quatt climate source with exact `chills` or legacy `chills.<index>` identity is retained per installation and registry device. Reading overrides cannot retarget controls. Opening Controls emits `hass-more-info` for that climate entity; the card makes no service calls. The native panel handles target temperature, heat/cool/off mode, fan speed, permissions, and errors. Offline status or missing/unavailable climate state disables the button.

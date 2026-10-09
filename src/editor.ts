@@ -105,7 +105,7 @@ export class QuattCardEditor extends LitElement {
     }
   }
 
-  private updateConfig(key: keyof CardConfig, value: string | number | undefined) {
+  private updateConfig(key: keyof CardConfig, value: string | number | boolean | undefined) {
     if (!this.config) return;
     const config = { ...this.config };
     if (key === 'integration_id' && value !== config.integration_id) delete config.device;
@@ -194,6 +194,12 @@ export class QuattCardEditor extends LitElement {
           </select>
           <small id="layout-help">Columns shows up to three units per row. Additional units wrap onto a new row.</small>
         </label>` : nothing}
+      ${isChill ? html`<label class="field" for="show-controls"><span>Unit controls</span>
+        <select id="show-controls" aria-label="Unit controls" @change=${(event:Event)=>this.updateConfig('show_controls',this.inputValue(event)==='true')}>
+          <option value="true" .selected=${config.show_controls!==false}>Show Controls button</option>
+          <option value="false" .selected=${config.show_controls===false}>Hide controls (display only)</option>
+        </select><small>Open each unit’s Home Assistant climate panel for temperature, mode, and fan controls.</small>
+      </label>`:nothing}
       ${isHistory ? html`<label class="field" for="hours"><span id="hours-label">History range</span>
         <select id="hours" aria-labelledby="hours-label" @change=${(event: Event) => this.updateConfig('hours', Number(this.inputValue(event)))}>
           ${[6, 12, 24, 48].map(hours => html`<option value=${hours} .selected=${(config.hours ?? 24) === hours}>Last ${hours} hours</option>`)}

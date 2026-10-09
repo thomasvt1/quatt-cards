@@ -1,6 +1,6 @@
 # Quatt Cards
 
-Compact, display-only Home Assistant dashboard cards for the [Quatt integration by marcoboers](https://github.com/marcoboers/home-assistant-quatt). The collection continues the typography, compact layouts, inline charts, and Home Assistant theme support of [Omnibattery Cards](https://github.com/thomasvt1/omnibattery-cards), with visual inspiration from [EMHASS Companion](https://github.com/smefa/emhass-ha-companion).
+Compact Home Assistant dashboard cards for the [Quatt integration by marcoboers](https://github.com/marcoboers/home-assistant-quatt). The collection continues the typography, compact layouts, inline charts, and Home Assistant theme support of [Omnibattery Cards](https://github.com/thomasvt1/omnibattery-cards), with visual inspiration from [EMHASS Companion](https://github.com/smefa/emhass-ha-companion).
 
 [![CI](https://github.com/thomasvt1/quatt-cards/actions/workflows/ci.yml/badge.svg)](https://github.com/thomasvt1/quatt-cards/actions/workflows/ci.yml) [![Release](https://img.shields.io/github/v/release/thomasvt1/quatt-cards)](https://github.com/thomasvt1/quatt-cards/releases/latest)
 
@@ -12,12 +12,12 @@ Compact, display-only Home Assistant dashboard cards for the [Quatt integration 
 | Performance history | `custom:quatt-history-card` | Recorded heat output, electrical input, COP, and a slim operating-mode timeline over the last 6, 12, 24, or 48 hours. |
 | Heat pumps | `custom:quatt-heat-pump-card` | All heat pumps or one selected unit, with power, temperatures, and available operating details. |
 | Heat battery | `custom:quatt-heat-battery-card` | Thermal charge level, available shower time, temperatures, and available charging information. |
-| Chill | `custom:quatt-chill-card` | All Chill units or one selected unit, with available temperature, fan, and operating information. |
+| Chill | `custom:quatt-chill-card` | All Chill units or one selected unit, with available temperature, fan, operating information, and native controls. |
 | System status | `custom:quatt-status-card` | Reported operating state, connectivity, defrost, limits, and available faults. |
 
 All cards have a visual configuration editor, card-picker preview, YAML configuration, and Sections/Masonry sizing. Heat pump and Chill collections support three styles: **C · Columns** by default, **A · Stacked**, and **B · Compact**. Columns uses at most three units per row; further units wrap onto new rows. A single visible unit uses two reading columns across the card.
 
-Interactions inspect chart readings or open Home Assistant sensor details. Cards do not call services, change temperatures, switch modes, or operate equipment.
+Interactions inspect chart readings or open Home Assistant sensor details. Each Chill unit also has a **Controls** button that opens its native Home Assistant climate panel. Use that panel to change target temperature, heating/cooling/off mode, and fan speed. Opening it does not change the unit; commands are handled by Home Assistant when you use its controls. The other cards remain display-only.
 
 ![The six Quatt cards in a light Home Assistant theme, using synthetic readings](docs/screenshots/desktop-light.png)
 
@@ -48,14 +48,14 @@ HACS normally registers the module automatically. If your resources are managed 
 
 1. Build the asset with `npm ci` and `npm run build`.
 2. Copy `dist/quatt-cards.js` to `/config/www/quatt-cards.js` on Home Assistant.
-3. Add a dashboard resource with URL `/local/quatt-cards.js?v=0.1.1` and resource type **JavaScript Module**.
+3. Add a dashboard resource with URL `/local/quatt-cards.js?v=0.2.0` and resource type **JavaScript Module**.
 4. Reload the browser. In **Add card**, search for **Quatt**.
 
 For dashboards with YAML-managed resources:
 
 ```yaml
 resources:
-  - url: /local/quatt-cards.js?v=0.1.1
+  - url: /local/quatt-cards.js?v=0.2.0
     type: module
 ```
 
@@ -95,6 +95,7 @@ layout: columns
 | `title` | All | Card's own title | Optional heading. |
 | `integration_id` | All | Automatic | Quatt config-entry ID selected in the visual editor. |
 | `device` | Heat pumps, Chill | All units | Restrict the card to one device registry ID. |
+| `show_controls` | Chill | `true` | Show a Controls button for each unit. Set `false` to keep the card display-only. |
 | `layout` | Heat pumps, Chill | `columns` | `columns`, `stacked`, or `compact`. |
 | `hours` | History | `24` | Recorded window: `6`, `12`, `24`, or `48`. |
 | `entities` | All | Automatic | Map supported metric roles to explicit sensor entity IDs. |
@@ -153,3 +154,7 @@ Keep personal Home Assistant identifiers, credentials, raw diagnostics, and loca
 Licensed **AGPL-3.0-or-later**; see [LICENSE](LICENSE). Derived frontend patterns from [Omnibattery Cards](https://github.com/thomasvt1/omnibattery-cards) are retained under that license. [EMHASS Companion](https://github.com/smefa/emhass-ha-companion) supplied visual inspiration. [marcoboers/home-assistant-quatt](https://github.com/marcoboers/home-assistant-quatt) supplies the integration and entity contract; this frontend is a separate project and is not an official Quatt product.
 
 Bundled Lit license notices are preserved in [THIRD_PARTY_NOTICES.txt](THIRD_PARTY_NOTICES.txt) and the generated JavaScript asset.
+
+### Chill controls
+
+Controls are discovered from each device’s enabled Quatt climate entity, independently of reading overrides. They work for a selected unit or all units in the card. The integration’s Quatt Remote Mobile API configuration is required. Missing or ambiguous climate entities show an explanation; offline units have disabled buttons. Home Assistant supplies the supported modes, fan options, temperature limits, permissions, and service error handling. No command is sent when opening the panel.

@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.0
+
+- Add a Controls button for each Chill unit, opening Home Assistant’s native climate panel for temperature, heat/cool/off mode, and fan speed.
+- Discover control targets independently of telemetry overrides, and disable control access for offline units.
+- Add a visual-editor/YAML option (`show_controls: false`) for display-only Chill cards.
+- Cover native control-panel access and target discovery with keyboard, offline, rename, legacy, and ambiguity tests.
+
 ## 0.1.1
 
 - Use two reading columns and natural card height when a heat pump or Chill card shows one unit, including an explicitly selected device.

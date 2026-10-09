@@ -64,7 +64,11 @@ export function buildSnapshot(hass: HomeAssistant, registry: RegistryData, confi
     return [...new Set(candidates.map(source => source.deviceId))].map(id => {
       const registryDevice = registry.devices.find(device => device.id === id);
       const metrics = readMetrics(hass, candidates.filter(source => source.deviceId === id), snapshot.warnings);
-      return { id, name: registryDevice?.name_by_user || registryDevice?.name || kind.replaceAll('-', ' '), kind, available: Object.values(metrics).some(meaningful) && metrics.connected?.value !== 0 && metrics.status?.text?.toLowerCase() !== 'offline', metrics };
+      // Control targets come only from exact, device-scoped integration discovery.
+      // A reading override must never retarget a control to another room.
+      const climates = candidates.filter(source => source.deviceId === id && source.kind === 'chill' && source.entity.entity_id.startsWith('climate.'));
+      const climateEntityId = climates.length === 1 ? climates[0].entity.entity_id : undefined;
+      return { id, name: registryDevice?.name_by_user || registryDevice?.name || kind.replaceAll('-', ' '), kind, available: Object.values(metrics).some(meaningful) && metrics.connected?.value !== 0 && metrics.status?.text?.toLowerCase() !== 'offline', metrics, climateEntityId };
     });
   }
   snapshot.heatPumps = devices('heat-pump'); snapshot.chills = devices('chill');

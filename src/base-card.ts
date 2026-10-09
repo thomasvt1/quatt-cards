@@ -55,6 +55,7 @@ export abstract class BaseCard extends LitElement {
     if (!config || !config.type?.startsWith('custom:quatt-')) throw new Error('Select a Quatt card type.');
     if (config.entities && (typeof config.entities !== 'object' || Array.isArray(config.entities))) throw new Error('entities must map data roles to entity IDs.');
     if (config.layout && !['columns','stacked','compact'].includes(config.layout)) throw new Error('layout must be columns, stacked, or compact.');
+    if (config.show_controls !== undefined && typeof config.show_controls !== 'boolean') throw new Error('show_controls must be true or false.');
     if (config.hours !== undefined && (!Number.isFinite(config.hours) || config.hours < 1 || config.hours > 48)) throw new Error('hours must be between 1 and 48.');
     this.config = { ...config, entities: { ...config.entities } };
     this.invalidate();

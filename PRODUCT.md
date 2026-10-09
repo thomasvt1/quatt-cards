@@ -12,7 +12,7 @@ TypeScript, Lit, inline SVG and Vite, continuing the user's Omnibattery Cards im
 Home Assistant users inspecting their Quatt heat-pump system. The user requested a similar card collection based on the approved compact Omnibattery layouts.
 
 ## Operating context
-Independent Lovelace cards in Sections or Masonry dashboards, on desktop and touch devices, in the active Home Assistant theme. Sensor details are inspection actions; there are no heating controls or service calls.
+Independent Lovelace cards in Sections or Masonry dashboards, on desktop and touch devices, in the active Home Assistant theme. Sensor details are inspection actions. Since v0.2.0, each Chill unit can open its native Home Assistant climate controls. The package itself sends no service calls; the user operates the native panel. Other cards remain display-only.
 
 ## Capabilities and constraints
 Read entities provided by marcoboers/home-assistant-quatt. Discover through registry membership and stable unique IDs, preserve renamed entity IDs, and distinguish multiple installations. Optional and missing telemetry stays unavailable. No fabricated forecasts, heating savings, or storage percentages. Development examples use synthetic household and device identifiers.

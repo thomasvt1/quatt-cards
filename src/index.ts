@@ -11,7 +11,7 @@ const cards=[
   ['quatt-history-card',QuattHistoryCard,'Quatt Performance','Measured heat, electricity and COP over time.'],
   ['quatt-heat-pump-card',QuattHeatPumpCard,'Quatt Heat Pumps','Compare heat-pump readings and operating states.'],
   ['quatt-heat-battery-card',QuattHeatBatteryCard,'Quatt Heat Battery','Thermal charge, shower time and storage temperatures.'],
-  ['quatt-chill-card',QuattChillCard,'Quatt Chill Rooms','Room temperatures, targets and reported Chill states.'],
+  ['quatt-chill-card',QuattChillCard,'Quatt Chill Rooms','Room readings and access to native Chill controls.'],
   ['quatt-status-card',QuattStatusCard,'Quatt Status','Operating mode, connectivity, protection and alerts.'],
 ] as const;
 declare global { interface Window { customCards?: {type:string;name:string;description:string;preview:boolean}[]; } }
@@ -21,4 +21,4 @@ for(const [type,element,name,description] of cards) {
   if(!window.customCards.some(card=>card.type===type)) window.customCards.push({type,name,description,preview:true});
 }
 if(!customElements.get('quatt-card-editor')) customElements.define('quatt-card-editor',QuattCardEditor);
-console.info('QUATT CARDS 0.1.1 · Read-only heating insights');
+console.info('QUATT CARDS 0.2.0 · Heating insights and Chill controls');

@@ -21,7 +21,7 @@ export class QuattOverviewCard extends BaseCard {
     .battery-header{display:flex;align-items:center;gap:10px;margin-bottom:14px}.battery-header .icon{width:23px;height:36px;color:var(--qc-heat)}
     .battery-status{margin-left:auto;width:44px;height:36px;padding:0;border:0;background:transparent;display:grid;place-items:center;border-radius:6px;flex-shrink:0}
     .status-dot{width:9px;height:9px;border-radius:50%;background:var(--disabled-text-color,#9e9e9e)}
-    .status-dot.on{background:var(--success-color,#43a047)}.status-dot.off{background:var(--error-color,#db4437)}
+    .status-dot.on{background:var(--success-color,#43a047)}.status-dot.off{background:var(--disabled-text-color,#9e9e9e)}
     button.battery-status:hover{background:var(--qc-subtle)}
     h3{font-size:14px;font-weight:600;margin:0}.battery-header .label{font-size:11px}
     .battery-readings{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.battery-readings .stat{gap:3px}.battery-readings .value{font-size:16px}

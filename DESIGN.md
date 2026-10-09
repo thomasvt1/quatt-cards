@@ -214,4 +214,4 @@ The optional Minimal heat-battery layout appends selected storage/charger readin
 
 ### Overview heat-battery status (v0.4.3)
 
-The detailed battery header uses a 9px status dot in a 44px-wide sensor-detail target. Green means reported On, red means reported Off, and gray preserves unavailable or other states without assigning them a binary meaning. The exact state remains in the tooltip and accessible label. The existing status field controls visibility.
+The detailed battery header uses a 9px status dot in a 44px-wide sensor-detail target. Green means reported On; gray means reported Off or an unavailable/other state. The neutral Off color avoids suggesting a fault. The exact state remains in the tooltip and accessible label. The existing status field controls visibility.

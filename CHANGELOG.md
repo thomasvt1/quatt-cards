@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.4
+
+- Use a neutral gray dot for heat-battery Off status instead of red, so Off does not suggest a fault. On remains green.
+
 ## 0.4.3
 
 - Replace the Detailed Overview heat-battery On/Off text with a small green/red status dot.

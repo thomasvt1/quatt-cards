@@ -1,5 +1,6 @@
 import type { CardConfig, DeviceKind, HomeAssistant, MetricRole, Metrics, QuattDevice, Reading, RegistryData, Snapshot } from '../types';
 import { pumpPosition } from './circuit';
+import { chillDisconnected } from './chill-state';
 import { discover, type Source } from './discovery';
 import { buildStatus } from './status';
 import { present, readValue, supervisoryMode } from './values';
@@ -90,7 +91,7 @@ export function buildSnapshot(hass: HomeAssistant, registry: RegistryData, confi
   // A climate's Off state is an operating setting; its separate Offline status
   // remains authoritative even when cached temperatures are still numeric.
   for (const device of [...snapshot.heatPumps, ...snapshot.chills, ...batteries, ...chargers]) {
-    device.available = Object.values(device.metrics).some(meaningful) && device.metrics.connected?.value !== 0 && device.metrics.status?.text?.toLowerCase() !== 'offline';
+    device.available = Object.values(device.metrics).some(meaningful) && device.metrics.connected?.value !== 0 && !(device.kind === 'chill' ? chillDisconnected(device.metrics.status?.text) : device.metrics.status?.text?.toLowerCase() === 'offline');
   }
   snapshot.status = buildStatus(snapshot);
   if (!scoped.some(source => present(hass.states[source.entity.entity_id]))) snapshot.warnings.push('All supported Quatt telemetry is currently unavailable.');

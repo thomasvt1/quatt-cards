@@ -14,7 +14,7 @@ export class QuattChillCard extends BaseCard {
     .unit-icon>.icon{width:25px;height:38px;stroke-width:1.3}.unit-icon.off>.icon,.unit-icon.idle>.icon,.unit-icon.unknown>.icon{color:var(--qc-secondary)}
     .icon-badge{position:absolute;display:grid;place-items:center;width:20px;height:20px;border:2px solid var(--ha-card-background,var(--card-background-color,#fff));border-radius:50%;background:var(--ha-card-background,var(--card-background-color,#fff))}
     .icon-badge .icon{width:14px;height:14px;stroke-width:2}.status-badge{right:-5px;bottom:-3px;background:var(--ring-color);color:var(--ha-card-background,var(--card-background-color,#fff))}
-    .off .status-badge,.idle .status-badge,.unknown .status-badge{background:var(--qc-secondary)}.offline .status-badge{background:var(--qc-warning)}
+    .off .status-badge,.idle .status-badge,.unknown .status-badge{background:var(--qc-secondary)}.offline .status-badge,.warning .status-badge{background:var(--qc-warning)}
     button.unit-icon:disabled{opacity:1}.icon-description{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
     button.unit-icon:hover:not(:disabled){background:var(--qc-subtle)}
     .temperature .value{font-size:23px}.temperature>.label{display:block;font-size:11px}.fields{display:grid;gap:17px;margin-top:20px}.warning{margin-top:12px;color:var(--qc-warning);font-size:12px}

@@ -3,6 +3,7 @@ import { fileURLToPath } from 'node:url';
 import { resolve } from 'node:path';
 import { chromium, expect } from '@playwright/test';
 import { createServer } from 'vite';
+import {exampleInputDigest, sha256} from './example-integrity.mjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const output = resolve(root, 'examples');
@@ -103,7 +104,8 @@ try {
   const block = /<!-- BEGIN GENERATED EXAMPLES -->[\s\S]*?<!-- END GENERATED EXAMPLES -->/;
   if (!block.test(readme)) throw new Error('README is missing the generated examples markers.');
   await writeFile(readmePath, readme.replace(block, lines.join('\n')));
-  await writeFile(resolve(output, 'screenshots.json'), JSON.stringify({clock: '2026-06-15T12:30:00Z', locale: 'en-GB', timezone: 'Europe/Amsterdam', cards: cards.map(c => c.type), files: captures}, null, 2)+'\n');
+  const pngSha256 = Object.fromEntries(await Promise.all(captures.map(async file => [file, sha256(await readFile(resolve(output, file)))])));
+  await writeFile(resolve(output, 'screenshots.json'), JSON.stringify({clock: '2026-06-15T12:30:00Z', locale: 'en-GB', timezone: 'Europe/Amsterdam', cards: cards.map(c => c.type), files: captures, inputDigest: await exampleInputDigest(), pngSha256}, null, 2)+'\n');
   console.log(`Updated ${captures.length} PNGs and the README gallery.`);
 } finally {
   try { await browser?.close(); }

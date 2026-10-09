@@ -11,7 +11,8 @@
     "test": "vitest run",
     "test:browser": "playwright test",
     "test:coverage": "node scripts/coverage.mjs",
-    "update:examples": "node scripts/update-examples.mjs"
+    "update:examples": "node scripts/update-examples.mjs",
+    "check:examples": "node scripts/check-examples.mjs"
   },
   "dependencies": {
     "lit": "^3.3.3"

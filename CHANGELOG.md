@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.2
+
+- Hide heat pump Operating status by default because it is not reported by every installation.
+- Keep it available as an opt-in checkbox under Displayed fields and through `fields.status: true`; explicit existing selections are preserved.
+
 ## 0.4.1
 
 - Center each Chill equipment icon and make it open that unit’s native Home Assistant controls.

@@ -48,14 +48,14 @@ HACS normally registers the module automatically. If your resources are managed 
 
 1. Build the asset with `npm ci` and `npm run build`.
 2. Copy `dist/quatt-cards.js` to `/config/www/quatt-cards.js` on Home Assistant.
-3. Add a dashboard resource with URL `/local/quatt-cards.js?v=0.4.1` and resource type **JavaScript Module**.
+3. Add a dashboard resource with URL `/local/quatt-cards.js?v=0.4.2` and resource type **JavaScript Module**.
 4. Reload the browser. In **Add card**, search for **Quatt**.
 
 For dashboards with YAML-managed resources:
 
 ```yaml
 resources:
-  - url: /local/quatt-cards.js?v=0.4.1
+  - url: /local/quatt-cards.js?v=0.4.2
     type: module
 ```
 
@@ -178,12 +178,14 @@ fields:
   heatCharger.heaterPower: true
 ```
 
+Heat pump **Operating status** is off by default because some installations do not report it. Enable it under **Displayed fields**, or set `fields: {status: true}`. An existing explicit `status: true` remains enabled; **Reset displayed fields** restores the off default.
+
 Omitted keys use their defaults. An empty `fields: {}` also uses defaults. Explicit booleans are required; unsupported keys are rejected. Entity overrides choose reading sources, while `fields` chooses visibility. Heat-battery overview values are discovered from the battery/charger devices, independently of system-reading overrides.
 
 | Card | Field keys |
 | --- | --- |
 | `custom:quatt-overview-card` | `electricPower`, `cop`, `heatPower`, `roomTemperature`, `targetTemperature`, `outdoorTemperature`, `flowRate`, `supplyTemperature` (off by default), `mode`, `heatBattery.charge`, `heatBattery.showerMinutes`, `heatBattery.status`, `heatBattery.topTemperature` (off by default), `heatBattery.middleTemperature` (off by default), `heatBattery.bottomTemperature` (off by default), `heatBattery.charging` (off by default), `heatBattery.hotWater` (off by default), `heatCharger.heaterPower` (off by default), `heatCharger.waterPressure` (off by default) |
-| `custom:quatt-heat-pump-card` | `electricPower`, `cop`, `heatPower`, `returnTemperature`, `supplyTemperature`, `status`, `compressorSpeed`, `outdoorTemperature` |
+| `custom:quatt-heat-pump-card` | `electricPower`, `cop`, `heatPower`, `returnTemperature`, `supplyTemperature`, `status` (off by default), `compressorSpeed`, `outdoorTemperature` |
 | `custom:quatt-heat-battery-card` | `charge`, `showerMinutes`, `topTemperature`, `middleTemperature`, `bottomTemperature`, `status`, `heaterPower`, `waterPressure`, `charging`, `hotWater`, `boost` |
 | `custom:quatt-chill-card` | `roomTemperature`, `targetTemperature`, `fanMode`, `status`, `mode`, `waterWarning` |
 | `custom:quatt-history-card` | `electricPower`, `cop`, `heatPower`, `mode` |

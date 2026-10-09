@@ -39,3 +39,10 @@ views:
         cards:
           - type: custom:quatt-status-card
             title: System status
+      - type: grid
+        cards:
+          - type: custom:quatt-heating-circuit-card
+            title: Heating circuit
+            fields:
+              heatBattery.middleTemperature: false
+              heatCharger.waterPressure: false

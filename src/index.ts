@@ -1,3 +1,4 @@
+import { QuattHeatingCircuitCard } from './cards/heating-circuit-card';
 import { QuattOverviewCard } from './cards/overview-card';
 import { QuattHistoryCard } from './cards/history-card';
 import { QuattHeatPumpCard } from './cards/heat-pump-card';
@@ -7,6 +8,7 @@ import { QuattStatusCard } from './cards/status-card';
 import { QuattCardEditor } from './editor';
 
 const cards=[
+  ['quatt-heating-circuit-card',QuattHeatingCircuitCard,'Quatt Heating Circuit','Heat-pump circuit, Heat Charger and thermal storage.'],
   ['quatt-overview-card',QuattOverviewCard,'Quatt Overview','Heat output, electricity input, COP and comfort.'],
   ['quatt-history-card',QuattHistoryCard,'Quatt Performance','Measured heat, electricity and COP over time.'],
   ['quatt-heat-pump-card',QuattHeatPumpCard,'Quatt Heat Pumps','Compare heat-pump readings and operating states.'],
@@ -21,4 +23,4 @@ for(const [type,element,name,description] of cards) {
   if(!window.customCards.some(card=>card.type===type)) window.customCards.push({type,name,description,preview:true});
 }
 if(!customElements.get('quatt-card-editor')) customElements.define('quatt-card-editor',QuattCardEditor);
-console.info('QUATT CARDS 0.5.1 · Heating insights and Chill controls');
+console.info('QUATT CARDS 0.6.0 · Heating insights and Chill controls');

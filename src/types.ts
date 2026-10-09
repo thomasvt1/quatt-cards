@@ -24,7 +24,7 @@ export interface HomeAssistant {
   callApi?: <T = unknown>(method: string, path: string, parameters?: unknown) => Promise<T>;
   connection?: { subscribeEvents?: (callback: (event: unknown) => void, eventType: string) => Promise<() => void> };
 }
-export type CardType = 'custom:quatt-overview-card' | 'custom:quatt-history-card' | 'custom:quatt-heat-pump-card' | 'custom:quatt-heat-battery-card' | 'custom:quatt-chill-card' | 'custom:quatt-status-card';
+export type CardType = 'custom:quatt-heating-circuit-card' | 'custom:quatt-overview-card' | 'custom:quatt-history-card' | 'custom:quatt-heat-pump-card' | 'custom:quatt-heat-battery-card' | 'custom:quatt-chill-card' | 'custom:quatt-status-card';
 export interface CardConfig {
   type: CardType; title?: string; integration_id?: string; device?: string;
   fields?: Record<string, boolean>;
@@ -40,7 +40,7 @@ export type MetricRole = 'heatPower' | 'electricPower' | 'cop' | 'roomTemperatur
 export interface Reading { value: number | null; text: string | null; unit: string; entityId?: string; }
 export type Metrics = Partial<Record<MetricRole, Reading>>;
 export type DeviceKind = 'system' | 'thermostat' | 'heat-pump' | 'heat-battery' | 'heat-charger' | 'chill';
-export interface QuattDevice { id: string; name: string; kind: DeviceKind; available: boolean; metrics: Metrics; climateEntityId?: string; }
+export interface QuattDevice { position?: number; id: string; name: string; kind: DeviceKind; available: boolean; metrics: Metrics; climateEntityId?: string; }
 export interface StatusRow { key: string; title: string; detail?: string; tone: Tone; icon: string; entityId?: string; }
 export interface Snapshot {
   error?: string; warnings: string[]; installationId?: string; installations: { id: string; name: string }[];

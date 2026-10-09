@@ -4,13 +4,13 @@ import { createDemo } from './fixtures';
 import type { CardConfig, CardType, HomeAssistant } from '../types';
 
 type DemoCard = HTMLElement & { hass:HomeAssistant; setConfig(config:CardConfig):void; updateComplete:Promise<boolean> };
-const names=['overview','heat-pump','heat-battery','history','chill','status'];
-const titles=['Overview','Heat pumps','Heat battery','Heating history','Chill rooms','Status'];
+const names=['overview','heat-pump','heat-battery','history','chill','status','heating-circuit'];
+const titles=['Overview','Heat pumps','Heat battery','Heating history','Chill rooms','Status','Heating circuit'];
 const types=names.map(name=>`custom:quatt-${name}-card` as CardType);
 const configs=new Map<CardType,CardConfig>();
 let demo=createDemo();
 
-document.body.innerHTML=`<main><header class="demo-header"><div class="brand"><h1>Quatt</h1><span class="demo-label">Demo data</span></div><div class="demo-controls"><label>Scenario <select id="scenario"><option value="heating">Heating</option><option value="single">Single units</option><option value="idle">Standby</option><option value="cooling">Chill cooling</option><option value="defrost">Defrost</option><option value="offline">Device offline</option><option value="partial">Partial data</option><option value="missing">Integration missing</option><option value="many">Five Chill rooms</option></select></label><button id="theme">Dark theme</button><label>Edit card <select id="edit-card">${names.map((name,i)=>`<option value="${name}">${titles[i]}</option>`).join('')}</select></label><button id="edit">Open editor</button></div></header><section class="card-grid" aria-label="Quatt cards"></section><section class="editor-panel" hidden><div class="editor-heading"><h2>Card editor</h2><button id="close-editor">Close editor</button></div><div id="editor-mount"></div></section><footer>Six independent Home Assistant cards · Illustrative values · Controls open in Home Assistant</footer></main>`;
+document.body.innerHTML=`<main><header class="demo-header"><div class="brand"><h1>Quatt</h1><span class="demo-label">Demo data</span></div><div class="demo-controls"><label>Scenario <select id="scenario"><option value="heating">Heating</option><option value="single">Single units</option><option value="idle">Standby</option><option value="cooling">Chill cooling</option><option value="defrost">Defrost</option><option value="offline">Device offline</option><option value="partial">Partial data</option><option value="missing">Integration missing</option><option value="many">Five Chill rooms</option></select></label><button id="theme">Dark theme</button><label>Edit card <select id="edit-card">${names.map((name,i)=>`<option value="${name}">${titles[i]}</option>`).join('')}</select></label><button id="edit">Open editor</button></div></header><section class="card-grid" aria-label="Quatt cards"></section><section class="editor-panel" hidden><div class="editor-heading"><h2>Card editor</h2><button id="close-editor">Close editor</button></div><div id="editor-mount"></div></section><footer>Seven independent Home Assistant cards · Illustrative values · Controls open in Home Assistant</footer></main>`;
 const grid=document.querySelector('.card-grid')!;
 const cardElements=new Map<CardType,DemoCard>();
 for(const type of types) {

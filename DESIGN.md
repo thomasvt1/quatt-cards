@@ -215,3 +215,7 @@ The optional Minimal heat-battery layout appends selected storage/charger readin
 ### Overview heat-battery status (v0.4.3)
 
 The detailed battery header uses a 9px status dot in a 44px-wide sensor-detail target. Green means reported On; gray means reported Off or an unavailable/other state. The neutral Off color avoids suggesting a fault. The exact state remains in the tooltip and accessible label. The existing status field controls visibility.
+
+### Heating circuit · A3b
+
+A compact HP input/output/COP row sits above a serial pump-to-home diagram. Equipment reuses the established Quatt outlines. Supply is red (`--quatt-supply-color`), return bright blue (`--quatt-return-color`); labels distinguish both without relying on color. The amber dashed thermal connector has exactly one “Heat Charger” label above its glyph and optional electric input below. The tank shows thermal charge and selected temperature rows without a nested surface. No domestic-water pipes appear. At a 720px card width the storage branch reflows below the 235px heating loop. It retains its own space, avoiding overlap with the return reading. One pump removes the second node; unavailable known pumps remain. Compact figures and field visibility follow the shared card conventions; no live flow animation is inferred.

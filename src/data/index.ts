@@ -1,4 +1,5 @@
 import type { CardConfig, DeviceKind, HomeAssistant, MetricRole, Metrics, QuattDevice, Reading, RegistryData, Snapshot } from '../types';
+import { pumpPosition } from './circuit';
 import { discover, type Source } from './discovery';
 import { buildStatus } from './status';
 import { present, readValue, supervisoryMode } from './values';
@@ -68,7 +69,7 @@ export function buildSnapshot(hass: HomeAssistant, registry: RegistryData, confi
       // A reading override must never retarget a control to another room.
       const climates = candidates.filter(source => source.deviceId === id && source.kind === 'chill' && source.entity.entity_id.startsWith('climate.'));
       const climateEntityId = climates.length === 1 ? climates[0].entity.entity_id : undefined;
-      return { id, name: registryDevice?.name_by_user || registryDevice?.name || kind.replaceAll('-', ' '), kind, available: Object.values(metrics).some(meaningful) && metrics.connected?.value !== 0 && metrics.status?.text?.toLowerCase() !== 'offline', metrics, climateEntityId };
+      return { id, position: kind === 'heat-pump' ? pumpPosition(candidates.filter(source => source.deviceId === id).map(source => source.key)) : undefined, name: registryDevice?.name_by_user || registryDevice?.name || kind.replaceAll('-', ' '), kind, available: Object.values(metrics).some(meaningful) && metrics.connected?.value !== 0 && metrics.status?.text?.toLowerCase() !== 'offline', metrics, climateEntityId };
     });
   }
   snapshot.heatPumps = devices('heat-pump'); snapshot.chills = devices('chill');

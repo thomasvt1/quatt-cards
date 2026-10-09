@@ -164,7 +164,7 @@ export class QuattCardEditor extends LitElement {
     const snapshot = this.hass ? buildSnapshot(this.hass, this.registry, { ...config, device: undefined, entities: undefined }) : undefined;
     const installations = snapshot?.installations ?? [];
     const devices = (isPump ? snapshot?.heatPumps : snapshot?.chills) ?? [];
-    const overrides = isPump ? pump : isChill ? chill : isBattery ? battery : isHistory ? [...energy,['mode','Operating mode'] as Override] : isStatus ? status : [...energy, ...temperatures.filter(([role])=>!['supplyTemperature','returnTemperature'].includes(role)), ['mode', 'Operating mode'] as Override];
+    const overrides = config.type === 'custom:quatt-heating-circuit-card' ? [...energy, ...temperatures.filter(([role])=>['supplyTemperature','returnTemperature','flowRate'].includes(role))] : isPump ? pump : isChill ? chill : isBattery ? battery : isHistory ? [...energy,['mode','Operating mode'] as Override] : isStatus ? status : [...energy, ...temperatures.filter(([role])=>!['supplyTemperature','returnTemperature'].includes(role)), ['mode', 'Operating mode'] as Override];
     const stateIds = Object.keys(this.hass?.states ?? {}).filter(id => id.startsWith('sensor.') || id.startsWith('binary_sensor.')).sort();
 
     return html`<div class="editor">

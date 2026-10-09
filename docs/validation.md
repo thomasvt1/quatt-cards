@@ -3,8 +3,8 @@
 Local checks on 9 October 2026 passed with Node.js 24:
 
 - TypeScript checking and Vite production build.
-- 49 unit tests covering discovery, unit conversion, source priority, status, history normalization and shared registry subscriptions.
-- 29 Chromium browser tests covering all six cards and their editors, light/dark themes, desktop (1440px), tablet (820px), phone (390px), keyboard and touch inspection, live updates during inspection, missing/offline telemetry, read-only sensor details, wrapping after three units, and single-unit installation/selection layouts in all three styles. Geometry assertions also check centered heat-battery temperatures and status icons.
+- 55 unit tests covering discovery, unit conversion, source priority, status, history normalization and shared registry subscriptions.
+- 36 Chromium browser tests covering all seven cards and their editors, light/dark themes, desktop (1440px), tablet (820px), phone (390px), keyboard and touch inspection, live updates during inspection, missing/offline telemetry, read-only sensor details, wrapping after three units, and single-unit installation/selection layouts in all three styles. Geometry assertions also check centered heat-battery temperatures and status icons.
 
 The browser suite renders actual Lit components using synthetic Home Assistant fixtures. It checks card overflow and page errors. Shared requests and subscription cleanup are tested. Screenshots in `docs/screenshots` come from that fixture preview, not a household dashboard.
 
@@ -23,3 +23,5 @@ Field-selection tests cover defaults, malformed YAML, every visual editor, reset
 The minimal Overview layout is tested at 1440px, 820px, and 390px in both themes, including editor switching, preserved field choices, a four-field configuration, missing battery equipment, and unavailable charge.
 
 Chill ring checks cover independent mode/status reports, missing and unfamiliar states, offline precedence, live state changes, field toggles, accessible descriptions, display-only indicators, and cooling/heating rendering in both themes.
+
+Heating circuit v0.6.0: browser checks cover one/two pumps at 1200px, 820px and 390px in both themes, field toggles/reset, sensor-detail keyboard activation, focus retention on updates, offline endpoints and absent storage. Geometry assertions prevent the phone storage branch overlapping the return reading. Visual review corrected that overlap and confirmed the final desktop/phone captures. Unit tests cover renamed/reordered/legacy pump identifiers, remote pump order, unknown/contradictory topology, Fahrenheit normalization, negative ΔT, explicit endpoint overrides and offline final-pump gaps. No new live hydraulic flow measurement is claimed.

@@ -3,7 +3,7 @@ import {mkdir} from 'node:fs/promises';
 import type {CardConfig,HomeAssistant} from '../../src/types';
 import type {DemoDiagnostics} from '../../src/demo/fixtures';
 type Card=HTMLElement&{hass:HomeAssistant&{__demoDiagnostics:DemoDiagnostics};setConfig(c:CardConfig):void;getCardSize():number;getGridOptions():unknown};
-const names=['overview','heat-pump','heat-battery','history','chill','status'];
+const names=['overview','heat-pump','heat-battery','history','chill','status','heating-circuit'];
 test('Chill ring combines reported status and mode without duplicate rows',async({page})=>{
  await open(page);const card=page.locator('quatt-chill-card'),control=card.getByRole('button',{name:'Control Living room',exact:true});
  await expect(control).toHaveClass(/neutral off/);
@@ -143,7 +143,7 @@ test('Chill controls disable for offline or missing climate state while retainin
 async function open(page:Page){await page.goto('/');await expect(page.locator('quatt-history-card').getByRole('slider')).toBeVisible();}
 
 for(const viewport of [{name:'desktop',width:1440,height:1050},{name:'tablet',width:820,height:1100},{name:'phone',width:390,height:844}])for(const theme of ['light','dark'] as const){
- test(`${viewport.name} ${theme}: six cards and editors fit`,async({page})=>{
+ test(`${viewport.name} ${theme}: seven cards and editors fit`,async({page})=>{
   await page.setViewportSize(viewport);const errors:string[]=[];page.on('pageerror',error=>errors.push(error.message));await open(page);
   await page.evaluate(theme=>window.demo.setTheme(theme),theme);
   for(const name of names)await expect(page.locator(`quatt-${name}-card`).getByRole('heading',{level:2})).toBeVisible();

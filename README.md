@@ -13,6 +13,7 @@ Compact Home Assistant dashboard cards for the [Quatt integration by marcoboers]
 | Heat pumps | `custom:quatt-heat-pump-card` | All heat pumps or one selected unit, with power, temperatures, and available operating details. |
 | Heat battery | `custom:quatt-heat-battery-card` | Thermal charge level, available shower time, temperatures, and available charging information. |
 | Chill | `custom:quatt-chill-card` | All Chill units or one selected unit, with available temperature, fan, operating information, and native controls. |
+| Heating circuit | `custom:quatt-heating-circuit-card` | One or two pumps in series, supply/return, flow, ΔT, inline Heat Charger and thermal storage. |
 | System status | `custom:quatt-status-card` | Reported operating state, connectivity, defrost, limits, and available faults. |
 
 All cards have a visual configuration editor, card-picker preview, YAML configuration, and Sections/Masonry sizing. Heat pump and Chill collections support three styles: **C · Columns** by default, **A · Stacked**, and **B · Compact**. Columns uses at most three units per row; further units wrap onto new rows. A single visible unit uses two reading columns across the card.
@@ -48,14 +49,14 @@ HACS normally registers the module automatically. If your resources are managed 
 
 1. Build the asset with `npm ci` and `npm run build`.
 2. Copy `dist/quatt-cards.js` to `/config/www/quatt-cards.js` on Home Assistant.
-3. Add a dashboard resource with URL `/local/quatt-cards.js?v=0.5.1` and resource type **JavaScript Module**.
+3. Add a dashboard resource with URL `/local/quatt-cards.js?v=0.6.0` and resource type **JavaScript Module**.
 4. Reload the browser. In **Add card**, search for **Quatt**.
 
 For dashboards with YAML-managed resources:
 
 ```yaml
 resources:
-  - url: /local/quatt-cards.js?v=0.5.1
+  - url: /local/quatt-cards.js?v=0.6.0
     type: module
 ```
 
@@ -91,7 +92,7 @@ layout: columns
 
 | Option | Applies to | Default | Purpose |
 | --- | --- | --- | --- |
-| `type` | All | Required | One of the six custom element names above. |
+| `type` | All | Required | One of the seven custom element names above. |
 | `title` | All | Card's own title | Optional heading. |
 | `integration_id` | All | Automatic | Quatt config-entry ID selected in the visual editor. |
 | `device` | Heat pumps, Chill | All units | Restrict the card to one device registry ID. |
@@ -116,7 +117,7 @@ entities:
 
 The editor exposes relevant supported roles for each card. Common system roles include `heatPower`, `electricPower`, `cop`, `roomTemperature`, `targetTemperature`, `outdoorTemperature`, `supplyTemperature`, `returnTemperature`, and `flowRate`. Thermal battery roles include `charge`, `showerMinutes`, `topTemperature`, `middleTemperature`, `bottomTemperature`, `charging`, `hotWater`, and `boost`. Separate charger readings are discovered from the heat charger device. Use actual sensor values with appropriate units. Do not use electrical battery charge sensors as thermal storage sources.
 
-See [examples/dashboard.yaml](examples/dashboard.yaml) for a complete six-card Sections dashboard. Examples use generic identifiers. Review any example before adding it to an existing dashboard.
+See [examples/dashboard.yaml](examples/dashboard.yaml) for a complete seven-card Sections dashboard. Examples use generic identifiers. Review any example before adding it to an existing dashboard.
 
 ## Data and chart behavior
 
@@ -209,3 +210,24 @@ fields:
 ```
 
 ![Minimal overview with four selected readings, synthetic data](docs/screenshots/minimal-overview.png)
+
+## Heating circuit
+
+![Compact heating circuit with two pumps and thermal storage, synthetic data](docs/screenshots/circuit-light.png)
+
+[Single pump on a phone, dark theme](docs/screenshots/circuit-single-phone-dark.png)
+
+```yaml
+type: custom:quatt-heating-circuit-card
+fields:
+  heatBattery.middleTemperature: true
+  heatCharger.waterPressure: false
+```
+
+The A3b layout adapts automatically to one or two discovered heat pumps. It preserves known offline units and uses upstream pump identifiers to order Duo pumps in series. A compact Heat Charger connector appears once, with optional electrical input underneath. The storage section moves below the loop on narrow cards. There are no domestic hot/cold-water pipes or equipment controls.
+
+The top summary is **heat-pump** input, output and reported COP, excluding the Heat Charger. Supply is the final pump outlet; return is the first pump inlet. ΔT is calculated from those normalized temperature readings; missing endpoints leave it unavailable. This is a schematic, not an installation drawing. The dashed amber connector expresses a thermal relationship, not a water pipe or measured live direction. No transfer heat is inferred from charger input. See [plumbing and telemetry research](docs/heating-circuit-research.md).
+
+Displayed fields: `electricPower`, `heatPower`, `cop`, `supplyTemperature`, `returnTemperature`, `flowRate`, `deltaTemperature`, `heatBattery.charge`, `heatBattery.topTemperature`, `heatBattery.middleTemperature`, `heatBattery.bottomTemperature`, `heatBattery.showerMinutes`, `heatCharger.heaterPower`, `heatCharger.waterPressure`. Middle temperature, shower time and pressure are off by default. Field toggles hide readings, keeping equipment topology visible. Missing optional equipment is omitted.
+
+System entity overrides support `electricPower`, `heatPower`, `cop`, `supplyTemperature`, `returnTemperature`, and `flowRate`; explicit temperature overrides replace the circuit endpoints and feed ΔT. Storage readings use discovered devices. Readings open sensor details; derived ΔT has no sensor of its own. Theme overrides: `--quatt-supply-color` (red `#e34d59`) and `--quatt-return-color` (blue `#00a9ed`).

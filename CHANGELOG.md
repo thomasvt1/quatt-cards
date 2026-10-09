@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.6.0
+
+- Add the compact A3b Heating circuit card with automatic one-/two-pump topology, configurable readings, and sensor details.
+- Integrate Heat Charger as one compact labeled connector and include available thermal storage readings.
+- Keep HP power/COP, charger electricity and thermal relationships distinct; derive ΔT only from valid circuit endpoints.
+- Support narrow cards, light/dark themes, keyboard access, missing equipment and live updates.
+
 ## 0.5.1
 
 - Simplify the Chill ring to one combined badge instead of separate mode and status badges.

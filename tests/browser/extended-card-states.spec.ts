@@ -9,6 +9,16 @@ test('Chill working reports render the cooling/heating badge and preserve off, i
  await expect(control).toHaveClass(/cooling on/);await expect(control.locator('.icon-snow')).toHaveCount(1);
  await expect(control.locator('.icon-question')).toHaveCount(0);await expect(control).toHaveAccessibleDescription('Status: On working · Mode: Cooling');
  expect(await control.evaluate(e=>getComputedStyle(e).color)).toBe('rgb(0, 169, 237)');
+ for(const mode of ['Cooling','Heating']){
+  for(const status of ['On target temperature reached','ON_TARGET_TEMPERATURE_REACHED','On working']){
+   await card.evaluate((e,{status,mode})=>{const c=e as Card,states={...c.hass.states};for(const [id,s] of Object.entries(states))if(id.includes('demo-chill-uuid-1')){if(id.endsWith('_status'))states[id]={...s,state:status};if(id.endsWith('_mode'))states[id]={...s,state:mode};}c.hass={...c.hass,states};},{status,mode});
+   const working=status==='On working',tone=working?mode.toLowerCase():'neutral',state=working?'on':'idle',icon=working?(mode==='Cooling'?'snow':'heat'):'power';
+   await expect(control).toHaveClass(new RegExp(`${tone} ${state}`));
+   await expect(control.locator(`.status-badge .icon-${icon}`)).toHaveCount(1);
+   await expect(control.locator('.icon-question')).toHaveCount(0);
+   await expect(control).toHaveAccessibleDescription(`Status: ${status} · Mode: ${mode}`);
+  }
+ }
  for(const [status,mode,state,tone,icon] of [['ON_WORKING','HEATING','on','heating','heat'],['On idle','Cooling','idle','neutral','power'],['Off','Cooling','off','neutral','power'],['Starting','Cooling','unknown','neutral','question'],['Offline','Cooling','offline','neutral','warning'],['On working','Cooling','on','cooling','snow']]){
   await card.evaluate((e,{status,mode})=>{const c=e as Card,states={...c.hass.states};for(const [id,s] of Object.entries(states))if(id.includes('demo-chill-uuid-1')){if(id.endsWith('_status'))states[id]={...s,state:status};if(id.endsWith('_mode'))states[id]={...s,state:mode};}c.hass={...c.hass,states};},{status,mode});
   await expect(control).toHaveClass(new RegExp(`${tone} ${state}`));await expect(control.locator(`.status-badge .icon-${icon}`)).toHaveCount(1);

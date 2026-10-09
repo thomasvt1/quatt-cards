@@ -3,7 +3,7 @@
 Local checks on 9 October 2026 passed with Node.js 24:
 
 - TypeScript checking and Vite production build.
-- 67 unit tests covering discovery, unit conversion, source priority, status, history normalization and shared registry subscriptions.
+- 70 unit tests covering discovery, unit conversion, source priority, status, history normalization and shared registry subscriptions.
 - 42 Chromium browser tests covering all seven cards and their editors, light/dark themes, desktop (1440px), tablet (820px), phone (390px), keyboard and touch inspection, live updates during inspection, missing/offline telemetry, read-only sensor details, wrapping after three units, and single-unit installation/selection layouts in all three styles. Geometry assertions also check centered heat-battery temperatures and status icons.
 
 The browser suite renders actual Lit components using synthetic Home Assistant fixtures. It checks card overflow and page errors. Shared requests and subscription cleanup are tested. Screenshots in `examples` come from that fixture preview, not a household dashboard.
@@ -29,5 +29,7 @@ Heating circuit v0.6.0: browser checks cover one/two pumps at 1200px, 820px and 
 Release v0.6.0 was installed through HACS and verified in the live Home Assistant card picker and unsaved visual editor on 9 October 2026. Both pumps, circuit temperatures/flow, charger input and thermal storage rendered from discovered sensors. The Displayed fields editor loaded correctly. The preview was cancelled without saving a dashboard change; HACS reported v0.6.0 installed with no pending update.
 
 Chill v0.6.1: the exact “On working” + “Cooling” regression was first observed failing with unknown/question output, then passed with on/cooling/snow. Tests cover raw ON_WORKING, case/whitespace variants, heating, off/idle, offline precedence and unfamiliar reports. Instrumented browser tests measure each actual card; the 81% per-card gate initially failed five cards, then passed after added behavior tests. Coverage is enforced in CI and tagged release workflows.
+
+Chill v0.6.3: a live “On target temperature reached” report reproduced the unknown/question output on v0.6.2. Three new unit regressions failed before the fix, then passed as idle/neutral/power. Browser checks cover cooling and heating reaching their target and resuming, plus raw enum spelling and preservation of the full accessible status. All 70 unit tests, 42 browser tests, production build and the 81% coverage gates passed locally.
 
 Example generation: `npm run update:examples` captures all seven registered cards, both themes and desktop/phone sizes, alternate heat-pump/Chill layouts, minimal Overview, a single-pump circuit and two dashboards. On 9 October 2026, two consecutive local runs produced 42 byte-identical PNGs. All generated files are referenced in the README. Visual inspection covered the desktop collection, cooling Chill badge, compact/stacked layouts, phone history, thermal storage, status and single-pump plumbing. CI also runs the generator.

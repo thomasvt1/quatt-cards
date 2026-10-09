@@ -26,6 +26,12 @@ describe('Chill icon state',()=>{
 });
 
 describe('reported Quatt working states',()=>{
+  it.each(['On target temperature reached','ON_TARGET_TEMPERATURE_REACHED',' on   TARGET_temperature REACHED '])('renders %s as idle instead of a question mark',status=>{
+    for(const mode of ['Cooling','Heating',undefined]){
+      expect(chillState(device(status,mode))).toMatchObject({state:'idle',activity:'neutral',activityIcon:'power',statusIcon:'power',statusText:status.trim()});
+    }
+    expect(chillState(device(status,'Cooling',false))).toMatchObject({state:'offline',activityIcon:'warning'});
+  });
   it('renders On working plus Cooling as a blue snowflake, never a question mark',()=>{
     expect(chillState(device('On working','Cooling'))).toMatchObject({state:'on',activity:'cooling',activityIcon:'snow'});
   });

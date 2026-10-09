@@ -77,14 +77,14 @@ HACS normally registers the module automatically. If your resources are managed 
 
 1. Build the asset with `npm ci` and `npm run build`.
 2. Copy `dist/quatt-cards.js` to `/config/www/quatt-cards.js` on Home Assistant.
-3. Add a dashboard resource with URL `/local/quatt-cards.js?v=0.6.2` and resource type **JavaScript Module**.
+3. Add a dashboard resource with URL `/local/quatt-cards.js?v=0.6.3` and resource type **JavaScript Module**.
 4. Reload the browser. In **Add card**, search for **Quatt**.
 
 For dashboards with YAML-managed resources:
 
 ```yaml
 resources:
-  - url: /local/quatt-cards.js?v=0.6.2
+  - url: /local/quatt-cards.js?v=0.6.3
     type: module
 ```
 
@@ -267,4 +267,4 @@ System entity overrides support `electricPower`, `heatPower`, `cop`, `supplyTemp
 
 `npm run test:coverage` runs the data tests and instrumented Chromium card tests. CI and release builds enforce **at least 81% lines, statements, functions and branches for every card**, as well as the full browser runtime aggregate and the shared-data test aggregate. New card files are discovered automatically; an untested card fails the gate. Demo fixtures and test code are excluded. The production bundle contains no coverage instrumentation. See [coverage results and scope](docs/coverage.md).
 
-Chill accepts both the reported **On working** status and raw **ON_WORKING** spelling, combined with the selected Cooling/Heating mode. Off and idle retain their gray power indicator; unfamiliar or missing reports remain distinct.
+Chill accepts both the reported **On working** status and raw **ON_WORKING** spelling, combined with the selected Cooling/Heating mode. **On target temperature reached** (`ON_TARGET_TEMPERATURE_REACHED`) is idle and uses the gray power indicator, including when Cooling or Heating remains selected. The original status stays in the tooltip and accessible description. Off and other idle states also retain their gray power indicator; unfamiliar or missing reports remain distinct.

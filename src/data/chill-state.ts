@@ -4,14 +4,14 @@ import type { QuattDevice } from '../types';
 export function chillState(device: QuattDevice) {
   const status = device.metrics.status?.text?.trim();
   const mode = device.metrics.mode?.text?.trim();
-  // HA formats raw ON_WORKING as On working; accept both exact forms.
+  // HA formats API enums as sentence case; accept both exact forms.
   // Do not treat every unknown on-prefixed state as confirmed activity.
   const normalizedStatus = status?.toLowerCase().replace(/[_\s]+/g, ' ');
   const normalizedMode = mode?.toLowerCase().replace(/[_\s]+/g, ' ');
   const offline = !device.available || normalizedStatus === 'offline';
   const state = offline ? 'offline'
     : normalizedStatus === 'off' ? 'off'
-    : ['idle', 'standby', 'on idle', 'on standby'].includes(normalizedStatus || '') ? 'idle'
+    : ['idle', 'standby', 'on idle', 'on standby', 'on target temperature reached'].includes(normalizedStatus || '') ? 'idle'
     : ['on', 'on working', 'running', 'cooling', 'heating'].includes(normalizedStatus || '') ? 'on' : 'unknown';
   const setting = ['cool', 'cooling'].includes(normalizedMode || '') ? 'cooling'
     : ['heat', 'heating'].includes(normalizedMode || '') ? 'heating' : 'neutral';

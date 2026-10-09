@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.6.3
+
+- Fix Chill showing a question mark when its target temperature is reached. The reported `On target temperature reached` / `ON_TARGET_TEMPERATURE_REACHED` state now uses the gray idle power indicator, retaining the full report in the tooltip and accessible description.
+- Add regressions for cooling/heating reaching their target and resuming, raw API spelling, whitespace/case, and offline precedence. Keep the 81% coverage gates for every card.
+
 ## 0.6.2
 
 - Add a custom generated blue Q / airflow icon to the GitHub and HACS repository detail page. HACS retains its fixed dashboard-category icon in the repository list.

@@ -24,3 +24,24 @@ describe('Chill icon state',()=>{
     expect(chillState(device('Offline','Heating'))).toMatchObject({state:'offline'});
   });
 });
+
+describe('reported Quatt working states',()=>{
+  it('renders On working plus Cooling as a blue snowflake, never a question mark',()=>{
+    expect(chillState(device('On working','Cooling'))).toMatchObject({state:'on',activity:'cooling',activityIcon:'snow'});
+  });
+});
+
+describe('Chill API and display spelling compatibility',()=>{
+ it.each(['On working','ON_WORKING',' on   WORKING ','on_working'])('recognizes active cooling from %s',status=>{
+  expect(chillState(device(status,'COOLING'))).toMatchObject({state:'on',activity:'cooling',activityIcon:'snow'});
+  expect(chillState(device(status,'HEATING'))).toMatchObject({state:'on',activity:'heating',activityIcon:'heat'});
+ });
+ it.each(['On idle','ON_IDLE','On standby','ON_STANDBY','Idle','Standby'])('keeps %s neutral even with cooling selected',status=>{
+  expect(chillState(device(status,'Cooling'))).toMatchObject({state:'idle',activity:'neutral',activityIcon:'power'});
+ });
+ it('does not infer active cooling from a selected mode or a new unknown on-state',()=>{
+  expect(chillState(device('On starting','Cooling'))).toMatchObject({state:'unknown',activityIcon:'question'});
+  expect(chillState(device('On working',undefined))).toMatchObject({state:'on',activity:'neutral',activityIcon:'tick'});
+  expect(chillState(device('On working','Cooling',false))).toMatchObject({state:'offline',activityIcon:'warning'});
+ });
+});

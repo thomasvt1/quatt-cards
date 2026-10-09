@@ -25,10 +25,17 @@ jobs:
           node --input-type=module -e 'import fs from "node:fs"; const p = JSON.parse(fs.readFileSync("package.json", "utf8")); if (process.env.GITHUB_REF_NAME !== `v${p.version}`) throw new Error("Tag must match package.json version");'
       - run: npm ci
       - run: npm run check
-      - run: npm test
       - run: npm run build
       - run: npx playwright install --with-deps chromium
-      - run: npm run test:browser
+      - run: npm run test:coverage
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-coverage
+          path: |
+            coverage/data/
+            coverage/browser/
+          retention-days: 14
       - name: Publish HACS release asset
         env:
           GH_TOKEN: ${{ github.token }}

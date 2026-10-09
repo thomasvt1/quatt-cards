@@ -70,7 +70,7 @@ export function createDemo(scenario: DemoScenario | string = 'heating', now = ne
     addDevice(id, token, ['Living room', 'Bedroom', 'Office', 'Studio', 'Guest room'][i - 1]);
     // Current upstream deliberately removes response-list indexes from keys.
     add(id, token, 'chills.ambientTemperature', i === 1 ? 24.2 : 23.6, '°C');
-    add(id, token, 'chills.status', cooling ? 'Cooling' : 'Off');
+    add(id, token, 'chills.status', cooling ? 'On working' : 'Off');
     add(id, token, 'chills.mode', 'Cooling');
     add(id, token, 'chills.fanMode', i === 1 ? 'Normal' : 'Low');
     add(id, token, 'chills.hasWaterTankLevelWarning', 'off', '', 'binary_sensor');

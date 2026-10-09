@@ -1,6 +1,6 @@
 {
   "name": "quatt-cards",
-  "version": "0.6.0",
+  "version": "0.6.1",
   "type": "module",
   "description": "Compact Home Assistant cards for Quatt heat pumps, heat storage and Chill, with native Chill controls",
   "license": "AGPL-3.0-or-later",
@@ -9,17 +9,24 @@
     "check": "tsc --noEmit",
     "build": "tsc --noEmit && vite build",
     "test": "vitest run",
-    "test:browser": "playwright test"
+    "test:browser": "playwright test",
+    "test:coverage": "node scripts/coverage.mjs"
   },
   "dependencies": {
     "lit": "^3.3.3"
   },
   "devDependencies": {
     "@playwright/test": "^1.56.0",
+    "@types/node": "^24.0.0",
+    "@vitest/coverage-istanbul": "^5.0.3",
+    "istanbul-lib-coverage": "^3.2.2",
+    "istanbul-lib-report": "^3.0.1",
+    "istanbul-lib-source-maps": "^5.0.6",
+    "istanbul-reports": "^3.2.0",
     "typescript": "^5.9.3",
     "vite": "^8.3.4",
-    "vitest": "^5.0.3",
-    "@types/node": "^24.0.0"
+    "vite-plugin-istanbul": "^9.0.1",
+    "vitest": "^5.0.3"
   },
   "repository": {
     "type": "git",

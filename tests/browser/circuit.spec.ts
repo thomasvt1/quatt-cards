@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './fixtures';
 import type { HomeAssistant } from '../../src/types';
 test('circuit adapts to one pump, optional storage, offline readings and configurable fields',async({page})=>{
   await page.goto('/');const card=page.locator('quatt-heating-circuit-card');

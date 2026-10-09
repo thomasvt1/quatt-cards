@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.6.1
+
+- Fix Chill showing a question mark for the live “On working” status. Cooling now shows the blue snowflake; heating shows red heat waves. Normalize raw API underscores, case and whitespace without treating unknown states as active.
+- Add working/idle state regressions and realistic cooling fixtures.
+- Enforce an 81% minimum for lines, statements, functions and branches on every card, the browser runtime aggregate, and the shared-data test aggregate in both CI and release builds.
+- Expand behavior checks for hidden fields, missing equipment, offline readings, optional storage telemetry and sensor-detail interactions. Upload coverage reports with CI results.
+
 ## 0.6.0
 
 - Add the compact A3b Heating circuit card with automatic one-/two-pump topology, configurable readings, and sensor details.

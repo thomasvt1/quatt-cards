@@ -3,8 +3,8 @@
 Local checks on 9 October 2026 passed with Node.js 24:
 
 - TypeScript checking and Vite production build.
-- 55 unit tests covering discovery, unit conversion, source priority, status, history normalization and shared registry subscriptions.
-- 36 Chromium browser tests covering all seven cards and their editors, light/dark themes, desktop (1440px), tablet (820px), phone (390px), keyboard and touch inspection, live updates during inspection, missing/offline telemetry, read-only sensor details, wrapping after three units, and single-unit installation/selection layouts in all three styles. Geometry assertions also check centered heat-battery temperatures and status icons.
+- 67 unit tests covering discovery, unit conversion, source priority, status, history normalization and shared registry subscriptions.
+- 42 Chromium browser tests covering all seven cards and their editors, light/dark themes, desktop (1440px), tablet (820px), phone (390px), keyboard and touch inspection, live updates during inspection, missing/offline telemetry, read-only sensor details, wrapping after three units, and single-unit installation/selection layouts in all three styles. Geometry assertions also check centered heat-battery temperatures and status icons.
 
 The browser suite renders actual Lit components using synthetic Home Assistant fixtures. It checks card overflow and page errors. Shared requests and subscription cleanup are tested. Screenshots in `docs/screenshots` come from that fixture preview, not a household dashboard.
 
@@ -27,3 +27,5 @@ Chill ring checks cover independent mode/status reports, missing and unfamiliar 
 Heating circuit v0.6.0: browser checks cover one/two pumps at 1200px, 820px and 390px in both themes, field toggles/reset, sensor-detail keyboard activation, focus retention on updates, offline endpoints and absent storage. Geometry assertions prevent the phone storage branch overlapping the return reading. Visual review corrected that overlap and confirmed the final desktop/phone captures. Unit tests cover renamed/reordered/legacy pump identifiers, remote pump order, unknown/contradictory topology, Fahrenheit normalization, negative ΔT, explicit endpoint overrides and offline final-pump gaps. No new live hydraulic flow measurement is claimed.
 
 Release v0.6.0 was installed through HACS and verified in the live Home Assistant card picker and unsaved visual editor on 9 October 2026. Both pumps, circuit temperatures/flow, charger input and thermal storage rendered from discovered sensors. The Displayed fields editor loaded correctly. The preview was cancelled without saving a dashboard change; HACS reported v0.6.0 installed with no pending update.
+
+Chill v0.6.1: the exact “On working” + “Cooling” regression was first observed failing with unknown/question output, then passed with on/cooling/snow. Tests cover raw ON_WORKING, case/whitespace variants, heating, off/idle, offline precedence and unfamiliar reports. Instrumented browser tests measure each actual card; the 81% per-card gate initially failed five cards, then passed after added behavior tests. Coverage is enforced in CI and tagged release workflows.

@@ -49,14 +49,14 @@ HACS normally registers the module automatically. If your resources are managed 
 
 1. Build the asset with `npm ci` and `npm run build`.
 2. Copy `dist/quatt-cards.js` to `/config/www/quatt-cards.js` on Home Assistant.
-3. Add a dashboard resource with URL `/local/quatt-cards.js?v=0.6.0` and resource type **JavaScript Module**.
+3. Add a dashboard resource with URL `/local/quatt-cards.js?v=0.6.1` and resource type **JavaScript Module**.
 4. Reload the browser. In **Add card**, search for **Quatt**.
 
 For dashboards with YAML-managed resources:
 
 ```yaml
 resources:
-  - url: /local/quatt-cards.js?v=0.6.0
+  - url: /local/quatt-cards.js?v=0.6.1
     type: module
 ```
 
@@ -231,3 +231,9 @@ The top summary is **heat-pump** input, output and reported COP, excluding the H
 Displayed fields: `electricPower`, `heatPower`, `cop`, `supplyTemperature`, `returnTemperature`, `flowRate`, `deltaTemperature`, `heatBattery.charge`, `heatBattery.topTemperature`, `heatBattery.middleTemperature`, `heatBattery.bottomTemperature`, `heatBattery.showerMinutes`, `heatCharger.heaterPower`, `heatCharger.waterPressure`. Middle temperature, shower time and pressure are off by default. Field toggles hide readings, keeping equipment topology visible. Missing optional equipment is omitted.
 
 System entity overrides support `electricPower`, `heatPower`, `cop`, `supplyTemperature`, `returnTemperature`, and `flowRate`; explicit temperature overrides replace the circuit endpoints and feed ΔT. Storage readings use discovered devices. Readings open sensor details; derived ΔT has no sensor of its own. Theme overrides: `--quatt-supply-color` (red `#e34d59`) and `--quatt-return-color` (blue `#00a9ed`).
+
+### Coverage gate
+
+`npm run test:coverage` runs the data tests and instrumented Chromium card tests. CI and release builds enforce **at least 81% lines, statements, functions and branches for every card**, as well as the full browser runtime aggregate and the shared-data test aggregate. New card files are discovered automatically; an untested card fails the gate. Demo fixtures and test code are excluded. The production bundle contains no coverage instrumentation. See [coverage results and scope](docs/coverage.md).
+
+Chill accepts both the reported **On working** status and raw **ON_WORKING** spelling, combined with the selected Cooling/Heating mode. Off and idle retain their gray power indicator; unfamiliar or missing reports remain distinct.

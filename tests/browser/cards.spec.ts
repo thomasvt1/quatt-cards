@@ -1,4 +1,4 @@
-import {test,expect,type Page} from '@playwright/test';
+import {test,expect,collectCoverage,type Page} from './fixtures';
 import {mkdir} from 'node:fs/promises';
 import type {CardConfig,HomeAssistant} from '../../src/types';
 import type {DemoDiagnostics} from '../../src/demo/fixtures';
@@ -175,8 +175,8 @@ test('history has one thin mode strip and preserves unavailable gaps',async({pag
  await card.getByRole('slider').focus();await card.getByRole('slider').press('Home');await expect(card.locator('.inspector')).toContainText('Standby');
 });
 test('touch can inspect recorded measurements',async({browser})=>{
- const context=await browser.newContext({viewport:{width:390,height:844},hasTouch:true,isMobile:true});const page=await context.newPage();await page.goto('http://127.0.0.1:4174/');
- const chart=page.locator('quatt-history-card').getByRole('slider');await expect(chart).toBeVisible();await chart.scrollIntoViewIfNeeded();const b=(await chart.boundingBox())!;await page.touchscreen.tap(b.x+b.width*.55,b.y+50);await expect(page.locator('quatt-history-card').locator('.inspector')).toBeVisible();expect(Number(await chart.getAttribute('aria-valuenow'))).toBeGreaterThan(300);await context.close();
+ const context=await browser.newContext({viewport:{width:390,height:844},hasTouch:true,isMobile:true});const page=await context.newPage();await page.goto(`http://127.0.0.1:${process.env.QUATT_COVERAGE==='true'?4175:4174}/`);
+ const chart=page.locator('quatt-history-card').getByRole('slider');await expect(chart).toBeVisible();await chart.scrollIntoViewIfNeeded();const b=(await chart.boundingBox())!;await page.touchscreen.tap(b.x+b.width*.55,b.y+50);await expect(page.locator('quatt-history-card').locator('.inspector')).toBeVisible();expect(Number(await chart.getAttribute('aria-valuenow'))).toBeGreaterThan(300);await collectCoverage(page);await context.close();
 });
 test('C wraps after three devices, with working A and B layout options',async({page})=>{
  await page.setViewportSize({width:390,height:844});await open(page);await page.evaluate(()=>window.demo.setScenario('many'));const card=page.locator('quatt-chill-card');await expect(card.locator('article')).toHaveCount(5);

@@ -11,3 +11,5 @@ test-results/
 # Local design workflow and generated proposal images
 .impeccable/
 mockups/
+
+coverage/

@@ -12,7 +12,7 @@ test('Chill working reports render the cooling/heating badge and preserve off, i
  for(const mode of ['Cooling','Heating']){
   for(const status of ['On target temperature reached','ON_TARGET_TEMPERATURE_REACHED','On working']){
    await card.evaluate((e,{status,mode})=>{const c=e as Card,states={...c.hass.states};for(const [id,s] of Object.entries(states))if(id.includes('demo-chill-uuid-1')){if(id.endsWith('_status'))states[id]={...s,state:status};if(id.endsWith('_mode'))states[id]={...s,state:mode};}c.hass={...c.hass,states};},{status,mode});
-   const working=status==='On working',tone=working?mode.toLowerCase():'neutral',state=working?'on':'idle',icon=working?(mode==='Cooling'?'snow':'heat'):'power';
+   const working=status==='On working',tone=mode.toLowerCase(),state=working?'on':'maintaining',icon=mode==='Cooling'?'snow':'heat';
    await expect(control).toHaveClass(new RegExp(`${tone} ${state}`));
    await expect(control.locator(`.status-badge .icon-${icon}`)).toHaveCount(1);
    await expect(control.locator('.icon-question')).toHaveCount(0);

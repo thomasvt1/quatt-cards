@@ -6,7 +6,7 @@ export const chillStates = [
   {status:'COOLING', state:'on', activity:'cooling', icon:'snow'},
   {status:'HEATING', state:'on', activity:'heating', icon:'heat'},
   {status:'ON_WORKING', state:'on', activity:'mode', icon:'mode'},
-  {status:'ON_TARGET_TEMPERATURE_REACHED', state:'idle', activity:'neutral', icon:'power'},
+  {status:'ON_TARGET_TEMPERATURE_REACHED', state:'maintaining', activity:'neutral', icon:'mode'},
   {status:'WARNING_DISCONNECTED', state:'offline', activity:'neutral', icon:'warning'},
   {status:'WARNING_NOT_COOLING_HEATING_SYSTEM_IS_HEATING', state:'warning', activity:'neutral', icon:'warning'},
   {status:'ON', state:'on', activity:'mode', icon:'mode'},

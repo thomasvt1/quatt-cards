@@ -21,9 +21,10 @@ describe('complete known Chill status contract through HA discovery',()=>{
       for(const mode of ['Cooling','Heating','COOL','HEAT','unknown','unavailable','','Dry']){
         const setting=/^cool/i.test(mode)?'cooling':/^heat/i.test(mode)?'heating':'neutral';
         const activity=row.activity==='mode'?setting:row.activity;
+        const indicatorTone=row.state==='maintaining'?setting:activity;
         const activityIcon=row.icon==='mode'?(setting==='cooling'?'snow':setting==='heating'?'heat':'tick'):row.icon;
         const data=snapshot(status,mode),device=data.chills[0];
-        expect(chillState(device)).toMatchObject({state:row.state,activity,activityIcon,setting});
+        expect(chillState(device)).toMatchObject({state:row.state,activity,indicatorTone,activityIcon,setting});
         expect(device.available).toBe(row.state!=='offline');
         expect(chillState(snapshot(status,mode,true).chills[0])).toMatchObject({state:'offline',activity:'neutral',activityIcon:'warning'});
         if(row.status==='WARNING_DISCONNECTED')expect(data.status).toContainEqual(expect.objectContaining({key:'demo-chill-1-offline',detail:status.trim()}));

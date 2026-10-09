@@ -21,13 +21,13 @@ Browser tests exercise the actual Lit components, editors, state updates, keyboa
 | history-card.ts | 98.36% | 93.54% | 94.64% | 89.74% |
 | overview-card.ts | 100% | 100% | 100% | 93.05% |
 | status-card.ts | 100% | 100% | 100% | 83.33% |
-| Browser runtime aggregate | 96.13% | 88.4% | 94.02% | 82.05% |
-| Shared-data aggregate | 99.12% | 93.43% | 100% | 88.76% |
+| Browser runtime aggregate | 96.14% | 88.41% | 94.02% | 82.12% |
+| Shared-data aggregate | 99.12% | 93.44% | 100% | 88.87% |
 | Chill state interpreter (unit) | 100% | 100% | 100% | 100% |
 
 The Chill regression covers **On working + Cooling** producing an active blue snowflake instead of a question mark. Further cases cover raw `ON_WORKING`, case and whitespace, heating, idle/off, offline precedence, missing mode and unfamiliar status values. Browser assertions also check live transitions and accessible status descriptions.
 
-The target-reached regression covers **On target temperature reached** and raw `ON_TARGET_TEMPERATURE_REACHED`, including case/whitespace normalization, cooling/heating/missing mode, and offline precedence. Browser checks assert the gray idle power badge, no question mark, preserved accessible report, and resumption of blue cooling/red heating after reaching the target.
+The target-reached regression covers **On target temperature reached** and raw `ON_TARGET_TEMPERATURE_REACHED`, including case/whitespace normalization, cooling/heating/missing mode, and offline precedence. Browser checks assert the enabled/maintaining blue cooling or red heating badge, no question mark, preserved accessible report, and transitions back to working. Unit assertions keep maintaining activity neutral rather than implying active output.
 
 ## Reproduce
 

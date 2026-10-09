@@ -20,19 +20,22 @@ export function chillState(device: QuattDevice) {
   const state = offline ? 'offline'
     : diagnostic ? 'warning'
     : normalizedStatus === 'off' ? 'off'
-    : ['idle', 'standby', 'on idle', 'on standby', 'on target temperature reached'].includes(normalizedStatus || '') ? 'idle'
+    : normalizedStatus === 'on target temperature reached' ? 'maintaining'
+    : ['idle', 'standby', 'on idle', 'on standby'].includes(normalizedStatus || '') ? 'idle'
     : ['on', 'on working', 'running', 'cooling', 'heating'].includes(normalizedStatus || '') ? 'on' : 'unknown';
   const setting = ['cool', 'cooling'].includes(normalizedMode || '') ? 'cooling'
     : ['heat', 'heating'].includes(normalizedMode || '') ? 'heating' : 'neutral';
   const activity = state === 'on' ? normalizedStatus === 'cooling' ? 'cooling' : normalizedStatus === 'heating' ? 'heating' : setting : 'neutral';
+  // Target reached remains enabled in its mode without asserting active output.
+  const indicatorTone = state === 'maintaining' ? setting : activity;
   return {
-    activity,
-    activityIcon: state === 'off' || state === 'idle' ? 'power' : state === 'offline' || state === 'warning' ? 'warning' : state === 'unknown' ? 'question' : activity === 'cooling' ? 'snow' : activity === 'heating' ? 'heat' : 'tick',
+    activity, indicatorTone,
+    activityIcon: state === 'off' || state === 'idle' ? 'power' : state === 'offline' || state === 'warning' ? 'warning' : state === 'unknown' ? 'question' : indicatorTone === 'cooling' ? 'snow' : indicatorTone === 'heating' ? 'heat' : 'tick',
     state, setting,
     statusText: offline && !diagnostic ? 'Unavailable' : status || 'Status unavailable',
     modeText: mode || 'Mode unavailable',
     statusIcon: state === 'offline' || state === 'warning' ? 'warning' : state === 'off' ? 'power'
-      : state === 'idle' ? 'power' : state === 'on' ? 'tick' : 'question',
+      : state === 'idle' ? 'power' : state === 'on' || state === 'maintaining' ? 'tick' : 'question',
     modeIcon: setting === 'cooling' ? 'snow' : setting === 'heating' ? 'heat' : 'question',
   };
 }

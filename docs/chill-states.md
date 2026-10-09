@@ -21,7 +21,7 @@ Both raw API spelling and sentence-case HA spelling are supported, with case/whi
 | `COOLING` | Active cooling | Blue snowflake | Upstream enum |
 | `HEATING` | Active heating | Red heat waves | Upstream enum |
 | `ON_WORKING` | Active; uses reported mode | Blue/red; neutral tick if mode missing | Observed API report |
-| `ON_TARGET_TEMPERATURE_REACHED` | Idle | Gray power | Observed API report |
+| `ON_TARGET_TEMPERATURE_REACHED` | Enabled, maintaining; no active output inferred | Selected blue cooling/red heating; neutral tick if mode missing | Observed API report; maintaining presentation clarified in user review |
 | `WARNING_DISCONNECTED` | Unavailable | Warning; controls disabled | Upstream discussion |
 | `WARNING_NOT_COOLING_HEATING_SYSTEM_IS_HEATING` | Warning; no activity inferred | Neutral ring, amber warning | Upstream discussion and observed report |
 
@@ -31,7 +31,7 @@ Existing compatibility aliases: `ON` and `RUNNING` use the selected mode while a
 
 1. Missing device telemetry or an explicit disconnected/offline report overrides cached active readings. Disconnection disables the native-control launcher and is reflected in Status.
 2. Explicit `WARNING`, `ERROR` and `FAULT` diagnostic families use an amber warning badge and preserve the reason. Only exact disconnected reports imply lost connectivity. Diagnostic text mentioning cooling/heating does not make the unit active.
-3. Off and idle override the selected mode. Explicit Cooling/Heating status overrides a conflicting selected mode.
+3. Target reached remains enabled and maintaining: retain the selected mode's ring/badge without declaring active output. Off and other idle/standby reports override the selected mode. Explicit Cooling/Heating status overrides a conflicting selected mode.
 4. Working/On/Running uses Cooling/Heating (or Cool/Heat); absent/unknown mode stays neutral with a tick.
 5. Missing HA values (`unknown`, `unavailable`, `none`, `null`, empty) and unfamiliar operating reports remain unknown. New `ON_*` values are not blindly treated as working.
 

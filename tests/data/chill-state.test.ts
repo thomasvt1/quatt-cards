@@ -26,9 +26,10 @@ describe('Chill icon state',()=>{
 });
 
 describe('reported Quatt working states',()=>{
-  it.each(['On target temperature reached','ON_TARGET_TEMPERATURE_REACHED',' on   TARGET_temperature REACHED '])('renders %s as idle instead of a question mark',status=>{
+  it.each(['On target temperature reached','ON_TARGET_TEMPERATURE_REACHED',' on   TARGET_temperature REACHED '])('renders %s as enabled and maintaining instead of off or unknown',status=>{
     for(const mode of ['Cooling','Heating',undefined]){
-      expect(chillState(device(status,mode))).toMatchObject({state:'idle',activity:'neutral',activityIcon:'power',statusIcon:'power',statusText:status.trim()});
+      const indicatorTone=mode==='Cooling'?'cooling':mode==='Heating'?'heating':'neutral';
+      expect(chillState(device(status,mode))).toMatchObject({state:'maintaining',activity:'neutral',indicatorTone,activityIcon:mode==='Cooling'?'snow':mode==='Heating'?'heat':'tick',statusIcon:'tick',statusText:status.trim()});
     }
     expect(chillState(device(status,'Cooling',false))).toMatchObject({state:'offline',activityIcon:'warning'});
   });

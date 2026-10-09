@@ -29,7 +29,7 @@ export class QuattChillCard extends BaseCard {
   private controlIcon(d:QuattDevice) {
     const state=chillState(d),showStatus=this.showField('status'),showMode=this.showField('mode');
     const description=[showStatus?`Status: ${state.statusText}`:'',showMode?`Mode: ${state.modeText}`:''].filter(Boolean).join(' · ');
-    const tone=showMode?(showStatus?state.activity:state.setting):'neutral';
+    const tone=showMode?(showStatus?state.indicatorTone:state.setting):'neutral';
     const badge=showStatus?(showMode?state.activityIcon:state.statusIcon):state.modeIcon;
     const classes=`unit-icon ${tone} ${showStatus?state.state:''}`;
     const content=html`${icon('chill')}${showStatus||showMode?html`<span class="icon-badge status-badge" aria-hidden="true">${icon(badge)}</span>`:nothing}`;

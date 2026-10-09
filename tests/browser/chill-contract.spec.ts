@@ -18,7 +18,7 @@ for(const row of chillStates){
      }
      for(const tag of ['quatt-chill-card','quatt-status-card']){const card=document.querySelector(tag) as Card;card.hass={...card.hass,states};}
     },{status,mode});
-    const tone=row.activity==='mode'?mode.toLowerCase():row.activity;
+    const tone=row.activity==='mode'||row.state==='maintaining'?mode.toLowerCase():row.activity;
     const icon=row.icon==='mode'?(mode==='Cooling'?'snow':'heat'):row.icon;
     await expect(control).toHaveClass(new RegExp(`${tone} ${row.state}`));
     await expect(control.locator(`.status-badge .icon-${icon}`)).toHaveCount(1);

@@ -24,9 +24,33 @@ All cards have a visual configuration editor, card-picker preview, YAML configur
 
 Interactions inspect chart readings or open Home Assistant sensor details. Each Chill unit has a centered, clickable **Chill status ring** that opens its native Home Assistant climate panel. Use that panel to change target temperature, heating/cooling/off mode, and fan speed. Opening it does not change the unit; commands are handled by Home Assistant when you use its controls. The other cards remain display-only.
 
-![The six Quatt cards in a light Home Assistant theme, using synthetic readings](docs/screenshots/desktop-light.png)
+<!-- BEGIN GENERATED EXAMPLES -->
+![All 7 Quatt cards, desktop light theme with synthetic data](examples/desktop-light.png)
 
-[Single-unit layout](docs/screenshots/single-desktop-light.png) · [Single unit on phone](docs/screenshots/single-phone-dark.png) · [Dark theme](docs/screenshots/desktop-dark.png) · [Phone, light theme](docs/screenshots/phone-light.png) · [Phone, dark theme](docs/screenshots/phone-dark.png)
+[Full phone dashboard, dark theme](examples/mobile-dark.png)
+
+### Card previews
+
+Synthetic readings only. Regenerate these images with `npm run update:examples`.
+
+| Card / layout | Light theme | Dark theme |
+| --- | --- | --- |
+| Quatt Heating Circuit | ![Quatt Heating Circuit, light](examples/heating-circuit-light.png) | ![Quatt Heating Circuit, dark](examples/heating-circuit-dark.png) |
+| Heating circuit · single pump, phone | ![Heating circuit · single pump, phone, light](examples/heating-circuit-single-mobile-light.png) | ![Heating circuit · single pump, phone, dark](examples/heating-circuit-single-mobile-dark.png) |
+| Quatt Overview | ![Quatt Overview, light](examples/overview-light.png) | ![Quatt Overview, dark](examples/overview-dark.png) |
+| Overview · minimal heat battery | ![Overview · minimal heat battery, light](examples/overview-minimal-light.png) | ![Overview · minimal heat battery, dark](examples/overview-minimal-dark.png) |
+| Quatt Performance | ![Quatt Performance, light](examples/history-light.png) | ![Quatt Performance, dark](examples/history-dark.png) |
+| Quatt Heat Pumps | ![Quatt Heat Pumps, light](examples/heat-pump-light.png) | ![Quatt Heat Pumps, dark](examples/heat-pump-dark.png) |
+| Quatt Heat Pumps · stacked | ![Quatt Heat Pumps · stacked, light](examples/heat-pump-stacked-light.png) | ![Quatt Heat Pumps · stacked, dark](examples/heat-pump-stacked-dark.png) |
+| Quatt Heat Pumps · compact | ![Quatt Heat Pumps · compact, light](examples/heat-pump-compact-light.png) | ![Quatt Heat Pumps · compact, dark](examples/heat-pump-compact-dark.png) |
+| Quatt Heat Battery | ![Quatt Heat Battery, light](examples/heat-battery-light.png) | ![Quatt Heat Battery, dark](examples/heat-battery-dark.png) |
+| Quatt Chill Rooms | ![Quatt Chill Rooms, light](examples/chill-light.png) | ![Quatt Chill Rooms, dark](examples/chill-dark.png) |
+| Quatt Chill Rooms · stacked | ![Quatt Chill Rooms · stacked, light](examples/chill-stacked-light.png) | ![Quatt Chill Rooms · stacked, dark](examples/chill-stacked-dark.png) |
+| Quatt Chill Rooms · compact | ![Quatt Chill Rooms · compact, light](examples/chill-compact-light.png) | ![Quatt Chill Rooms · compact, dark](examples/chill-compact-dark.png) |
+| Quatt Status | ![Quatt Status, light](examples/status-light.png) | ![Quatt Status, dark](examples/status-dark.png) |
+
+Phone previews: Quatt Heating Circuit ([light](examples/heating-circuit-mobile-light.png), [dark](examples/heating-circuit-mobile-dark.png)) · Quatt Overview ([light](examples/overview-mobile-light.png), [dark](examples/overview-mobile-dark.png)) · Quatt Performance ([light](examples/history-mobile-light.png), [dark](examples/history-mobile-dark.png)) · Quatt Heat Pumps ([light](examples/heat-pump-mobile-light.png), [dark](examples/heat-pump-mobile-dark.png)) · Quatt Heat Battery ([light](examples/heat-battery-mobile-light.png), [dark](examples/heat-battery-mobile-dark.png)) · Quatt Chill Rooms ([light](examples/chill-mobile-light.png), [dark](examples/chill-mobile-dark.png)) · Quatt Status ([light](examples/status-mobile-light.png), [dark](examples/status-mobile-dark.png))
+<!-- END GENERATED EXAMPLES -->
 
 ## Requirements
 
@@ -150,7 +174,10 @@ npm test
 npm run build
 npx playwright install chromium
 npm run test:browser
+npm run update:examples
 ```
+
+Run `npm run update:examples` after changing a card’s appearance and commit the refreshed PNGs and README gallery. It starts and stops its own local demo server and Chromium browser, uses a fixed clock, locale, timezone and viewport, and writes every registered card in light/dark themes and desktop/phone sizes directly to `examples/`. It also captures the two dashboards, both alternative heat-pump/Chill layouts, minimal Overview and a single-pump circuit. New cards missing a demo fixture fail explicitly. The script requires Chromium (`npx playwright install chromium`); no running preview server or Home Assistant connection is needed. CI first runs `npm run check:examples` to reject changed source, missing/altered PNGs or missing README links, then exercises the generator. The manifest records source and output SHA-256 hashes; normalized line endings make the freshness check portable between Windows and Linux. Cross-platform screenshot pixels are not compared.
 
 The development preview and screenshots use synthetic fixtures. Tests cover data discovery and units, unsupported or missing telemetry, and browser behavior across supported card layouts. CI runs type checking, unit tests, a production build, and Chromium browser tests. See [validation notes](docs/validation.md) for the checked environments and remaining live-installation boundary.
 
@@ -213,13 +240,13 @@ fields:
   heatBattery.status: false
 ```
 
-![Minimal overview with four selected readings, synthetic data](docs/screenshots/minimal-overview.png)
+![Minimal overview with four selected readings, synthetic data](examples/overview-minimal-light.png)
 
 ## Heating circuit
 
-![Compact heating circuit with two pumps and thermal storage, synthetic data](docs/screenshots/circuit-light.png)
+![Compact heating circuit with two pumps and thermal storage, synthetic data](examples/heating-circuit-light.png)
 
-[Single pump on a phone, dark theme](docs/screenshots/circuit-single-phone-dark.png)
+[Single pump on a phone, dark theme](examples/heating-circuit-single-mobile-dark.png)
 
 ```yaml
 type: custom:quatt-heating-circuit-card

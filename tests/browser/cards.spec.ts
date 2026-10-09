@@ -4,6 +4,32 @@ import type {CardConfig,HomeAssistant} from '../../src/types';
 import type {DemoDiagnostics} from '../../src/demo/fixtures';
 type Card=HTMLElement&{hass:HomeAssistant&{__demoDiagnostics:DemoDiagnostics};setConfig(c:CardConfig):void;getCardSize():number;getGridOptions():unknown};
 const names=['overview','heat-pump','heat-battery','history','chill','status'];
+test('Overview minimal heat battery joins the reading grid and preserves field choices',async({page})=>{
+ await open(page);await page.evaluate(()=>window.demo.showEditor('overview'));
+ const card=page.locator('quatt-overview-card'),editor=page.locator('quatt-card-editor');
+ await expect(card.locator('.battery')).toHaveCount(1);
+ await editor.getByRole('combobox',{name:'Heat battery layout',exact:true}).selectOption('minimal');
+ await expect(card.locator('.battery')).toHaveCount(0);await expect(card.getByRole('meter')).toHaveCount(0);
+ await expect(card.locator('.stat-grid').getByRole('button',{name:/^Heat battery: 74/})).toBeVisible();
+ await expect(card.locator('.stat-grid .device-field')).toHaveCount(7);
+ await editor.getByText('Displayed fields',{exact:true}).click();
+ await editor.getByRole('checkbox',{name:'Heat battery · status',exact:true}).uncheck();
+ await editor.getByRole('checkbox',{name:'Heat battery · shower time',exact:true}).uncheck();
+ await editor.getByRole('checkbox',{name:'Water flow',exact:true}).uncheck();
+ await expect(card.locator('.stat-grid .device-field')).toHaveCount(4);
+ await editor.getByRole('combobox',{name:'Heat battery layout',exact:true}).selectOption('detailed');
+ await expect(card.getByRole('meter')).toHaveCount(1);await expect(card.getByRole('button',{name:/^Shower time:/})).toHaveCount(0);
+ await editor.getByRole('combobox',{name:'Heat battery layout',exact:true}).selectOption('minimal');
+ await expect(card.locator('.stat-grid .device-field')).toHaveCount(4);
+ for(const width of [1440,820,390])for(const theme of ['light','dark'] as const){
+  await page.setViewportSize({width,height:1000});await page.evaluate(theme=>window.demo.setTheme(theme),theme);
+  expect(await card.locator('ha-card').evaluate(e=>e.scrollWidth-e.clientWidth)).toBeLessThanOrEqual(1);
+  await card.screenshot({path:`.impeccable/review/minimal-overview-${width}-${theme}.png`});
+ }
+ await page.evaluate(()=>window.demo.setScenario('partial'));
+ await expect(card.locator('.stat-grid .device-field').filter({hasText:'Heat battery'}).locator('.value')).toHaveText('—');
+ await page.evaluate(()=>window.demo.setScenario('missing'));await expect(card.locator('.stat-grid .device-field')).toHaveCount(3);
+});
 test('Overview includes real heat-battery readings and preserves unavailable charge',async({page})=>{
  await open(page);const card=page.locator('quatt-overview-card');
  await expect(card.getByRole('region',{name:'Heat battery',exact:true})).toBeVisible();

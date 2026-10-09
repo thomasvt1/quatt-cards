@@ -4,7 +4,7 @@ Local checks on 9 October 2026 passed with Node.js 24:
 
 - TypeScript checking and Vite production build.
 - 46 unit tests covering discovery, unit conversion, source priority, status, history normalization and shared registry subscriptions.
-- 26 Chromium browser tests covering all six cards and their editors, light/dark themes, desktop (1440px), tablet (820px), phone (390px), keyboard and touch inspection, live updates during inspection, missing/offline telemetry, read-only sensor details, wrapping after three units, and single-unit installation/selection layouts in all three styles. Geometry assertions also check centered heat-battery temperatures and status icons.
+- 27 Chromium browser tests covering all six cards and their editors, light/dark themes, desktop (1440px), tablet (820px), phone (390px), keyboard and touch inspection, live updates during inspection, missing/offline telemetry, read-only sensor details, wrapping after three units, and single-unit installation/selection layouts in all three styles. Geometry assertions also check centered heat-battery temperatures and status icons.
 
 The browser suite renders actual Lit components using synthetic Home Assistant fixtures. It checks card overflow and page errors. Shared requests and subscription cleanup are tested. Screenshots in `docs/screenshots` come from that fixture preview, not a household dashboard.
 
@@ -19,3 +19,5 @@ The fresh visual review found no concrete UI repairs: topology, device outlines,
 Chill control-access tests cover renamed and indexed legacy climate entities, disabled/foreign/ambiguous targets, override isolation, keyboard activation, per-unit event targets, the editor visibility option, and offline/missing climate state. Opening a control panel emits no service calls.
 
 Field-selection tests cover defaults, malformed YAML, every visual editor, reset without losing unrelated settings, selected temperature reflow, COP-only/mode-only history, heat-battery overview readings, missing equipment, and unavailable charge. Field checkboxes are included in responsive editor checks.
+
+The minimal Overview layout is tested at 1440px, 820px, and 390px in both themes, including editor switching, preserved field choices, a four-field configuration, missing battery equipment, and unavailable charge.

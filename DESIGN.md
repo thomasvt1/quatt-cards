@@ -206,3 +206,7 @@ Each unit has a full-width, 44px minimum-height Controls button beneath a thin s
 Overview separates heat-pump flow, comfort readings, and thermal storage with thin rules. The heat-battery section uses the established tank outline, a compact status on the heading row, a two-column reading grid, and a 6px warm progress track. Missing hardware omits the section and missing charge omits the track.
 
 Displayed fields are native labeled checkboxes, with 44px rows, two columns in wide editors and one on phones. A reset action restores defaults. Partial flow selections use equal-width nodes without misleading connecting arrows. Selected tank temperatures divide available width evenly; empty detail groups disappear. Custom field layouts use natural card height.
+
+### Minimal overview storage (v0.4.0)
+
+The optional Minimal heat-battery layout appends selected storage/charger readings to the existing two-column comfort grid. It uses the same icon size, label placement, value size, and gaps. No separate storage heading, divider, or charge meter is rendered. Clear labels distinguish tank temperatures and battery status. Detailed remains the default; both layouts share field visibility.

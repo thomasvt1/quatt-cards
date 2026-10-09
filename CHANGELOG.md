@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.0
+
+- Add Detailed and Minimal heat-battery layouts to the Overview visual editor and YAML (`heat_battery_layout`).
+- Minimal places selected battery and charger readings in the main reading grid, without the separate section or charge bar.
+- Preserve displayed-field selections when switching layouts; Detailed remains the default.
+- Test switching, field preservation, missing data, and minimal layout sizing in both themes on phone, tablet, and desktop.
+
 ## 0.3.0
 
 - Add a compact heat-battery summary to Overview with thermal charge, shower time, status, and a progress bar.

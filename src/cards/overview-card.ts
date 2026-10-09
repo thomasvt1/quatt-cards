@@ -1,7 +1,7 @@
 import { css, html, nothing } from 'lit';
 import { BaseCard } from '../base-card';
 import { icon } from '../ui';
-import type { MetricRole } from '../types';
+import type { MetricRole, Reading } from '../types';
 export class QuattOverviewCard extends BaseCard {
   static getStubConfig() { return {type:'custom:quatt-overview-card'}; }
   static styles=[BaseCard.styles,css`
@@ -36,12 +36,19 @@ export class QuattOverviewCard extends BaseCard {
     const selectedBattery=batteryFields.filter(([key])=>this.showField(`heatBattery.${key}`)&&b?.metrics[key]);
     const chargerFields:[MetricRole,string][]=[['heaterPower','Charger input'],['waterPressure','Water pressure']];
     const selectedCharger=chargerFields.filter(([key])=>this.showField(`heatCharger.${key}`)&&s.heatCharger?.metrics[key]);
-    return html`<ha-card class=${this.config.fields?'custom-fields':''}>${this.renderHeader('Overview')}${this.renderNotice()}
+    const minimal=this.config.heat_battery_layout==='minimal';
+    const compactBattery:[string,string,Reading|undefined,string][]=[];
+    if(minimal&&b){
+      const labels:Partial<Record<MetricRole,string>>={charge:'Heat battery',status:'Battery status',topTemperature:'Tank top',middleTemperature:'Tank middle',bottomTemperature:'Tank bottom',charging:'Battery charging'};
+      for(const [key,label] of selectedBattery)compactBattery.push([`heatBattery.${key}`,labels[key]||label,key==='status'&&!b.available?{value:null,text:'Unavailable',unit:''}:b.metrics[key],key.toLowerCase().includes('temperature')?'thermometer':key==='showerMinutes'||key==='hotWater'?'water':'tank']);
+      for(const [key,label] of selectedCharger)compactBattery.push([`heatCharger.${key}`,label,s.heatCharger?.metrics[key],key==='heaterPower'?'electric':'water']);
+    }
+    return html`<ha-card class=${this.config.fields||minimal?'custom-fields':''}>${this.renderHeader('Overview')}${this.renderNotice()}
       ${nodes.length?html`<div class=${`flow ${nodes.length<3?'partial':''}`} style=${`--count:${nodes.length}`} aria-label="Heat pump measurements">
         ${nodes.map((n,i)=>html`${i&&nodes.length===3?html`<svg class="arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M1 12h21m-5-5 5 5-5 5"/></svg>`:nothing}<div class="node" data-field=${n.key}><span class=${`symbol ${n.style}`}>${icon(n.symbol)}</span>${this.value(m[n.key],n.key==='cop'?'Reported COP':n.label,'value',n.digits)}<span class="label">${n.label}</span></div>`)}
       </div>`:nothing}
-      ${visible.length?html`<div class="stat-grid">${visible.map(([key,label,symbol])=>this.deviceField(label,m[key],symbol))}</div>`:nothing}
-      ${b&&(selectedBattery.length||selectedCharger.length)?html`<section class="battery" aria-label="Heat battery"><div class="battery-header">${icon('tank')}<h3>Heat battery</h3>${!b.available?html`<span class="battery-status">Unavailable</span>`:this.showField('heatBattery.status')?html`<span class="battery-status">${this.value(b.metrics.status,'Heat battery status')}</span>`:nothing}</div>
+      ${visible.length||compactBattery.length?html`<div class="stat-grid">${visible.map(([key,label,symbol])=>this.deviceField(label,m[key],symbol))}${compactBattery.map(([,label,reading,symbol])=>this.deviceField(label,reading,symbol))}</div>`:nothing}
+      ${!minimal&&b&&(selectedBattery.length||selectedCharger.length)?html`<section class="battery" aria-label="Heat battery"><div class="battery-header">${icon('tank')}<h3>Heat battery</h3>${!b.available?html`<span class="battery-status">Unavailable</span>`:this.showField('heatBattery.status')?html`<span class="battery-status">${this.value(b.metrics.status,'Heat battery status')}</span>`:nothing}</div>
         ${selectedBattery.some(([key])=>key!=='status')||selectedCharger.length?html`<div class="battery-readings">${selectedBattery.filter(([key])=>key!=='status').map(([key,label])=>this.metric(label,b.metrics[key]))}${selectedCharger.map(([key,label])=>this.metric(label,s.heatCharger?.metrics[key]))}</div>`:nothing}
         ${this.showField('heatBattery.charge')&&charge!=null?html`<div class="charge-track" role="meter" aria-label="Heat battery charge" aria-valuemin="0" aria-valuemax="100" aria-valuenow=${charge}><div class="charge-fill" style=${`width:${charge}%`}></div></div>`:nothing}
       </section>`:nothing}

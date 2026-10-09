@@ -48,14 +48,14 @@ HACS normally registers the module automatically. If your resources are managed 
 
 1. Build the asset with `npm ci` and `npm run build`.
 2. Copy `dist/quatt-cards.js` to `/config/www/quatt-cards.js` on Home Assistant.
-3. Add a dashboard resource with URL `/local/quatt-cards.js?v=0.3.0` and resource type **JavaScript Module**.
+3. Add a dashboard resource with URL `/local/quatt-cards.js?v=0.4.0` and resource type **JavaScript Module**.
 4. Reload the browser. In **Add card**, search for **Quatt**.
 
 For dashboards with YAML-managed resources:
 
 ```yaml
 resources:
-  - url: /local/quatt-cards.js?v=0.3.0
+  - url: /local/quatt-cards.js?v=0.4.0
     type: module
 ```
 
@@ -95,6 +95,7 @@ layout: columns
 | `title` | All | Card's own title | Optional heading. |
 | `integration_id` | All | Automatic | Quatt config-entry ID selected in the visual editor. |
 | `device` | Heat pumps, Chill | All units | Restrict the card to one device registry ID. |
+| `heat_battery_layout` | Overview | `detailed` | `detailed` keeps the separate section and charge bar; `minimal` puts battery readings in the main reading grid. |
 | `fields` | All cards | Card defaults | Map field keys to `true` or `false`; also available under **Displayed fields** in the visual editor. |
 | `show_controls` | Chill | `true` | Show a Controls button for each unit. Set `false` to keep the card display-only. |
 | `layout` | Heat pumps, Chill | `columns` | `columns`, `stacked`, or `compact`. |
@@ -187,3 +188,20 @@ Omitted keys use their defaults. An empty `fields: {}` also uses defaults. Expli
 | `custom:quatt-chill-card` | `roomTemperature`, `targetTemperature`, `fanMode`, `status`, `mode`, `waterWarning` |
 | `custom:quatt-history-card` | `electricPower`, `cop`, `heatPower`, `mode` |
 | `custom:quatt-status-card` | `mode`, `connectivity`, `defrost`, `heatBattery`, `limits`, `alerts` |
+
+### Minimal heat battery in Overview
+
+Choose **Heat battery layout → Minimal · alongside other readings** in the Overview editor. Battery readings use the same cells as Room, Target, Outside, and Water flow, without a separate section or progress bar. **Displayed fields** works identically in both layouts; switching layouts preserves every field choice. Detailed remains the default for existing cards.
+
+For a four-field grid with Room, Target, Outside, and heat-battery charge:
+
+```yaml
+type: custom:quatt-overview-card
+heat_battery_layout: minimal
+fields:
+  flowRate: false
+  heatBattery.showerMinutes: false
+  heatBattery.status: false
+```
+
+![Minimal overview with four selected readings, synthetic data](docs/screenshots/minimal-overview.png)

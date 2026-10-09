@@ -203,6 +203,12 @@ export class QuattCardEditor extends LitElement {
           </select>
           <small id="layout-help">Columns shows up to three units per row. Additional units wrap onto a new row.</small>
         </label>` : nothing}
+      ${config.type==='custom:quatt-overview-card'?html`<label class="field" for="heat-battery-layout"><span>Heat battery layout</span>
+        <select id="heat-battery-layout" aria-label="Heat battery layout" @change=${(event:Event)=>this.updateConfig('heat_battery_layout',this.inputValue(event))}>
+          <option value="detailed" .selected=${config.heat_battery_layout!=='minimal'}>Detailed · separate section</option>
+          <option value="minimal" .selected=${config.heat_battery_layout==='minimal'}>Minimal · alongside other readings</option>
+        </select><small>Minimal adds the selected battery readings to the Room, Target, Outside, and Water flow grid. Choose readings under Displayed fields.</small>
+      </label>`:nothing}
       ${isChill ? html`<label class="field" for="show-controls"><span>Unit controls</span>
         <select id="show-controls" aria-label="Unit controls" @change=${(event:Event)=>this.updateConfig('show_controls',this.inputValue(event)==='true')}>
           <option value="true" .selected=${config.show_controls!==false}>Show Controls button</option>

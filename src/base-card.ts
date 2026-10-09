@@ -59,6 +59,7 @@ export abstract class BaseCard extends LitElement {
     if (config.show_controls !== undefined && typeof config.show_controls !== 'boolean') throw new Error('show_controls must be true or false.');
     if (config.hours !== undefined && (!Number.isFinite(config.hours) || config.hours < 1 || config.hours > 48)) throw new Error('hours must be between 1 and 48.');
     validateFields(config);
+    if(config.heat_battery_layout!==undefined&&!['detailed','minimal'].includes(config.heat_battery_layout))throw new Error('heat_battery_layout must be detailed or minimal.');
     this.config = { ...config, entities: { ...config.entities }, fields: config.fields ? { ...config.fields } : undefined };
     this.invalidate();
   }

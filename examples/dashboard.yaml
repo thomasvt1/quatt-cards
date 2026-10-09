@@ -1,0 +1,41 @@
+# Standalone example; adding it to Home Assistant is a separate user action.
+# Select the Quatt installation and devices in each card's visual editor.
+title: Heating
+views:
+  - title: Quatt
+    path: quatt
+    type: sections
+    max_columns: 3
+    sections:
+      - type: grid
+        cards:
+          - type: custom:quatt-overview-card
+            title: Heating overview
+      - type: grid
+        cards:
+          - type: custom:quatt-heat-pump-card
+            title: Heat pumps
+            layout: columns
+            # Omit device to show all units, with at most three per row.
+            # device: YOUR_HEAT_PUMP_DEVICE_ID
+      - type: grid
+        cards:
+          - type: custom:quatt-heat-battery-card
+            title: Heat battery
+      - type: grid
+        cards:
+          - type: custom:quatt-history-card
+            title: Heating performance
+            hours: 24
+      - type: grid
+        cards:
+          - type: custom:quatt-chill-card
+            title: Chill
+            layout: columns
+            # layout: stacked  # A · Stacked
+            # layout: compact  # B · Compact
+            # device: YOUR_CHILL_DEVICE_ID
+      - type: grid
+        cards:
+          - type: custom:quatt-status-card
+            title: System status

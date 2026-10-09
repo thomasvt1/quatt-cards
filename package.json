@@ -1,0 +1,32 @@
+{
+  "name": "quatt-cards",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Compact, display-only Home Assistant cards for Quatt heat pumps, heat storage and Chill",
+  "license": "AGPL-3.0-or-later",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "check": "tsc --noEmit",
+    "build": "tsc --noEmit && vite build",
+    "test": "vitest run",
+    "test:browser": "playwright test"
+  },
+  "dependencies": {
+    "lit": "^3.3.3"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.56.0",
+    "typescript": "^5.9.3",
+    "vite": "^8.3.4",
+    "vitest": "^5.0.3",
+    "@types/node": "^24.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thomasvt1/quatt-cards.git"
+  },
+  "homepage": "https://github.com/thomasvt1/quatt-cards#readme",
+  "bugs": {
+    "url": "https://github.com/thomasvt1/quatt-cards/issues"
+  }
+}

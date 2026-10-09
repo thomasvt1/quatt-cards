@@ -8,7 +8,7 @@ Local checks on 9 October 2026 passed with Node.js 24:
 
 The browser suite renders actual Lit components using synthetic Home Assistant fixtures. It checks card overflow and page errors. Shared requests and subscription cleanup are tested. Screenshots in `docs/screenshots` come from that fixture preview, not a household dashboard.
 
-The entity adapter was checked against the pinned upstream integration contract documented in [data-contract.md](data-contract.md). Package metadata targets Home Assistant 2026.10. This is not a claim that the bundle has been installed or rendered inside a live Home Assistant dashboard. HACS installation, live resource loading, and actual dashboard placement remain to be verified after installation.
+The entity adapter was checked against the pinned upstream integration contract documented in [data-contract.md](data-contract.md). Package metadata targets Home Assistant 2026.10. Release v0.1.0 was installed through HACS on that version on 9 October 2026. HACS registered the versioned module resource automatically. The live card picker rendered all six cards, discovering two heat pumps, two Chill units, and thermal storage. Recorder-backed history loaded, and the Overview visual editor showed live measurements in an unsaved preview. The preview was cancelled and no card was added to the dashboard. No Quatt-specific browser errors were observed during this check. Private household screenshots and identifiers are excluded from this repository.
 
 Visual review compares card composition and physical-device outlines with approved mockup C v3. The mockup's Home Assistant navigation and duplicated phone inset are host context. No pixel-difference or font-matching gate is claimed for the whole showcase image.
 

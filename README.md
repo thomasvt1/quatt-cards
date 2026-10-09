@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://raw.githubusercontent.com/thomasvt1/quatt-cards/main/docs/brand/icon-generated.png" width="112" height="112" alt="Quatt Cards — blue Q with airflow waves">
+</p>
+
 # Quatt Cards
 
 Compact Home Assistant dashboard cards for the [Quatt integration by marcoboers](https://github.com/marcoboers/home-assistant-quatt). The collection continues the typography, compact layouts, inline charts, and Home Assistant theme support of [Omnibattery Cards](https://github.com/thomasvt1/omnibattery-cards), with visual inspiration from [EMHASS Companion](https://github.com/smefa/emhass-ha-companion).

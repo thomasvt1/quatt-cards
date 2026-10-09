@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.0
+
+- Add a compact heat-battery summary to Overview with thermal charge, shower time, status, and a progress bar.
+- Add Displayed fields checkboxes and reset to all six visual editors, plus a validated YAML `fields` map.
+- Offer additional overview tank temperatures, charging/hot-water readings, charger input, and water pressure.
+- Reflow hidden values and support selected history series and status categories.
+
 ## 0.2.0
 
 - Add a Controls button for each Chill unit, opening Home Assistant’s native climate panel for temperature, heat/cool/off mode, and fan speed.

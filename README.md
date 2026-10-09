@@ -8,7 +8,7 @@ Compact Home Assistant dashboard cards for the [Quatt integration by marcoboers]
 
 | Card | Custom element | Content |
 | --- | --- | --- |
-| System overview | `custom:quatt-overview-card` | Heat output, electrical input, reported COP, and available room, water, and outdoor readings. |
+| System overview | `custom:quatt-overview-card` | Heat output, electrical input, reported COP, comfort readings, and a compact heat-battery summary. |
 | Performance history | `custom:quatt-history-card` | Recorded heat output, electrical input, COP, and a slim operating-mode timeline over the last 6, 12, 24, or 48 hours. |
 | Heat pumps | `custom:quatt-heat-pump-card` | All heat pumps or one selected unit, with power, temperatures, and available operating details. |
 | Heat battery | `custom:quatt-heat-battery-card` | Thermal charge level, available shower time, temperatures, and available charging information. |
@@ -48,14 +48,14 @@ HACS normally registers the module automatically. If your resources are managed 
 
 1. Build the asset with `npm ci` and `npm run build`.
 2. Copy `dist/quatt-cards.js` to `/config/www/quatt-cards.js` on Home Assistant.
-3. Add a dashboard resource with URL `/local/quatt-cards.js?v=0.2.0` and resource type **JavaScript Module**.
+3. Add a dashboard resource with URL `/local/quatt-cards.js?v=0.3.0` and resource type **JavaScript Module**.
 4. Reload the browser. In **Add card**, search for **Quatt**.
 
 For dashboards with YAML-managed resources:
 
 ```yaml
 resources:
-  - url: /local/quatt-cards.js?v=0.2.0
+  - url: /local/quatt-cards.js?v=0.3.0
     type: module
 ```
 
@@ -95,6 +95,7 @@ layout: columns
 | `title` | All | Card's own title | Optional heading. |
 | `integration_id` | All | Automatic | Quatt config-entry ID selected in the visual editor. |
 | `device` | Heat pumps, Chill | All units | Restrict the card to one device registry ID. |
+| `fields` | All cards | Card defaults | Map field keys to `true` or `false`; also available under **Displayed fields** in the visual editor. |
 | `show_controls` | Chill | `true` | Show a Controls button for each unit. Set `false` to keep the card display-only. |
 | `layout` | Heat pumps, Chill | `columns` | `columns`, `stacked`, or `compact`. |
 | `hours` | History | `24` | Recorded window: `6`, `12`, `24`, or `48`. |
@@ -158,3 +159,31 @@ Bundled Lit license notices are preserved in [THIRD_PARTY_NOTICES.txt](THIRD_PAR
 ### Chill controls
 
 Controls are discovered from each device’s enabled Quatt climate entity, independently of reading overrides. They work for a selected unit or all units in the card. The integration’s Quatt Remote Mobile API configuration is required. Missing or ambiguous climate entities show an explanation; offline units have disabled buttons. Home Assistant supplies the supported modes, fan options, temperature limits, permissions, and service error handling. No command is sent when opening the panel.
+
+## Choose displayed fields
+
+Open the card editor and expand **Displayed fields** to show or hide readings, history series, or status categories. **Reset displayed fields** restores that card’s defaults and preserves other settings. Selection applies to every visible device in a collection card. Hidden readings do not leave empty columns. Field selection affects presentation only; it does not change hardware or entity settings.
+
+Overview includes a heat-battery summary when that equipment is discovered: thermal charge with a progress bar, shower time, and operating status. Tank temperatures, charging/hot-water indicators, charger input, and water pressure can be enabled separately. Missing charge never becomes a fabricated percentage.
+
+```yaml
+type: custom:quatt-overview-card
+fields:
+  cop: false
+  flowRate: false
+  heatBattery.charge: true
+  heatBattery.showerMinutes: true
+  heatBattery.topTemperature: true
+  heatCharger.heaterPower: true
+```
+
+Omitted keys use their defaults. An empty `fields: {}` also uses defaults. Explicit booleans are required; unsupported keys are rejected. Entity overrides choose reading sources, while `fields` chooses visibility. Heat-battery overview values are discovered from the battery/charger devices, independently of system-reading overrides.
+
+| Card | Field keys |
+| --- | --- |
+| `custom:quatt-overview-card` | `electricPower`, `cop`, `heatPower`, `roomTemperature`, `targetTemperature`, `outdoorTemperature`, `flowRate`, `supplyTemperature` (off by default), `mode`, `heatBattery.charge`, `heatBattery.showerMinutes`, `heatBattery.status`, `heatBattery.topTemperature` (off by default), `heatBattery.middleTemperature` (off by default), `heatBattery.bottomTemperature` (off by default), `heatBattery.charging` (off by default), `heatBattery.hotWater` (off by default), `heatCharger.heaterPower` (off by default), `heatCharger.waterPressure` (off by default) |
+| `custom:quatt-heat-pump-card` | `electricPower`, `cop`, `heatPower`, `returnTemperature`, `supplyTemperature`, `status`, `compressorSpeed`, `outdoorTemperature` |
+| `custom:quatt-heat-battery-card` | `charge`, `showerMinutes`, `topTemperature`, `middleTemperature`, `bottomTemperature`, `status`, `heaterPower`, `waterPressure`, `charging`, `hotWater`, `boost` |
+| `custom:quatt-chill-card` | `roomTemperature`, `targetTemperature`, `fanMode`, `status`, `mode`, `waterWarning` |
+| `custom:quatt-history-card` | `electricPower`, `cop`, `heatPower`, `mode` |
+| `custom:quatt-status-card` | `mode`, `connectivity`, `defrost`, `heatBattery`, `limits`, `alerts` |

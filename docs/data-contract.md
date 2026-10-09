@@ -61,3 +61,7 @@ Adapter tests cover exact keys, renamed entities, legacy IDs, colliding translat
 ## Chill control-panel targets
 
 Since v0.2.0, an unambiguous enabled Quatt climate source with exact `chills` or legacy `chills.<index>` identity is retained per installation and registry device. Reading overrides cannot retarget controls. Opening Controls emits `hass-more-info` for that climate entity; the card makes no service calls. The native panel handles target temperature, heat/cool/off mode, fan speed, permissions, and errors. Offline status or missing/unavailable climate state disables the button.
+
+## Displayed fields and Overview storage
+
+`fields` is a presentation-only boolean map validated against a per-card catalog. Omitted keys preserve defaults. Overview storage reads `snapshot.heatBattery.metrics` and `snapshot.heatCharger.metrics`, not the heat-pump system metrics. It does not add charger power to system electrical input. No hardware or incomplete charge value is replaced with synthetic data. History requests include only selected series.

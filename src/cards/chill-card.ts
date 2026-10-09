@@ -15,7 +15,7 @@ export class QuattChillCard extends BaseCard {
     .compact .unit-icon{display:none}.compact .temperature .value{font-size:20px}.compact .device-field>.icon{display:none}.compact .fields{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
     .rooms.three .device-field>.icon{display:none}.rooms.three .room{padding:0 9px}.rooms.three .row-start{padding-left:0}.rooms.three .temperature .value{font-size:19px}
     .rooms.single.columns h3{text-align:center}.rooms.single.columns .summary{display:flex;justify-content:center;align-items:center;gap:16px;margin:20px 0 26px}.rooms.single.columns .unit-icon{margin:0}.rooms.single.columns .fields{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 18px}
-    ha-card.single-device{min-height:0}
+    ha-card.single-device{min-height:0}ha-card.custom-fields{min-height:0}.fields:empty{display:none}
     .controls{grid-column:1/-1;margin-top:20px;padding-top:14px;border-top:1px solid var(--qc-line)}
     .control-button{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;min-height:44px;border:1px solid var(--qc-line);border-radius:8px;background:transparent;font-size:13px;font-weight:500;padding:8px;overflow-wrap:anywhere}
     .control-button:hover:not(:disabled){background:var(--qc-subtle)}.control-button .icon{width:18px;height:18px}
@@ -41,13 +41,13 @@ export class QuattChillCard extends BaseCard {
   }
   private room(d:QuattDevice,index:number,columns:number) {
     const m=d.metrics,status=m.status?.text||(!d.available?'Unavailable':'Status unavailable');
-    return html`<article class=${`room${index%columns===0?' row-start':''}`} aria-label=${d.name}><h3>${d.name}</h3><div class="summary"><span class="unit-icon">${icon('chill')}</span>
-      <div class="temperature">${this.value(m.roomTemperature,`${d.name} temperature`)}<span class="label">Current temperature</span></div></div><div class="fields">
-      ${this.deviceField('Target temperature',m.targetTemperature,'thermometer')}${this.deviceField('Fan speed',m.fanMode,'fan')}${this.deviceField('Status',{...m.status,value:null,text:status,unit:''},d.available?'dot':'warning')}${this.deviceField('Mode',m.mode,m.mode?.text?.toLowerCase().includes('heat')?'heat':'snow')}
-      </div>${this.on(m.waterWarning)?html`<p class="warning">Water tank needs attention</p>`:nothing}${this.controls(d)}</article>`;
+    return html`<article class=${`room${index%columns===0?' row-start':''}`} aria-label=${d.name}><h3>${d.name}</h3>${this.showField('roomTemperature')?html`<div class="summary"><span class="unit-icon">${icon('chill')}</span>
+      <div class="temperature">${this.value(m.roomTemperature,`${d.name} temperature`)}<span class="label">Current temperature</span></div></div>`:nothing}<div class="fields">
+      ${this.selectedField('targetTemperature','Target temperature',m.targetTemperature,'thermometer')}${this.selectedField('fanMode','Fan speed',m.fanMode,'fan')}${this.selectedField('status','Status',{...m.status,value:null,text:status,unit:''},d.available?'dot':'warning')}${this.selectedField('mode','Mode',m.mode,m.mode?.text?.toLowerCase().includes('heat')?'heat':'snow')}
+      </div>${this.showField('waterWarning')&&this.on(m.waterWarning)?html`<p class="warning">Water tank needs attention</p>`:nothing}${this.controls(d)}</article>`;
   }
   protected render() {
     const rooms=this.snapshot.chills.filter(d=>!this.config.device||d.id===this.config.device),columns=Math.min(3,Math.max(1,rooms.length));
-    return html`<ha-card class=${rooms.length===1?'single-device':''}>${this.renderHeader('Chill rooms')}${this.renderNotice()}${rooms.length?html`<div class=${`rooms ${this.config.layout||'columns'} ${columns===3?'three':''} ${rooms.length===1?'single':''}`} style=${`--columns:${columns}`}>${rooms.map((d,i)=>this.room(d,i,columns))}</div>`:html`<p class="empty">No Chill units found. Chill telemetry requires the Quatt Remote Mobile API.</p>`}</ha-card>`;
+    return html`<ha-card class=${`${rooms.length===1?'single-device':''} ${this.config.fields?'custom-fields':''}`}>${this.renderHeader('Chill rooms')}${this.renderNotice()}${rooms.length?html`<div class=${`rooms ${this.config.layout||'columns'} ${columns===3?'three':''} ${rooms.length===1?'single':''}`} style=${`--columns:${columns}`}>${rooms.map((d,i)=>this.room(d,i,columns))}</div>`:html`<p class="empty">No Chill units found. Chill telemetry requires the Quatt Remote Mobile API.</p>`}</ha-card>`;
   }
 }

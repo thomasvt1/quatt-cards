@@ -200,3 +200,9 @@ Not canonized: the demo wordmark's system-font display styling is preview scaffo
 ### Chill control access (v0.2.0)
 
 Each unit has a full-width, 44px minimum-height Controls button beneath a thin separator. It inherits theme text, borders, and focus treatment; three-column layouts omit its secondary icon to retain label space. It opens the native climate panel for that unit. Missing targets show an explanation; unavailable units disable the button. The visual editor can hide control access for display-only dashboards. This is the explicit exception to the original display-only scope.
+
+### Overview storage and field selection (v0.3.0)
+
+Overview separates heat-pump flow, comfort readings, and thermal storage with thin rules. The heat-battery section uses the established tank outline, a compact status on the heading row, a two-column reading grid, and a 6px warm progress track. Missing hardware omits the section and missing charge omits the track.
+
+Displayed fields are native labeled checkboxes, with 44px rows, two columns in wide editors and one on phones. A reset action restores defaults. Partial flow selections use equal-width nodes without misleading connecting arrows. Selected tank temperatures divide available width evenly; empty detail groups disappear. Custom field layouts use natural card height.

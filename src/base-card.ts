@@ -3,6 +3,7 @@ import type { CardConfig, HomeAssistant, RegistryData, Snapshot, Reading } from 
 import { buildSnapshot } from './data';
 import { loadRegistry, watchRegistry } from './connection';
 import { cardStyles, icon } from './ui';
+import { cardFields, fieldVisible, validateFields } from './fields';
 
 export abstract class BaseCard extends LitElement {
   static styles: CSSResultGroup = cardStyles;
@@ -57,7 +58,8 @@ export abstract class BaseCard extends LitElement {
     if (config.layout && !['columns','stacked','compact'].includes(config.layout)) throw new Error('layout must be columns, stacked, or compact.');
     if (config.show_controls !== undefined && typeof config.show_controls !== 'boolean') throw new Error('show_controls must be true or false.');
     if (config.hours !== undefined && (!Number.isFinite(config.hours) || config.hours < 1 || config.hours > 48)) throw new Error('hours must be between 1 and 48.');
-    this.config = { ...config, entities: { ...config.entities } };
+    validateFields(config);
+    this.config = { ...config, entities: { ...config.entities }, fields: config.fields ? { ...config.fields } : undefined };
     this.invalidate();
   }
   static getConfigElement() { return document.createElement('quatt-card-editor'); }
@@ -98,6 +100,7 @@ export abstract class BaseCard extends LitElement {
     }
   }
   protected invalidate() { this.cached = undefined; this.requestUpdate(); }
+  protected showField(key:string) { return fieldVisible(this.config,key); }
   protected shouldUpdate(_changed: PropertyValues) { return Boolean(this.config && this._hass); }
   protected format(value: number | null, unit: string, digits = 1) {
     if (value == null || !Number.isFinite(value)) return '—';
@@ -132,6 +135,9 @@ export abstract class BaseCard extends LitElement {
   protected deviceField(label: string, reading: Reading | undefined, symbol: string, tone = '', digits = 1) {
     return html`<div class=${`device-field ${tone}`}>${icon(symbol)}<div>${this.value(reading,label,'value',digits)}<span class="label">${label}</span></div></div>`;
   }
+  protected selectedField(key:string,label:string,reading:Reading|undefined,symbol:string,tone='',digits=1) {
+    return this.showField(key)?this.deviceField(label,reading,symbol,tone,digits):html``;
+  }
   protected on(reading?: Reading) { return reading?.value === 1 || ['on','true','yes','connected'].includes(reading?.text?.toLowerCase() || ''); }
   protected renderHeader(defaultTitle: string, subtitle?: string) {
     return html`<div class="ob-header"><h2>${this.config.title || defaultTitle}</h2>${subtitle ? html`<span class="subtitle">${subtitle}</span>` : ''}</div>`;
@@ -139,6 +145,7 @@ export abstract class BaseCard extends LitElement {
   protected renderNotice() {
     const error = this.registryError || this.snapshot.error;
     if (error) return html`<div class="notice error" role="status">${error}</div>`;
+    if(!cardFields[this.config.type]?.some(field=>this.showField(field.key)))return html`<p class="notice">No fields selected. Choose Displayed fields in the card editor.</p>`;
     return this.snapshot.warnings.length ? html`<details class="notice"><summary>Data availability</summary>${this.snapshot.warnings.map(w => html`<p>${w}</p>`)}</details>` : html``;
   }
 }

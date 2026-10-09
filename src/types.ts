@@ -27,6 +27,7 @@ export interface HomeAssistant {
 export type CardType = 'custom:quatt-overview-card' | 'custom:quatt-history-card' | 'custom:quatt-heat-pump-card' | 'custom:quatt-heat-battery-card' | 'custom:quatt-chill-card' | 'custom:quatt-status-card';
 export interface CardConfig {
   type: CardType; title?: string; integration_id?: string; device?: string;
+  fields?: Record<string, boolean>;
   entities?: Record<string, string>; hours?: number; layout?: 'columns' | 'stacked' | 'compact'; show_controls?: boolean;
 }
 export type MetricRole = 'heatPower' | 'electricPower' | 'cop' | 'roomTemperature' | 'targetTemperature' |

@@ -3,8 +3,8 @@
 Local checks on 9 October 2026 passed with Node.js 24:
 
 - TypeScript checking and Vite production build.
-- 42 unit tests covering discovery, unit conversion, source priority, status, history normalization and shared registry subscriptions.
-- 22 Chromium browser tests covering all six cards and their editors, light/dark themes, desktop (1440px), tablet (820px), phone (390px), keyboard and touch inspection, live updates during inspection, missing/offline telemetry, read-only sensor details, wrapping after three units, and single-unit installation/selection layouts in all three styles. Geometry assertions also check centered heat-battery temperatures and status icons.
+- 46 unit tests covering discovery, unit conversion, source priority, status, history normalization and shared registry subscriptions.
+- 26 Chromium browser tests covering all six cards and their editors, light/dark themes, desktop (1440px), tablet (820px), phone (390px), keyboard and touch inspection, live updates during inspection, missing/offline telemetry, read-only sensor details, wrapping after three units, and single-unit installation/selection layouts in all three styles. Geometry assertions also check centered heat-battery temperatures and status icons.
 
 The browser suite renders actual Lit components using synthetic Home Assistant fixtures. It checks card overflow and page errors. Shared requests and subscription cleanup are tested. Screenshots in `docs/screenshots` come from that fixture preview, not a household dashboard.
 
@@ -17,3 +17,5 @@ Visual review compares card composition and physical-device outlines with approv
 The fresh visual review found no concrete UI repairs: topology, device outlines, chart instruments, theme inheritance, and compact comparison columns matched the approved direction. A follow-up measured comparison of six card crops reported drift (scores 0.6323–0.72), with differing card widths normalized by stretching. These diagnostic scores do not establish pixel fidelity. The review's strict reproduction-workflow evidence finding remains open; the spec/font/build-phase gates have not passed. This limitation is separate from the passing functional tests.
 
 Chill control-access tests cover renamed and indexed legacy climate entities, disabled/foreign/ambiguous targets, override isolation, keyboard activation, per-unit event targets, the editor visibility option, and offline/missing climate state. Opening a control panel emits no service calls.
+
+Field-selection tests cover defaults, malformed YAML, every visual editor, reset without losing unrelated settings, selected temperature reflow, COP-only/mode-only history, heat-battery overview readings, missing equipment, and unavailable charge. Field checkboxes are included in responsive editor checks.

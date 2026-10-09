@@ -1,6 +1,7 @@
-import { css, html } from 'lit';
+import { css, html, nothing } from 'lit';
 import { BaseCard } from '../base-card';
 import { icon } from '../ui';
+import type { MetricRole } from '../types';
 export class QuattOverviewCard extends BaseCard {
   static getStubConfig() { return {type:'custom:quatt-overview-card'}; }
   static styles=[BaseCard.styles,css`
@@ -15,18 +16,36 @@ export class QuattOverviewCard extends BaseCard {
     .stat-grid{margin:0;padding:20px 0;border-top:1px solid var(--qc-line);gap:20px 14px}
     .device-field{gap:9px}.device-field .label{order:-1;font-size:12px}.device-field .value{font-size:15px}
     .mode{margin-top:auto;padding-top:18px;color:var(--qc-secondary);font-size:12px}
+    .flow.partial{grid-template-columns:repeat(var(--count),minmax(0,1fr))}
+    .battery{border-top:1px solid var(--qc-line);padding-top:18px;margin-top:4px}
+    .battery-header{display:flex;align-items:center;gap:10px;margin-bottom:14px}.battery-header .icon{width:23px;height:36px;color:var(--qc-heat)}
+    .battery-status{margin-left:auto;text-align:right;font-size:12px}.battery-status .value{font-size:12px;font-weight:400}
+    h3{font-size:14px;font-weight:600;margin:0}.battery-header .label{font-size:11px}
+    .battery-readings{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.battery-readings .stat{gap:3px}.battery-readings .value{font-size:16px}
+    .charge-track{height:6px;border-radius:3px;background:var(--qc-line);overflow:hidden;margin-top:14px}.charge-fill{height:100%;background:var(--qc-heat);border-radius:inherit}
+    ha-card.custom-fields{min-height:0}
     @container(max-width:350px){.node .value{font-size:16px}.flow{grid-template-columns:1fr 16px 1fr 16px 1fr}.arrow{width:16px}.symbol .icon{width:43px}.circle .icon{width:27px}}
   `];
   protected render() {
-    const m=this.snapshot.system;
-    return html`<ha-card>${this.renderHeader('Overview')}${this.renderNotice()}
-      <div class="flow" aria-label="Heat pump electricity input, COP and heat output">
-        <div class="node"><span class="symbol circle electric">${icon('electric')}</span>${this.value(m.electricPower,'Electric input','value',2)}<span class="label">Electric input</span></div>
-        <svg class="arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M1 12h21m-5-5 5 5-5 5"/></svg>
-        <div class="node"><span class="symbol">${icon('pump')}</span>${this.value(m.cop,'Reported COP')}<span class="label">COP</span></div>
-        <svg class="arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M1 12h21m-5-5 5 5-5 5"/></svg>
-        <div class="node"><span class="symbol circle heat">${icon('heat')}</span>${this.value(m.heatPower,'Heat output','value',2)}<span class="label">Heat output</span></div>
-      </div><div class="stat-grid">${this.deviceField('Room',m.roomTemperature,'home')}${this.deviceField('Target',m.targetTemperature,'thermometer')}${this.deviceField('Outside',m.outdoorTemperature,'sun')}${this.deviceField('Water flow',m.flowRate,'water')}</div>
-      <div class="mode">${this.reading(m.mode)}</div></ha-card>`;
+    const s=this.snapshot,m=s.system;
+    const nodes=[{key:'electricPower' as const,label:'Electric input',symbol:'electric',style:'circle electric',digits:2},{key:'cop' as const,label:'COP',symbol:'pump',style:'',digits:1},{key:'heatPower' as const,label:'Heat output',symbol:'heat',style:'circle heat',digits:2}].filter(n=>this.showField(n.key));
+    const readings: [MetricRole,string,string][]=[['roomTemperature','Room','home'],['targetTemperature','Target','thermometer'],['outdoorTemperature','Outside','sun'],['flowRate','Water flow','water'],['supplyTemperature','Supply','thermometer']];
+    const visible=readings.filter(([key])=>this.showField(key));
+    const b=s.heatBattery,charge=b?.metrics.charge?.value;
+    const batteryFields:[MetricRole,string][]=[['charge','Thermal charge'],['showerMinutes','Shower time'],['status','Status'],['topTemperature','Top'],['middleTemperature','Middle'],['bottomTemperature','Bottom'],['charging','Charging'],['hotWater','Hot-water use']];
+    const selectedBattery=batteryFields.filter(([key])=>this.showField(`heatBattery.${key}`)&&b?.metrics[key]);
+    const chargerFields:[MetricRole,string][]=[['heaterPower','Charger input'],['waterPressure','Water pressure']];
+    const selectedCharger=chargerFields.filter(([key])=>this.showField(`heatCharger.${key}`)&&s.heatCharger?.metrics[key]);
+    return html`<ha-card class=${this.config.fields?'custom-fields':''}>${this.renderHeader('Overview')}${this.renderNotice()}
+      ${nodes.length?html`<div class=${`flow ${nodes.length<3?'partial':''}`} style=${`--count:${nodes.length}`} aria-label="Heat pump measurements">
+        ${nodes.map((n,i)=>html`${i&&nodes.length===3?html`<svg class="arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M1 12h21m-5-5 5 5-5 5"/></svg>`:nothing}<div class="node" data-field=${n.key}><span class=${`symbol ${n.style}`}>${icon(n.symbol)}</span>${this.value(m[n.key],n.key==='cop'?'Reported COP':n.label,'value',n.digits)}<span class="label">${n.label}</span></div>`)}
+      </div>`:nothing}
+      ${visible.length?html`<div class="stat-grid">${visible.map(([key,label,symbol])=>this.deviceField(label,m[key],symbol))}</div>`:nothing}
+      ${b&&(selectedBattery.length||selectedCharger.length)?html`<section class="battery" aria-label="Heat battery"><div class="battery-header">${icon('tank')}<h3>Heat battery</h3>${!b.available?html`<span class="battery-status">Unavailable</span>`:this.showField('heatBattery.status')?html`<span class="battery-status">${this.value(b.metrics.status,'Heat battery status')}</span>`:nothing}</div>
+        ${selectedBattery.some(([key])=>key!=='status')||selectedCharger.length?html`<div class="battery-readings">${selectedBattery.filter(([key])=>key!=='status').map(([key,label])=>this.metric(label,b.metrics[key]))}${selectedCharger.map(([key,label])=>this.metric(label,s.heatCharger?.metrics[key]))}</div>`:nothing}
+        ${this.showField('heatBattery.charge')&&charge!=null?html`<div class="charge-track" role="meter" aria-label="Heat battery charge" aria-valuemin="0" aria-valuemax="100" aria-valuenow=${charge}><div class="charge-fill" style=${`width:${charge}%`}></div></div>`:nothing}
+      </section>`:nothing}
+      ${this.showField('mode')?html`<div class="mode">${this.reading(m.mode)}</div>`:nothing}
+      </ha-card>`;
   }
 }

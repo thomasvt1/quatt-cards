@@ -77,7 +77,7 @@ export class QuattHistoryCard extends BaseCard {
     ] as const;
     return definitions.flatMap(definition => {
       const reading = this.snapshot.system[definition.role];
-      if (!reading?.entityId) return [];
+      if (!reading?.entityId || !this.showField(definition.role)) return [];
       const unit = this.hass.states[reading.entityId]?.attributes.unit_of_measurement;
       return [{ ...definition, entityId: reading.entityId, unit: typeof unit === 'string' ? unit : reading.unit }];
     });
@@ -176,12 +176,12 @@ export class QuattHistoryCard extends BaseCard {
   protected render() {
     const sources = this.series;
     const result = this.history;
-    const hasData = result && sources.some(s=>s.kind!=='mode'&&(result.series[s.entityId]||[]).some(p=>p.value!=null));
+    const hasData = result && sources.some(s=>(result.series[s.entityId]||[]).some(p=>p.value!=null));
     const powers = sources.filter(source => source.kind === 'power'), cops = sources.filter(source => source.kind === 'cop');
     const compact = this.width < 450;
     const powerTop = 25, powerHeight = compact ? 94 : 114;
-    const copTop = powerTop + powerHeight + 38, copHeight = compact ? 43 : 53;
-    const chartBottom = cops.length ? copTop + copHeight : powerTop + powerHeight;
+    const copTop = powers.length ? powerTop + powerHeight + 38 : powerTop, copHeight = compact ? 43 : 53;
+    const chartBottom = cops.length ? copTop + copHeight : powers.length ? powerTop + powerHeight : powerTop;
     const modeSegments=this.modeSegments(),hasMode=modeSegments.length>0;
     const chartHeight = chartBottom + (hasMode?60:30);
     const selected = this.selectedTime ?? result?.end ?? Date.now();
@@ -195,7 +195,7 @@ export class QuattHistoryCard extends BaseCard {
       ${hasData ? html`<div class="chart" tabindex="0" role="slider" aria-label="Inspect heating history. Use left and right arrow keys to move through recorded measurements." aria-valuemin="0" aria-valuemax=${Math.round((result.end - result.start) / 60_000)} aria-valuenow=${Math.round((selected - result.start) / 60_000)} aria-valuetext=${inspected} aria-busy=${this.loading}
         @focus=${() => { this.selectedTime ??= result.end; }} @pointermove=${(event: PointerEvent) => { if (event.pointerType === 'mouse') this.setTime(event); }} @pointerdown=${(event: PointerEvent) => this.setTime(event)} @keydown=${(event: KeyboardEvent) => this.key(event)}>
         <svg viewBox=${`0 0 ${this.width} ${chartHeight}`} aria-hidden="true">
-          ${this.renderPlot(powers, powerTop, powerHeight, 'kW')}
+          ${powers.length ? this.renderPlot(powers, powerTop, powerHeight, 'kW') : nothing}
           ${cops.length ? this.renderPlot(cops, copTop, copHeight, 'COP') : nothing}
           ${Array.from({ length: compact ? 3 : 5 }, (_, i) => i / (compact ? 2 : 4)).map(fraction => {
             const time = result.start + fraction * (result.end - result.start), x = this.x(time);

@@ -1,6 +1,7 @@
 import { LitElement, css, html, nothing, type PropertyValues } from 'lit';
 import { loadRegistry, watchRegistry } from './connection';
 import { buildSnapshot } from './data';
+import { cardFields, fieldVisible } from './fields';
 import type { CardConfig, HomeAssistant, MetricRole, RegistryData } from './types';
 
 type Override = readonly [key: MetricRole, label: string, help?: string];
@@ -131,6 +132,14 @@ export class QuattCardEditor extends LitElement {
   }
 
   private inputValue(event: Event) { return (event.target as HTMLInputElement).value; }
+  private toggleField(key:string,enabled:boolean) {
+    if(!this.config)return;
+    this.emitConfig({...this.config,fields:{...this.config.fields,[key]:enabled}});
+  }
+  private resetFields() {
+    if(!this.config)return;
+    const config={...this.config};delete config.fields;this.emitConfig(config);
+  }
 
   private entityField([key, label, help]: Override) {
     return html`<label class="field" for=${key}>
@@ -205,6 +214,11 @@ export class QuattCardEditor extends LitElement {
           ${[6, 12, 24, 48].map(hours => html`<option value=${hours} .selected=${(config.hours ?? 24) === hours}>Last ${hours} hours</option>`)}
         </select>
       </label>` : nothing}
+      <details><summary>Displayed fields</summary>
+        <p class="help">Choose which readings to show. Missing optional equipment is omitted. Hiding a field does not change the equipment.</p>
+        <div class="field-options">${(cardFields[config.type]||[]).map(field=>html`<label class="field-option"><input type="checkbox" aria-label=${field.label} .checked=${fieldVisible(config,field.key)} @change=${(event:Event)=>this.toggleField(field.key,(event.target as HTMLInputElement).checked)} /><span>${field.label}</span></label>`)}</div>
+        <button class="reset-fields" @click=${()=>this.resetFields()}>Reset displayed fields</button>
+      </details>
       <details><summary>Entity overrides</summary>
         <p class="help">Optional sensor sources. Empty fields restore automatic discovery. ${isDevice ? 'Overrides apply only to the selected device.' : isBattery ? 'Overrides apply to this installation’s thermal heat battery.' : 'Overrides apply to this card’s system readings.'}</p>
         ${isDevice && !config.device
@@ -229,5 +243,11 @@ export class QuattCardEditor extends LitElement {
     details { border-top: 1px solid var(--divider-color, #d4dcd6); padding-top: 8px; }
     details > .field, details > .help { margin-top: 16px; }
     summary { min-height: 44px; display: list-item; align-content: center; cursor: pointer; font-weight: 500; font-size: 14px; }
+    .field-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 12px;margin-top:8px}
+    .field-option{display:flex;align-items:center;gap:10px;min-height:44px;min-width:0;font-size:13px;cursor:pointer}.field-option span{overflow-wrap:anywhere}
+    .field-option input{width:18px;height:18px;min-height:18px;flex:none;padding:0;accent-color:var(--primary-color,#327965)}
+    .reset-fields{font:inherit;font-size:13px;color:var(--primary-text-color,#202523);background:transparent;border:1px solid var(--divider-color,#d4dcd6);border-radius:8px;min-height:44px;padding:8px 12px;margin-top:8px;cursor:pointer}
+    .reset-fields:focus-visible{outline:2px solid var(--primary-color,#327965);outline-offset:2px}
+    @media(max-width:450px){.field-options{grid-template-columns:1fr}}
   `;
 }

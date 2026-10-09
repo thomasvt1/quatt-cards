@@ -73,3 +73,32 @@ test('sensor detail events are read-only; cards share discovery and release subs
 test('picker metadata, editors and layout sizing work before HA assigns state',async({page})=>{
  await open(page);const results=await page.evaluate(names=>names.map(name=>{const tag=`quatt-${name}-card`,ctor=customElements.get(tag) as CustomElementConstructor&{getStubConfig():CardConfig;getConfigElement():HTMLElement};const element=document.createElement(tag) as Card;return {type:ctor.getStubConfig().type,editor:ctor.getConfigElement().tagName,size:element.getCardSize(),grid:element.getGridOptions()};}),names);for(const [i,r] of results.entries()){expect(r.type).toBe(`custom:quatt-${names[i]}-card`);expect(r.editor).toBe('QUATT-CARD-EDITOR');expect(r.size).toBeGreaterThan(0);expect(r.grid).toMatchObject({columns:12,rows:'auto'});}
 });
+
+for(const viewport of [{name:'desktop',width:1440,height:1050},{name:'tablet',width:820,height:1100},{name:'phone',width:390,height:844}])for(const theme of ['light','dark'] as const){
+ test(`${viewport.name} ${theme}: single units fill both sides and readings align`,async({page})=>{
+  await page.setViewportSize(viewport);await open(page);
+  await page.evaluate(theme=>{window.demo.setTheme(theme);window.demo.setScenario('single');},theme);
+  for(const name of ['heat-pump','chill']){
+   const card=page.locator(`quatt-${name}-card`);await expect(card.locator('article')).toHaveCount(1);
+   const fields=await card.locator('.fields>.device-field').evaluateAll(elements=>elements.map(e=>{const r=e.getBoundingClientRect();return {x:r.x,y:r.y,width:r.width};}));
+   expect(Math.abs(fields[0].y-fields[1].y)).toBeLessThan(1);
+   expect(fields[1].x).toBeGreaterThan(fields[0].x+fields[0].width);
+   expect(Math.abs(fields[0].width-fields[1].width)).toBeLessThan(1);
+  }
+  const centers=await page.locator('quatt-heat-battery-card').locator('.temperatures .stat').evaluateAll(elements=>elements.flatMap(e=>{const r=e.getBoundingClientRect();return [...e.children].map(child=>{const c=child.getBoundingClientRect();return Math.abs(c.x+c.width/2-r.x-r.width/2);});}));
+  for(const delta of centers)expect(delta).toBeLessThan(1);
+  const statusAlignment=await page.locator('quatt-status-card').locator('.row').evaluateAll(elements=>elements.map(e=>{const [icon,text]=[...e.children].map(c=>c.getBoundingClientRect());return Math.abs(icon.y+icon.height/2-text.y-text.height/2);}));
+  for(const delta of statusAlignment)expect(delta).toBeLessThan(1);
+  await page.screenshot({path:`.impeccable/review/single-${viewport.name}-${theme}.png`,fullPage:true});
+  // Selecting one unit from a larger installation must use the same layout.
+  await page.evaluate(()=>{window.demo.setScenario('heating');window.demo.setConfig('heat-pump',{device:'demo-hp-1'});window.demo.setConfig('chill',{device:'demo-chill-1'});});
+  for(const layout of ['columns','stacked','compact'] as const){
+   await page.evaluate(layout=>{window.demo.setConfig('heat-pump',{layout});window.demo.setConfig('chill',{layout});},layout);
+   for(const name of ['heat-pump','chill']){
+    const card=page.locator(`quatt-${name}-card`);await expect(card.locator('article')).toHaveCount(1);
+    expect(await card.locator('.fields').evaluate(e=>e.scrollWidth-e.clientWidth)).toBeLessThanOrEqual(1);
+    expect(await card.locator('article').evaluate(e=>e.scrollWidth-e.clientWidth)).toBeLessThanOrEqual(1);
+   }
+  }
+ });
+}

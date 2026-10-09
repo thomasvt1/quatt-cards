@@ -5,7 +5,7 @@ export class QuattStatusCard extends BaseCard {
   static getStubConfig() { return {type:'custom:quatt-status-card'}; }
   static styles=[BaseCard.styles,css`
     ha-card{min-height:410px}
-    .rows{display:grid}.row{display:flex;gap:12px;align-items:flex-start;padding:16px 0;text-align:left;border:0;border-bottom:1px solid var(--qc-line);background:transparent;width:100%;font:inherit;color:inherit}
+    .rows{display:grid}.row{display:flex;gap:12px;align-items:center;padding:16px 0;text-align:left;border:0;border-bottom:1px solid var(--qc-line);background:transparent;width:100%;font:inherit;color:inherit}
     [role=listitem]:last-child .row{border-bottom:0}.row .disc{width:30px;height:30px;background:none;border-radius:0;color:var(--primary-text-color)}.row .disc .icon{width:27px;height:27px;stroke-width:1.3}
     .row .disc.warning{--accent:var(--qc-warning)}.row .disc.error{--accent:var(--qc-error)}.row .disc.neutral{--accent:var(--qc-secondary)}
     .row strong{font-size:13px;font-weight:500;display:block}.row small{display:block;color:var(--qc-secondary);font-size:12px;margin-top:3px;line-height:1.5}

@@ -8,7 +8,7 @@ export class QuattHeatBatteryCard extends BaseCard {
     .tank .icon{width:70px;height:119px;stroke-width:.5}.charge .value{font-size:31px}.charge-title{margin-bottom:7px}
     .meter{height:10px;border-radius:5px;background:var(--qc-line);overflow:hidden}.fill{height:100%;background:var(--qc-heat);border-radius:inherit}
     .shower{font-size:12px;margin-top:10px}.shower .value{font-size:12px;font-weight:400}
-    .temperatures{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;padding:20px 0;border-top:1px solid var(--qc-line)}.temperatures .stat+.stat{border-left:1px solid var(--qc-line);padding-left:10px}
+    .temperatures{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));padding:20px 0;border-top:1px solid var(--qc-line)}.temperatures .stat{align-items:center;text-align:center;padding:0 8px}.temperatures .stat+.stat{border-left:1px solid var(--qc-line)}
     .temperatures .value{font-size:14px}.temperatures .label{font-size:11px}.state-line{margin-top:auto;padding-top:18px;font-size:13px}.state-line .icon{width:22px;height:22px;color:var(--qc-good)}
     .details{margin-top:15px;font-size:12px;color:var(--qc-secondary)}summary{cursor:pointer}.details .stat-grid{margin-top:14px}.details .value{font-size:13px}
     @container(max-width:350px){.charge{grid-template-columns:60px minmax(0,1fr);gap:14px}.tank .icon{width:60px;height:110px}.charge .value{font-size:28px}.shower .value{font-size:12px}}

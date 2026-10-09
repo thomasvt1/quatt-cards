@@ -1,6 +1,6 @@
 import type { HassEntity, HomeAssistant, RegistryData, RegistryEntity } from '../types';
 
-export type DemoScenario = 'heating' | 'idle' | 'cooling' | 'defrost' | 'offline' | 'partial' | 'missing' | 'many';
+export type DemoScenario = 'heating' | 'idle' | 'cooling' | 'defrost' | 'offline' | 'partial' | 'missing' | 'many' | 'single';
 export interface DemoDiagnostics { requests: string[]; services: string[]; activeSubscriptions: number; }
 export interface DemoHass extends HomeAssistant { __demoDiagnostics: DemoDiagnostics; }
 export function createDemo(scenario: DemoScenario | string = 'heating', now = new Date()): { hass: DemoHass; registry: RegistryData } {
@@ -87,6 +87,15 @@ export function createDemo(scenario: DemoScenario | string = 'heating', now = ne
     for (const entity of registry.entities.filter(entity => /:allEStatus.heatBatteryPercentage$|:hb.middleTemperature$|:heatPumps.1.compressorFrequency$/.test(entity.unique_id || ''))) delete states[entity.entity_id];
     const water = registry.entities.find(entity => entity.device_id === 'demo-chill-2' && entity.unique_id?.endsWith('hasWaterTankLevelWarning'));
     if (water) states[water.entity_id].state = 'on';
+  }
+  if (scenario === 'single') {
+    const removed = new Set(['demo-hp-2', 'demo-chill-2']);
+    registry.entities = registry.entities.filter(entity => {
+      const remove = removed.has(entity.device_id || '') || entity.unique_id?.endsWith(':isHp2Connected');
+      if (remove) delete states[entity.entity_id];
+      return !remove;
+    });
+    registry.devices = registry.devices.filter(device => !removed.has(device.id));
   }
   if (scenario === 'missing') { registry.entities = []; registry.devices = []; Object.keys(states).forEach(id => delete states[id]); }
   const hass: DemoHass = {

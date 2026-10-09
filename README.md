@@ -15,13 +15,13 @@ Compact, display-only Home Assistant dashboard cards for the [Quatt integration 
 | Chill | `custom:quatt-chill-card` | All Chill units or one selected unit, with available temperature, fan, and operating information. |
 | System status | `custom:quatt-status-card` | Reported operating state, connectivity, defrost, limits, and available faults. |
 
-All cards have a visual configuration editor, card-picker preview, YAML configuration, and Sections/Masonry sizing. Heat pump and Chill collections support three styles: **C · Columns** by default, **A · Stacked**, and **B · Compact**. Columns uses at most three units per row; further units wrap onto new rows.
+All cards have a visual configuration editor, card-picker preview, YAML configuration, and Sections/Masonry sizing. Heat pump and Chill collections support three styles: **C · Columns** by default, **A · Stacked**, and **B · Compact**. Columns uses at most three units per row; further units wrap onto new rows. A single visible unit uses two reading columns across the card.
 
 Interactions inspect chart readings or open Home Assistant sensor details. Cards do not call services, change temperatures, switch modes, or operate equipment.
 
 ![The six Quatt cards in a light Home Assistant theme, using synthetic readings](docs/screenshots/desktop-light.png)
 
-[Dark theme](docs/screenshots/desktop-dark.png) · [Phone, light theme](docs/screenshots/phone-light.png) · [Phone, dark theme](docs/screenshots/phone-dark.png)
+[Single-unit layout](docs/screenshots/single-desktop-light.png) · [Single unit on phone](docs/screenshots/single-phone-dark.png) · [Dark theme](docs/screenshots/desktop-dark.png) · [Phone, light theme](docs/screenshots/phone-light.png) · [Phone, dark theme](docs/screenshots/phone-dark.png)
 
 ## Requirements
 
@@ -48,14 +48,14 @@ HACS normally registers the module automatically. If your resources are managed 
 
 1. Build the asset with `npm ci` and `npm run build`.
 2. Copy `dist/quatt-cards.js` to `/config/www/quatt-cards.js` on Home Assistant.
-3. Add a dashboard resource with URL `/local/quatt-cards.js?v=0.1.0` and resource type **JavaScript Module**.
+3. Add a dashboard resource with URL `/local/quatt-cards.js?v=0.1.1` and resource type **JavaScript Module**.
 4. Reload the browser. In **Add card**, search for **Quatt**.
 
 For dashboards with YAML-managed resources:
 
 ```yaml
 resources:
-  - url: /local/quatt-cards.js?v=0.1.0
+  - url: /local/quatt-cards.js?v=0.1.1
     type: module
 ```
 

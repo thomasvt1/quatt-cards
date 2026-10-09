@@ -4,7 +4,7 @@ Local checks on 9 October 2026 passed with Node.js 24:
 
 - TypeScript checking and Vite production build.
 - 37 unit tests covering discovery, unit conversion, source priority, status, history normalization and shared registry subscriptions.
-- 14 Chromium browser tests covering all six cards and their editors, light/dark themes, desktop (1440px), tablet (820px), phone (390px), keyboard and touch inspection, live updates during inspection, missing/offline telemetry, read-only sensor details, and wrapping after three units.
+- 20 Chromium browser tests covering all six cards and their editors, light/dark themes, desktop (1440px), tablet (820px), phone (390px), keyboard and touch inspection, live updates during inspection, missing/offline telemetry, read-only sensor details, wrapping after three units, and single-unit installation/selection layouts in all three styles. Geometry assertions also check centered heat-battery temperatures and status icons.
 
 The browser suite renders actual Lit components using synthetic Home Assistant fixtures. It checks card overflow and page errors. Shared requests and subscription cleanup are tested. Screenshots in `docs/screenshots` come from that fixture preview, not a household dashboard.
 

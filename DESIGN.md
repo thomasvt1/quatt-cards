@@ -132,7 +132,7 @@ Large readings are local instrument emphasis, not a general display ramp: overvi
 
 Each host is a block with inline-size containment and zero minimum width. Cards use the shared padding token, shrinking to the section spacing token at viewport widths up to (450px). Headers align title and subtitle on their baselines with a small gap. Shared measurement grids use two equal columns with (14px 16px) gaps; sections are separated by a top rule and (16px) spacing.
 
-The default C layout compares at most three heat pumps or Chill rooms per row, with additional units wrapping. Internal columns use vertical dividers; the first column in each row has no leading divider. Device count determines the column count. Narrow screens do not automatically change C into A or B. Three-column variants hide secondary field icons to protect reading width. A stacks units with horizontal dividers; B uses denser field grids and hides field icons.
+The default C layout compares at most three heat pumps or Chill rooms per row, with additional units wrapping. Internal columns use vertical dividers; the first column in each row has no leading divider. Device count determines the column count. When exactly one device is visible, C uses two reading columns and natural card height. The single Chill summary is centered above its readings. This applies equally to single-device installations and a selected device. Narrow screens do not automatically change C into A or B. Three-column variants hide secondary field icons to protect reading width. A stacks units with horizontal dividers; B uses denser field grids and hides field icons.
 
 Container adjustments are local: overview, HeatBattery and Chill at (350px), heat pumps at (360px), and history at (450px). Do not replace these with a global viewport assumption inside Lovelace dashboards.
 
@@ -168,7 +168,7 @@ Power traces share a panel; COP has its own aligned panel. A single (10px) segme
 
 ### Device field and status row
 
-A small icon leads a value/label pair; standard fields use the label-gap spacing token. Unit columns retain repeated reading order. Status rows use a divider, (16px) vertical padding, a (12px) icon/text gap, a medium-weight title and secondary explanation. Clickable status titles underline on hover.
+A small icon leads a value/label pair; standard fields use the label-gap spacing token. Unit columns retain repeated reading order. Heat-battery temperature cells center their labels and values in three equal columns. Status icons are vertically centered against their title and explanation. Status rows use a divider, (16px) vertical padding, a (12px) icon/text gap, a medium-weight title and secondary explanation. Clickable status titles underline on hover.
 
 ### Thermal charge meter
 

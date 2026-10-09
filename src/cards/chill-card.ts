@@ -17,7 +17,7 @@ export class QuattChillCard extends BaseCard {
     .off .status-badge,.idle .status-badge,.unknown .status-badge{background:var(--qc-secondary)}.offline .status-badge,.warning .status-badge{background:var(--qc-warning)}
     button.unit-icon:disabled{opacity:1}.icon-description{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
     button.unit-icon:hover:not(:disabled){background:var(--qc-subtle)}
-    .temperature .value{font-size:23px}.temperature>.label{display:block;font-size:11px}.fields{display:grid;gap:17px;margin-top:20px}.warning{margin-top:12px;color:var(--qc-warning);font-size:12px}
+    .temperature .value{font-size:23px}.temperature>.label{display:block;font-size:11px}.fields{display:grid;gap:17px;margin-top:20px}p.warning{margin-top:12px;color:var(--qc-warning);font-size:12px}
     .rooms.stacked,.rooms.compact{grid-template-columns:1fr;gap:0}.stacked .room,.compact .room{padding:16px 0;border-left:0;border-top:1px solid var(--qc-line)}.stacked .room:first-child,.compact .room:first-child{padding-top:0;border-top:0}
     .stacked .fields,.compact .fields{grid-template-columns:repeat(2,minmax(0,1fr))}
     .compact .temperature .value{font-size:20px}.compact .device-field>.icon{display:none}.compact .fields{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}

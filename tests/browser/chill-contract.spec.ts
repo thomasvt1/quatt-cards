@@ -37,6 +37,8 @@ test('warning indicator honors display options and decorative mode',async({page}
  await card.evaluate(e=>{const card=e as Card,states={...card.hass.states};for(const [id,s] of Object.entries(states))if(id.includes('demo-chill-uuid-1')&&id.endsWith('_status'))states[id]={...s,state:'Warning not cooling heating system is heating'};card.hass={...card.hass,states};});
  const control=card.getByRole('button',{name:'Control Living room',exact:true});
  await expect(control).toHaveClass(/neutral warning/);
+ await expect(control).toHaveCSS('margin-top','0px');
+ expect(await control.evaluate(e=>getComputedStyle(e).color)).toBe(await card.getByRole('button',{name:'Control Bedroom',exact:true}).evaluate(e=>getComputedStyle(e).color));
  await expect(control.locator('.icon-warning')).toHaveCount(1);
  await page.evaluate(()=>window.demo.setConfig('chill',{fields:{mode:false}}));
  await expect(control.locator('.icon-warning')).toHaveCount(1);

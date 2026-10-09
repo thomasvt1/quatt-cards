@@ -1,29 +1,41 @@
 import type { QuattDevice } from '../types';
 
+const normalize = (value?:string|null) => value?.trim().toLowerCase().replace(/[_\s]+/g, ' ');
+
+/** Connectivity diagnostics override cached readings and native control access. */
+export function chillDisconnected(status?:string|null):boolean {
+  return ['offline','warning disconnected'].includes(normalize(status) || '');
+}
+
 /** Mode is a setting; it never establishes whether the unit is running. */
 export function chillState(device: QuattDevice) {
   const status = device.metrics.status?.text?.trim();
   const mode = device.metrics.mode?.text?.trim();
-  // HA formats raw ON_WORKING as On working; accept both exact forms.
+  // HA formats API enums as sentence case; accept both exact forms.
   // Do not treat every unknown on-prefixed state as confirmed activity.
-  const normalizedStatus = status?.toLowerCase().replace(/[_\s]+/g, ' ');
-  const normalizedMode = mode?.toLowerCase().replace(/[_\s]+/g, ' ');
-  const offline = !device.available || normalizedStatus === 'offline';
+  const normalizedStatus = normalize(status);
+  const normalizedMode = normalize(mode);
+  const offline = !device.available || chillDisconnected(status);
+  const diagnostic = /^(warning|error|fault)(?: |$)/.test(normalizedStatus || '');
   const state = offline ? 'offline'
+    : diagnostic ? 'warning'
     : normalizedStatus === 'off' ? 'off'
+    : normalizedStatus === 'on target temperature reached' ? 'maintaining'
     : ['idle', 'standby', 'on idle', 'on standby'].includes(normalizedStatus || '') ? 'idle'
     : ['on', 'on working', 'running', 'cooling', 'heating'].includes(normalizedStatus || '') ? 'on' : 'unknown';
   const setting = ['cool', 'cooling'].includes(normalizedMode || '') ? 'cooling'
     : ['heat', 'heating'].includes(normalizedMode || '') ? 'heating' : 'neutral';
   const activity = state === 'on' ? normalizedStatus === 'cooling' ? 'cooling' : normalizedStatus === 'heating' ? 'heating' : setting : 'neutral';
+  // Target reached remains enabled in its mode without asserting active output.
+  const indicatorTone = state === 'maintaining' ? setting : activity;
   return {
-    activity,
-    activityIcon: state === 'off' || state === 'idle' ? 'power' : state === 'offline' ? 'warning' : state === 'unknown' ? 'question' : activity === 'cooling' ? 'snow' : activity === 'heating' ? 'heat' : 'tick',
+    activity, indicatorTone,
+    activityIcon: state === 'off' || state === 'idle' ? 'power' : state === 'offline' || state === 'warning' ? 'warning' : state === 'unknown' ? 'question' : indicatorTone === 'cooling' ? 'snow' : indicatorTone === 'heating' ? 'heat' : 'tick',
     state, setting,
-    statusText: offline ? 'Unavailable' : status || 'Status unavailable',
+    statusText: offline && !diagnostic ? 'Unavailable' : status || 'Status unavailable',
     modeText: mode || 'Mode unavailable',
-    statusIcon: state === 'offline' ? 'warning' : state === 'off' ? 'power'
-      : state === 'idle' ? 'power' : state === 'on' ? 'tick' : 'question',
+    statusIcon: state === 'offline' || state === 'warning' ? 'warning' : state === 'off' ? 'power'
+      : state === 'idle' ? 'power' : state === 'on' || state === 'maintaining' ? 'tick' : 'question',
     modeIcon: setting === 'cooling' ? 'snow' : setting === 'heating' ? 'heat' : 'question',
   };
 }

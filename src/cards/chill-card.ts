@@ -14,10 +14,10 @@ export class QuattChillCard extends BaseCard {
     .unit-icon>.icon{width:25px;height:38px;stroke-width:1.3}.unit-icon.off>.icon,.unit-icon.idle>.icon,.unit-icon.unknown>.icon{color:var(--qc-secondary)}
     .icon-badge{position:absolute;display:grid;place-items:center;width:20px;height:20px;border:2px solid var(--ha-card-background,var(--card-background-color,#fff));border-radius:50%;background:var(--ha-card-background,var(--card-background-color,#fff))}
     .icon-badge .icon{width:14px;height:14px;stroke-width:2}.status-badge{right:-5px;bottom:-3px;background:var(--ring-color);color:var(--ha-card-background,var(--card-background-color,#fff))}
-    .off .status-badge,.idle .status-badge,.unknown .status-badge{background:var(--qc-secondary)}.offline .status-badge{background:var(--qc-warning)}
+    .off .status-badge,.idle .status-badge,.unknown .status-badge{background:var(--qc-secondary)}.offline .status-badge,.warning .status-badge{background:var(--qc-warning)}
     button.unit-icon:disabled{opacity:1}.icon-description{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
     button.unit-icon:hover:not(:disabled){background:var(--qc-subtle)}
-    .temperature .value{font-size:23px}.temperature>.label{display:block;font-size:11px}.fields{display:grid;gap:17px;margin-top:20px}.warning{margin-top:12px;color:var(--qc-warning);font-size:12px}
+    .temperature .value{font-size:23px}.temperature>.label{display:block;font-size:11px}.fields{display:grid;gap:17px;margin-top:20px}p.warning{margin-top:12px;color:var(--qc-warning);font-size:12px}
     .rooms.stacked,.rooms.compact{grid-template-columns:1fr;gap:0}.stacked .room,.compact .room{padding:16px 0;border-left:0;border-top:1px solid var(--qc-line)}.stacked .room:first-child,.compact .room:first-child{padding-top:0;border-top:0}
     .stacked .fields,.compact .fields{grid-template-columns:repeat(2,minmax(0,1fr))}
     .compact .temperature .value{font-size:20px}.compact .device-field>.icon{display:none}.compact .fields{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
@@ -29,7 +29,7 @@ export class QuattChillCard extends BaseCard {
   private controlIcon(d:QuattDevice) {
     const state=chillState(d),showStatus=this.showField('status'),showMode=this.showField('mode');
     const description=[showStatus?`Status: ${state.statusText}`:'',showMode?`Mode: ${state.modeText}`:''].filter(Boolean).join(' · ');
-    const tone=showMode?(showStatus?state.activity:state.setting):'neutral';
+    const tone=showMode?(showStatus?state.indicatorTone:state.setting):'neutral';
     const badge=showStatus?(showMode?state.activityIcon:state.statusIcon):state.modeIcon;
     const classes=`unit-icon ${tone} ${showStatus?state.state:''}`;
     const content=html`${icon('chill')}${showStatus||showMode?html`<span class="icon-badge status-badge" aria-hidden="true">${icon(badge)}</span>`:nothing}`;

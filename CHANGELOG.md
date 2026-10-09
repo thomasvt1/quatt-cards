@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.6.3
+
+- Fix Chill showing a question mark when its target temperature is reached. `On target temperature reached` / `ON_TARGET_TEMPERATURE_REACHED` remains enabled and maintaining: keep the blue cooling/red heating badge while retaining the full report in the tooltip and accessible description. Maintaining is distinct from active output; missing mode stays neutral with a tick.
+- Add regressions for cooling/heating reaching their target and resuming, raw API spelling, whitespace/case, and offline precedence. Keep the 81% coverage gates for every card.
+- Audit all documented/observed Chill states. Handle disconnected reports consistently in the ring, control availability and Status card; show explicit warning/error/fault diagnostics with an amber badge and retain their reason.
+- Add a complete known-state adapter/browser matrix and enforce 100% unit coverage of the Chill state interpreter. Document the API's free-form status boundary and safe handling of future unknown reports.
+
 ## 0.6.2
 
 - Add a custom generated blue Q / airflow icon to the GitHub and HACS repository detail page. HACS retains its fixed dashboard-category icon in the repository list.

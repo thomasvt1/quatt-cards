@@ -210,3 +210,8 @@ Displayed fields are native labeled checkboxes, with 44px rows, two columns in w
 ### Minimal overview storage (v0.4.0)
 
 The optional Minimal heat-battery layout appends selected storage/charger readings to the existing two-column comfort grid. It uses the same icon size, label placement, value size, and gaps. No separate storage heading, divider, or charge meter is rendered. Clear labels distinguish tank temperatures and battery status. Detailed remains the default; both layouts share field visibility.
+
+
+### Overview heat-battery status (v0.4.3)
+
+The detailed battery header uses a 9px status dot in a 44px-wide sensor-detail target. Green means reported On, red means reported Off, and gray preserves unavailable or other states without assigning them a binary meaning. The exact state remains in the tooltip and accessible label. The existing status field controls visibility.

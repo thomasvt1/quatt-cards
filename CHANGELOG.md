@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.3
+
+- Replace the Detailed Overview heat-battery On/Off text with a small green/red status dot.
+- Keep other or unavailable states neutral gray, with the reported state in a tooltip and accessible label.
+- Preserve sensor-detail access and the configurable status field.
+
 ## 0.4.2
 
 - Hide heat pump Operating status by default because it is not reported by every installation.

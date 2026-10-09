@@ -48,14 +48,14 @@ HACS normally registers the module automatically. If your resources are managed 
 
 1. Build the asset with `npm ci` and `npm run build`.
 2. Copy `dist/quatt-cards.js` to `/config/www/quatt-cards.js` on Home Assistant.
-3. Add a dashboard resource with URL `/local/quatt-cards.js?v=0.4.2` and resource type **JavaScript Module**.
+3. Add a dashboard resource with URL `/local/quatt-cards.js?v=0.4.3` and resource type **JavaScript Module**.
 4. Reload the browser. In **Add card**, search for **Quatt**.
 
 For dashboards with YAML-managed resources:
 
 ```yaml
 resources:
-  - url: /local/quatt-cards.js?v=0.4.2
+  - url: /local/quatt-cards.js?v=0.4.3
     type: module
 ```
 
@@ -165,7 +165,7 @@ Controls are discovered from each device’s enabled Quatt climate entity, indep
 
 Open the card editor and expand **Displayed fields** to show or hide readings, history series, or status categories. **Reset displayed fields** restores that card’s defaults and preserves other settings. Selection applies to every visible device in a collection card. Hidden readings do not leave empty columns. Field selection affects presentation only; it does not change hardware or entity settings.
 
-Overview includes a heat-battery summary when that equipment is discovered: thermal charge with a progress bar, shower time, and operating status. Tank temperatures, charging/hot-water indicators, charger input, and water pressure can be enabled separately. Missing charge never becomes a fabricated percentage.
+Overview includes a heat-battery summary when that equipment is discovered: thermal charge with a progress bar, shower time, and operating status. In the Detailed layout, its header status is a small dot: green for On, red for Off, and gray for unavailable or other states. Hover or inspect the accessible label for the reported status; selecting the dot opens sensor details. The Heat battery · status field controls its visibility. Tank temperatures, charging/hot-water indicators, charger input, and water pressure can be enabled separately. Missing charge never becomes a fabricated percentage.
 
 ```yaml
 type: custom:quatt-overview-card

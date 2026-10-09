@@ -197,9 +197,9 @@ The configuration editor uses native inputs and selects with theme surface/text,
 
 Not canonized: the demo wordmark's system-font display styling is preview scaffolding, not a card display-font rule; unresolved reproduction drift and unpassed validation gates are not evidence of a reusable design decision.
 
-### Chill control access (v0.5.0)
+### Chill control access (v0.5.1)
 
-Each unit has a centered 60px circular equipment-icon control above its temperature, with a 2.5px mode ring. Cooling uses bright blue (#00a9ed), heating uses red (#e34d59); both have dedicated theme overrides. A 20px mode-symbol badge sits at the upper left and a 20px status badge at the lower right. The equipment outline is 25px by 38px. Off/idle/unknown mute the equipment outline while the ring continues to show the selected mode; unavailable units use neutral colour and a warning. The 14px badge symbols distinguish modes and states without relying on colour. Status and Mode text rows are removed. Displayed fields controls these indicators. Native controls, tooltip explanations and accessible state descriptions remain available; display-only mode retains the indicators. There is no animation or separate controls footer.
+Each unit has a centered 60px circular equipment-icon control above its temperature, with a 2.5px ring and exactly one 20px badge at the lower right. The badge and ring combine status and mode: gray power for off/idle, bright blue (#00a9ed) snowflake for cooling, red (#e34d59) heat waves for heating. The two mode colours have dedicated theme overrides. Unavailable uses a neutral warning, unknown status uses a question mark. The equipment outline is 25px by 38px; badge symbols are 14px. Status and Mode text rows are removed. Displayed fields controls which information feeds the combined indicator. Native controls, tooltip explanations and accessible state descriptions remain available; display-only mode retains the indicator. There is no animation or separate controls footer.
 
 ### Overview storage and field selection (v0.3.0)
 

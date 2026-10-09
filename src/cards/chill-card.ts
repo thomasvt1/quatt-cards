@@ -13,7 +13,7 @@ export class QuattChillCard extends BaseCard {
     .unit-icon.cooling{--ring-color:var(--quatt-chill-cooling-color,#00a9ed)}.unit-icon.heating{--ring-color:var(--quatt-chill-heating-color,#e34d59)}
     .unit-icon>.icon{width:25px;height:38px;stroke-width:1.3}.unit-icon.off>.icon,.unit-icon.idle>.icon,.unit-icon.unknown>.icon{color:var(--qc-secondary)}
     .icon-badge{position:absolute;display:grid;place-items:center;width:20px;height:20px;border:2px solid var(--ha-card-background,var(--card-background-color,#fff));border-radius:50%;background:var(--ha-card-background,var(--card-background-color,#fff))}
-    .icon-badge .icon{width:14px;height:14px;stroke-width:2}.mode-badge{left:-5px;top:-3px}.status-badge{right:-5px;bottom:-3px;background:var(--ring-color);color:var(--ha-card-background,var(--card-background-color,#fff))}
+    .icon-badge .icon{width:14px;height:14px;stroke-width:2}.status-badge{right:-5px;bottom:-3px;background:var(--ring-color);color:var(--ha-card-background,var(--card-background-color,#fff))}
     .off .status-badge,.idle .status-badge,.unknown .status-badge{background:var(--qc-secondary)}.offline .status-badge{background:var(--qc-warning)}
     button.unit-icon:disabled{opacity:1}.icon-description{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
     button.unit-icon:hover:not(:disabled){background:var(--qc-subtle)}
@@ -29,8 +29,10 @@ export class QuattChillCard extends BaseCard {
   private controlIcon(d:QuattDevice) {
     const state=chillState(d),showStatus=this.showField('status'),showMode=this.showField('mode');
     const description=[showStatus?`Status: ${state.statusText}`:'',showMode?`Mode: ${state.modeText}`:''].filter(Boolean).join(' · ');
-    const classes=`unit-icon ${showMode&&state.state!=='offline'?state.setting:'neutral'} ${showStatus?state.state:''}`;
-    const content=html`${icon('chill')}${showMode?html`<span class="icon-badge mode-badge" aria-hidden="true">${icon(state.modeIcon)}</span>`:nothing}${showStatus?html`<span class="icon-badge status-badge" aria-hidden="true">${icon(state.statusIcon)}</span>`:nothing}`;
+    const tone=showMode?(showStatus?state.activity:state.setting):'neutral';
+    const badge=showStatus?(showMode?state.activityIcon:state.statusIcon):state.modeIcon;
+    const classes=`unit-icon ${tone} ${showStatus?state.state:''}`;
+    const content=html`${icon('chill')}${showStatus||showMode?html`<span class="icon-badge status-badge" aria-hidden="true">${icon(badge)}</span>`:nothing}`;
     if(this.config.show_controls===false)return html`<span class=${classes} role="img" aria-label=${`${d.name}${description?`: ${description}`:''}`} title=${description}>${content}</span>`;
     const entity=d.climateEntityId&&this.hass.states[d.climateEntityId];
     const available=d.available&&entity&&!['unknown','unavailable'].includes(entity.state);

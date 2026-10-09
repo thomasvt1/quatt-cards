@@ -9,9 +9,10 @@ function device(status?:string,mode?:string,available=true):QuattDevice {
 }
 describe('Chill icon state',()=>{
   it('keeps selected cooling/heating separate from off and standby status',()=>{
-    expect(chillState(device('Off','Cooling'))).toMatchObject({state:'off',setting:'cooling',statusIcon:'power',modeIcon:'snow'});
-    expect(chillState(device('Standby','Heating'))).toMatchObject({state:'idle',setting:'heating',statusIcon:'clock',modeIcon:'heat'});
-    expect(chillState(device('On','Heating'))).toMatchObject({state:'on',setting:'heating',statusIcon:'tick'});
+    expect(chillState(device('Off','Cooling'))).toMatchObject({state:'off',setting:'cooling',activity:'neutral',activityIcon:'power',statusIcon:'power',modeIcon:'snow'});
+    expect(chillState(device('Standby','Heating'))).toMatchObject({state:'idle',setting:'heating',statusIcon:'power',modeIcon:'heat'});
+    expect(chillState(device('Cooling','Heating'))).toMatchObject({activity:'cooling',activityIcon:'snow'});
+    expect(chillState(device('On','Heating'))).toMatchObject({state:'on',setting:'heating',activity:'heating',activityIcon:'heat',statusIcon:'tick'});
   });
   it('never fabricates an active status or a mode from missing or unfamiliar reports',()=>{
     expect(chillState(device(undefined,'Cooling'))).toMatchObject({state:'unknown',setting:'cooling',statusIcon:'question'});

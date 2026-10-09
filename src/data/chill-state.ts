@@ -13,12 +13,15 @@ export function chillState(device: QuattDevice) {
     : ['on', 'running', 'cooling', 'heating'].includes(normalizedStatus || '') ? 'on' : 'unknown';
   const setting = ['cool', 'cooling'].includes(normalizedMode || '') ? 'cooling'
     : ['heat', 'heating'].includes(normalizedMode || '') ? 'heating' : 'neutral';
+  const activity = state === 'on' ? normalizedStatus === 'cooling' ? 'cooling' : normalizedStatus === 'heating' ? 'heating' : setting : 'neutral';
   return {
+    activity,
+    activityIcon: state === 'off' || state === 'idle' ? 'power' : state === 'offline' ? 'warning' : state === 'unknown' ? 'question' : activity === 'cooling' ? 'snow' : activity === 'heating' ? 'heat' : 'tick',
     state, setting,
     statusText: offline ? 'Unavailable' : status || 'Status unavailable',
     modeText: mode || 'Mode unavailable',
     statusIcon: state === 'offline' ? 'warning' : state === 'off' ? 'power'
-      : state === 'idle' ? 'clock' : state === 'on' ? 'tick' : 'question',
+      : state === 'idle' ? 'power' : state === 'on' ? 'tick' : 'question',
     modeIcon: setting === 'cooling' ? 'snow' : setting === 'heating' ? 'heat' : 'question',
   };
 }

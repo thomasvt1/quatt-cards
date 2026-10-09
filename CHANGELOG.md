@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.1
+
+- Simplify the Chill ring to one combined badge instead of separate mode and status badges.
+- Off/idle uses gray with a power symbol, cooling uses bright blue with a snowflake, and heating uses red with heat waves.
+- Keep unavailable/unknown states distinct and retain reported status and selected mode in accessible descriptions.
+
 ## 0.5.0
 
 - Integrate Chill status and mode into the clickable device ring, replacing both text rows.

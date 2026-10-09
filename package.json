@@ -10,7 +10,8 @@
     "build": "tsc --noEmit && vite build",
     "test": "vitest run",
     "test:browser": "playwright test",
-    "test:coverage": "node scripts/coverage.mjs"
+    "test:coverage": "node scripts/coverage.mjs",
+    "update:examples": "node scripts/update-examples.mjs"
   },
   "dependencies": {
     "lit": "^3.3.3"

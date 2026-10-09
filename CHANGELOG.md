@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.6.2
+
+- Add a custom generated blue Q / airflow icon to the GitHub and HACS repository detail page. HACS retains its fixed dashboard-category icon in the repository list.
+- No card behavior changes.
+
 ## 0.6.1
 
 - Fix Chill showing a question mark for the live “On working” status. Cooling now shows the blue snowflake; heating shows red heat waves. Normalize raw API underscores, case and whitespace without treating unknown states as active.

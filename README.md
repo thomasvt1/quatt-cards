@@ -53,14 +53,14 @@ HACS normally registers the module automatically. If your resources are managed 
 
 1. Build the asset with `npm ci` and `npm run build`.
 2. Copy `dist/quatt-cards.js` to `/config/www/quatt-cards.js` on Home Assistant.
-3. Add a dashboard resource with URL `/local/quatt-cards.js?v=0.6.1` and resource type **JavaScript Module**.
+3. Add a dashboard resource with URL `/local/quatt-cards.js?v=0.6.2` and resource type **JavaScript Module**.
 4. Reload the browser. In **Add card**, search for **Quatt**.
 
 For dashboards with YAML-managed resources:
 
 ```yaml
 resources:
-  - url: /local/quatt-cards.js?v=0.6.1
+  - url: /local/quatt-cards.js?v=0.6.2
     type: module
 ```
 

@@ -17,7 +17,13 @@ export function chillState(device: QuattDevice) {
   const normalizedMode = normalize(mode);
   const offline = !device.available || chillDisconnected(status);
   const diagnostic = /^(warning|error|fault)(?: |$)/.test(normalizedStatus || '');
+  // This mode conflict can persist while switched off. Prefer the explicit
+  // power sensor, falling back to the device's climate state if it is absent.
+  const power = device.metrics.power?.value;
+  const inactiveConflict = normalizedStatus === 'warning not cooling heating system is heating'
+    && (power === 0 || power == null && normalize(device.climateState) === 'off');
   const state = offline ? 'offline'
+    : inactiveConflict ? 'off'
     : diagnostic ? 'warning'
     : normalizedStatus === 'off' ? 'off'
     : normalizedStatus === 'on target temperature reached' ? 'maintaining'
@@ -32,7 +38,7 @@ export function chillState(device: QuattDevice) {
     activity, indicatorTone,
     activityIcon: state === 'off' || state === 'idle' ? 'power' : state === 'offline' || state === 'warning' ? 'warning' : state === 'unknown' ? 'question' : indicatorTone === 'cooling' ? 'snow' : indicatorTone === 'heating' ? 'heat' : 'tick',
     state, setting,
-    statusText: offline && !diagnostic ? 'Unavailable' : status || 'Status unavailable',
+    statusText: offline && !diagnostic ? 'Unavailable' : inactiveConflict && !offline ? 'Off' : status || 'Status unavailable',
     modeText: mode || 'Mode unavailable',
     statusIcon: state === 'offline' || state === 'warning' ? 'warning' : state === 'off' ? 'power'
       : state === 'idle' ? 'power' : state === 'on' || state === 'maintaining' ? 'tick' : 'question',

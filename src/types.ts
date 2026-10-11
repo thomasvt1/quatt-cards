@@ -36,11 +36,11 @@ export type MetricRole = 'heatPower' | 'electricPower' | 'cop' | 'roomTemperatur
   'compressorSpeed' | 'fanSpeed' | 'charge' | 'showerMinutes' | 'topTemperature' |
   'middleTemperature' | 'bottomTemperature' | 'waterPressure' | 'heaterPower' |
   'fanMode' | 'mode' | 'status' | 'connected' | 'defrost' | 'limited' | 'silent' |
-  'fault' | 'charging' | 'hotWater' | 'waterWarning' | 'boost';
+  'fault' | 'charging' | 'hotWater' | 'waterWarning' | 'boost' | 'power';
 export interface Reading { value: number | null; text: string | null; unit: string; entityId?: string; }
 export type Metrics = Partial<Record<MetricRole, Reading>>;
 export type DeviceKind = 'system' | 'thermostat' | 'heat-pump' | 'heat-battery' | 'heat-charger' | 'chill';
-export interface QuattDevice { position?: number; id: string; name: string; kind: DeviceKind; available: boolean; metrics: Metrics; climateEntityId?: string; }
+export interface QuattDevice { position?: number; id: string; name: string; kind: DeviceKind; available: boolean; metrics: Metrics; climateEntityId?: string; climateState?: string; }
 export interface StatusRow { key: string; title: string; detail?: string; tone: Tone; icon: string; entityId?: string; }
 export interface Snapshot {
   error?: string; warnings: string[]; installationId?: string; installations: { id: string; name: string }[];

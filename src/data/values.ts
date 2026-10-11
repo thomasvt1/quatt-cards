@@ -2,7 +2,7 @@ import type { HassEntity, MetricRole, Reading } from '../types';
 
 const power = new Set<MetricRole>(['heatPower', 'electricPower', 'heaterPower']);
 const temperature = new Set<MetricRole>(['roomTemperature', 'targetTemperature', 'outdoorTemperature', 'supplyTemperature', 'returnTemperature', 'topTemperature', 'middleTemperature', 'bottomTemperature']);
-const flags = new Set<MetricRole>(['connected', 'defrost', 'limited', 'silent', 'fault', 'charging', 'hotWater', 'waterWarning']);
+const flags = new Set<MetricRole>(['connected', 'defrost', 'limited', 'silent', 'fault', 'charging', 'hotWater', 'waterWarning', 'power']);
 const textRoles = new Set<MetricRole>(['mode', 'status', 'fanMode', 'boost']);
 export function missing(entityId?: string, unit = ''): Reading { return { value: null, text: null, unit, entityId }; }
 export function present(state: HassEntity | undefined): boolean {

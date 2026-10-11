@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.6.4
+
+- Hide the heating-system conflict warning when a Chill unit is off. Use its power sensor, with the climate Off state as a fallback, and show the gray power badge instead. Apply the same rule to the Status card.
+- Preserve disconnected, fault, other warning, and water-tank alerts. Add power-state and live-update regressions.
+
 ## 0.6.3
 
 - Fix Chill showing a question mark when its target temperature is reached. `On target temperature reached` / `ON_TARGET_TEMPERATURE_REACHED` remains enabled and maintaining: keep the blue cooling/red heating badge while retaining the full report in the tooltip and accessible description. Maintaining is distinct from active output; missing mode stays neutral with a tick.

@@ -39,7 +39,7 @@ const hpRoles: Record<string, MetricRole> = {
 const hpRemote: Record<string, MetricRole> = { electricalPower: 'electricPower', compressorFrequency: 'compressorSpeed', status: 'status' };
 const chillRoles: Record<string, MetricRole> = {
   ambientTemperature: 'roomTemperature', status: 'status', mode: 'mode', fanMode: 'fanMode',
-  hasWaterTankLevelWarning: 'waterWarning',
+  hasWaterTankLevelWarning: 'waterWarning', 'isOn.value': 'power',
 };
 function identity(entity: RegistryEntity): { key: string; device: string; hub: string } | undefined {
   const uid = entity.unique_id || '';

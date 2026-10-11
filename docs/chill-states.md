@@ -23,19 +23,20 @@ Both raw API spelling and sentence-case HA spelling are supported, with case/whi
 | `ON_WORKING` | Active; uses reported mode | Blue/red; neutral tick if mode missing | Observed API report |
 | `ON_TARGET_TEMPERATURE_REACHED` | Enabled, maintaining; no active output inferred | Selected blue cooling/red heating; neutral tick if mode missing | Observed API report; maintaining presentation clarified in user review |
 | `WARNING_DISCONNECTED` | Unavailable | Warning; controls disabled | Upstream discussion |
-| `WARNING_NOT_COOLING_HEATING_SYSTEM_IS_HEATING` | Warning; no activity inferred | Neutral ring, amber warning | Upstream discussion and observed report |
+| `WARNING_NOT_COOLING_HEATING_SYSTEM_IS_HEATING` | Warning while enabled; Off when power is off | Neutral ring, amber warning while enabled; gray power when off | Upstream discussion and observed report |
 
 Existing compatibility aliases: `ON` and `RUNNING` use the selected mode while active; `IDLE`, `STANDBY`, `ON_IDLE` and `ON_STANDBY` use gray power. These aliases are not claims of additional observed API states.
 
 ## Precedence and fallbacks
 
 1. Missing device telemetry or an explicit disconnected/offline report overrides cached active readings. Disconnection disables the native-control launcher and is reflected in Status.
-2. Explicit `WARNING`, `ERROR` and `FAULT` diagnostic families use an amber warning badge and preserve the reason. Only exact disconnected reports imply lost connectivity. Diagnostic text mentioning cooling/heating does not make the unit active.
-3. Target reached remains enabled and maintaining: retain the selected mode's ring/badge without declaring active output. Off and other idle/standby reports override the selected mode. Explicit Cooling/Heating status overrides a conflicting selected mode.
-4. Working/On/Running uses Cooling/Heating (or Cool/Heat); absent/unknown mode stays neutral with a tick.
-5. Missing HA values (`unknown`, `unavailable`, `none`, `null`, empty) and unfamiliar operating reports remain unknown. New `ON_*` values are not blindly treated as working.
+2. The exact `WARNING_NOT_COOLING_HEATING_SYSTEM_IS_HEATING` diagnostic is suppressed when the device-scoped `chills.isOn.value` power sensor reports Off. When power is missing or unknown, the uniquely discovered climate entity reporting Off is sufficient. Explicit power On takes precedence over a cached climate Off. The Chill badge and accessible status show Off, and the Status card omits this warning; the source status reading is unchanged. Other warnings, faults, water-tank alerts and disconnection remain visible.
+3. Explicit `WARNING`, `ERROR` and `FAULT` diagnostic families use an amber warning badge and preserve the reason. Only exact disconnected reports imply lost connectivity. Diagnostic text mentioning cooling/heating does not make the unit active.
+4. Target reached remains enabled and maintaining: retain the selected mode's ring/badge without declaring active output. Off and other idle/standby reports override the selected mode. Explicit Cooling/Heating status overrides a conflicting selected mode.
+5. Working/On/Running uses Cooling/Heating (or Cool/Heat); absent/unknown mode stays neutral with a tick.
+6. Missing HA values (`unknown`, `unavailable`, `none`, `null`, empty) and unfamiliar operating reports remain unknown. New `ON_*` values are not blindly treated as working.
 
-Status and mode field toggles retain their established behavior: mode-only displays the selected mode; status-only displays a neutral status badge; both hidden removes the badge. The reported diagnostic stays in accessible descriptions and tooltips whenever status is shown.
+Status and mode field toggles retain their established behavior: mode-only displays the selected mode; status-only displays a neutral status badge; both hidden removes the badge. Unsuppressed diagnostics stay in accessible descriptions and tooltips whenever status is shown.
 
 ## Regression gates
 

@@ -8,6 +8,8 @@ Compact Home Assistant dashboard cards for the [Quatt integration by marcoboers]
 
 [![CI](https://github.com/thomasvt1/quatt-cards/actions/workflows/ci.yml/badge.svg)](https://github.com/thomasvt1/quatt-cards/actions/workflows/ci.yml) [![Release](https://img.shields.io/github/v/release/thomasvt1/quatt-cards)](https://github.com/thomasvt1/quatt-cards/releases/latest)
 
+[![Add to HACS](https://img.shields.io/badge/Add%20to-HACS-41BDF5?style=for-the-badge&logo=homeassistant&logoColor=white)](https://my.home-assistant.io/redirect/hacs_repository/?owner=thomasvt1&repository=quatt-cards&category=plugin)
+
 ## Cards
 
 | Card | Custom element | Content |

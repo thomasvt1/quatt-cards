@@ -70,7 +70,8 @@ export function buildSnapshot(hass: HomeAssistant, registry: RegistryData, confi
       // A reading override must never retarget a control to another room.
       const climates = candidates.filter(source => source.deviceId === id && source.kind === 'chill' && source.entity.entity_id.startsWith('climate.'));
       const climateEntityId = climates.length === 1 ? climates[0].entity.entity_id : undefined;
-      return { id, position: kind === 'heat-pump' ? pumpPosition(candidates.filter(source => source.deviceId === id).map(source => source.key)) : undefined, name: registryDevice?.name_by_user || registryDevice?.name || kind.replaceAll('-', ' '), kind, available: Object.values(metrics).some(meaningful) && metrics.connected?.value !== 0 && metrics.status?.text?.toLowerCase() !== 'offline', metrics, climateEntityId };
+      const climateState = climateEntityId ? hass.states[climateEntityId]?.state : undefined;
+      return { id, position: kind === 'heat-pump' ? pumpPosition(candidates.filter(source => source.deviceId === id).map(source => source.key)) : undefined, name: registryDevice?.name_by_user || registryDevice?.name || kind.replaceAll('-', ' '), kind, available: Object.values(metrics).some(meaningful) && metrics.connected?.value !== 0 && metrics.status?.text?.toLowerCase() !== 'offline', metrics, climateEntityId, climateState };
     });
   }
   snapshot.heatPumps = devices('heat-pump'); snapshot.chills = devices('chill');

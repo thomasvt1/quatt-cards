@@ -1,4 +1,5 @@
 import type { Metrics, QuattDevice, Snapshot, StatusRow } from '../types';
+import { chillState } from './chill-state';
 
 const hasText = (metrics: Metrics, key: keyof Metrics) => metrics[key]?.text;
 export function buildStatus(snapshot: Snapshot): StatusRow[] {
@@ -16,7 +17,7 @@ export function buildStatus(snapshot: Snapshot): StatusRow[] {
   if (system.silent?.value === 1) rows.push({ key: 'silent-system', title: 'Silent mode active', detail: 'Quatt reports a system sound limit.', tone: 'neutral', icon: 'mdi:volume-low', entityId: system.silent.entityId });
   const check = (device: QuattDevice) => {
     const m = device.metrics, prefix = device.name;
-    const chillWarning = device.kind === 'chill' && /^warning(?:\b|_)/i.test(m.status?.text || '');
+    const chillWarning = device.kind === 'chill' && /^warning(?:\b|_)/i.test(m.status?.text || '') && chillState(device).state !== 'off';
     if (!device.available) rows.push({ key: `${device.id}-offline`, title: `${prefix} unavailable`, detail: chillWarning ? m.status?.text || undefined : m.status?.text?.toLowerCase() === 'offline' ? 'Quatt reports that this device is offline.' : 'No available telemetry or connection is reported for this device.', tone: 'warning', icon: 'mdi:lan-disconnect', entityId: m.connected?.entityId || m.status?.entityId });
     else if (chillWarning) rows.push({key:`${device.id}-warning`,title:`${prefix} reports a warning`,detail:m.status?.text || undefined,tone:'warning',icon:'warning',entityId:m.status?.entityId});
     if (m.defrost?.value === 1) rows.push({ key: `${device.id}-defrost`, title: `${prefix} is defrosting`, detail: 'Heating output may temporarily fall during defrost.', tone: 'neutral', icon: 'mdi:snowflake-melt', entityId: m.defrost.entityId });

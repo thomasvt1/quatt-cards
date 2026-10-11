@@ -8,7 +8,7 @@ Compact Home Assistant dashboard cards for the [Quatt integration by marcoboers]
 
 [![CI](https://github.com/thomasvt1/quatt-cards/actions/workflows/ci.yml/badge.svg)](https://github.com/thomasvt1/quatt-cards/actions/workflows/ci.yml) [![Release](https://img.shields.io/github/v/release/thomasvt1/quatt-cards)](https://github.com/thomasvt1/quatt-cards/releases/latest)
 
-[![Add to HACS](docs/brand/add-to-hacs.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=thomasvt1&repository=quatt-cards&category=plugin)
+[![Add to HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=thomasvt1&repository=quatt-cards&category=plugin)
 
 ## Cards
 
@@ -65,6 +65,8 @@ Discovery is based on the integration registry and upstream stable identifiers r
 The data adapter targets the upstream entity contract at [commit ac6d26ab5ee8083e9cacf2391b5cfa0ae98fa4cf](https://github.com/marcoboers/home-assistant-quatt/tree/ac6d26ab5ee8083e9cacf2391b5cfa0ae98fa4cf). Available fields depend on equipment, integration configuration, local/remote access, and enabled entities. Remote-only metrics can be absent in a local-only installation. Missing optional devices and readings are omitted or marked unavailable.
 
 ## Install through HACS
+
+Use the **Add to HACS** button above to open this repository in your Home Assistant instance, or add it manually:
 
 1. Open **HACS → Custom repositories**.
 2. Add `https://github.com/thomasvt1/quatt-cards` with type **Dashboard**.

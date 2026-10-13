@@ -66,6 +66,7 @@ export function icon(name: string) {
     tick: svg`<path d="m5 12 4 4L19 6"/>`,
     question: svg`<path d="M8 8a4 4 0 1 1 7 2.7c-2 1.3-3 1.8-3 4M12 19v.1"/>`,
     controls: svg`<path d="M4 7h4m4 0h8M4 17h8m4 0h4"/><circle cx="10" cy="7" r="2"/><circle cx="14" cy="17" r="2"/>`,
+    'heat-charger': svg`<path fill="currentColor" stroke="none" d=${equipmentPaths['heat-charger-outline']}/>`,
     'pump-duo': svg`<path fill="currentColor" stroke="none" d=${equipmentPaths['quatt-duo-outline']}/>`,
     pump: svg`<rect x="1.5" y="4.5" width="21" height="15" rx="1.4"/><path d="M3.5 7h5c4 0 4-1 8-1h4M3.5 9h5c4 0 4-1 8-1h4M3.5 11h5c4 0 4-1 8-1h4M3.5 13h5c4 0 4-1 8-1h4M3.5 15h5c4 0 4-1 8-1h4M2 18h6c4 0 4-2 8-2h6M4 20h2m12 0h2"/>`,
     chill: svg`<ellipse cx="12" cy="3.5" rx="5.5" ry="1.8"/><path d="M6.5 3.5v16.7c0 2.4 11 2.4 11 0V3.5M6.5 11.5c2 1.4 9 1.4 11 0M9 6v4m3-3.5V11m3-5v4"/>`,

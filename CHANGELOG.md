@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.7.1
+
+- Build the standalone icon bundle in memory during its browser test, so browser and coverage tests work without a production build and cannot use stale `dist/` output.
+
+- Add `quatt:heat-battery-boost` and `quatt:heat-charger-boost` with double upward chevrons. Include both in the card bundle, standalone icon bundle, icon picker, SVG downloads, and theme previews.
+
 ## 0.7.0
 
 - Include four searchable Home Assistant outline icons: `quatt:quatt-outline`, `quatt:chill-outline`, `quatt:heat-battery-outline`, and `quatt:heat-charger-outline`.

@@ -1,8 +1,8 @@
-# Quatt equipment outline icons
+# Quatt equipment icons
 
 These original project vectors use a 24 × 24 viewBox. The heat-pump, Chill, and heat-battery shapes come from `src/ui.ts`; the Heat Charger outline depicts the rounded housing and curved front panel shown in [Quatt's All-Electric product imagery](https://www.quatt.io/all-electric). No artwork from hass-hue-icons is copied. That project provided the Home Assistant registration reference.
 
-Files under `source/` are editable stroke-based SVGs. The SVGs in this directory and `src/icons/paths.json` are generated filled paths: Home Assistant's custom icon API accepts path geometry, not arbitrary SVG stroke styling. They render outlines without requiring CSS strokes or external images.
+Files under `source/` are editable SVGs. Outline sources use strokes. Solid sources use a filled housing followed by one stroked detail path and `data-operation="difference"`; the generator subtracts those details to create transparent cutouts. The SVGs in this directory and `src/icons/paths.json` are generated filled paths: Home Assistant's custom icon API accepts path geometry, not arbitrary SVG stroke styling. They render outlines without requiring CSS strokes or external images.
 
 To regenerate after editing a source, install Inkscape 1.2+ and Python 3, then run:
 

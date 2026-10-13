@@ -81,14 +81,14 @@ HACS normally registers the module automatically. If your resources are managed 
 
 1. Build the asset with `npm ci` and `npm run build`.
 2. Copy `dist/quatt-cards.js` to `/config/www/quatt-cards.js` on Home Assistant.
-3. Add a dashboard resource with URL `/local/quatt-cards.js?v=0.7.1` and resource type **JavaScript Module**.
+3. Add a dashboard resource with URL `/local/quatt-cards.js?v=0.8.0` and resource type **JavaScript Module**.
 4. Reload the browser. In **Add card**, search for **Quatt**.
 
 For dashboards with YAML-managed resources:
 
 ```yaml
 resources:
-  - url: /local/quatt-cards.js?v=0.7.1
+  - url: /local/quatt-cards.js?v=0.8.0
     type: module
 ```
 
@@ -102,30 +102,32 @@ Avoid loading both a manual `/local/` resource and a HACS resource for the same 
 
 ## Quatt icons for Home Assistant
 
-Quatt Cards includes six outline icons for use in standard Home Assistant cards, entity customization, and the icon picker. They inherit the icon color from Home Assistant, including theme and state colors.
+Quatt Cards includes twelve equipment icons in outline and solid styles for use in standard Home Assistant cards, entity customization, and the icon picker. They inherit the icon color from Home Assistant, including theme and state colors.
 
-![Quatt outline icons in light and dark themes](docs/quatt-icons-preview.png)
+![Quatt outline and solid icons in light and dark themes](docs/quatt-icons-preview.png)
 
-| Equipment | Icon name | SVG |
+| Equipment | Outline icon | Solid icon |
 | --- | --- | --- |
-| Quatt heat pump | `quatt:quatt-outline` | [Download](icons/quatt-outline.svg) |
-| Chill | `quatt:chill-outline` | [Download](icons/chill-outline.svg) |
-| Heat Battery | `quatt:heat-battery-outline` | [Download](icons/heat-battery-outline.svg) |
-| Heat Charger | `quatt:heat-charger-outline` | [Download](icons/heat-charger-outline.svg) |
-| Heat Battery boost | `quatt:heat-battery-boost` | [Download](icons/heat-battery-boost.svg) |
-| Heat Charger boost | `quatt:heat-charger-boost` | [Download](icons/heat-charger-boost.svg) |
+| Quatt heat pump | [`quatt:quatt-outline`](icons/quatt-outline.svg) | [`quatt:quatt-solid`](icons/quatt-solid.svg) |
+| Chill | [`quatt:chill-outline`](icons/chill-outline.svg) | [`quatt:chill-solid`](icons/chill-solid.svg) |
+| Heat Battery | [`quatt:heat-battery-outline`](icons/heat-battery-outline.svg) | [`quatt:heat-battery-solid`](icons/heat-battery-solid.svg) |
+| Heat Charger | [`quatt:heat-charger-outline`](icons/heat-charger-outline.svg) | [`quatt:heat-charger-solid`](icons/heat-charger-solid.svg) |
+| Heat Battery boost | [`quatt:heat-battery-boost`](icons/heat-battery-boost.svg) | [`quatt:heat-battery-boost-solid`](icons/heat-battery-boost-solid.svg) |
+| Heat Charger boost | [`quatt:heat-charger-boost`](icons/heat-charger-boost.svg) | [`quatt:heat-charger-boost-solid`](icons/heat-charger-boost-solid.svg) |
 
-Boost variants use double upward chevrons inside the equipment outline. These icons indicate boost visually; setting an icon does not activate boost or automatically track its state.
+The table links to downloadable SVGs. Solid icons use filled silhouettes with transparent details, and retain Home Assistant theme/state colors. Search for `solid` to find them in the icon picker.
+
+Boost variants use double upward chevrons inside the equipment silhouette. These icons indicate boost visually; setting an icon does not activate boost or automatically track its state.
 
 The icons register automatically when the Quatt Cards dashboard resource loads. For availability throughout the Home Assistant frontend, including entity settings before a dashboard has loaded, merge this into your existing `configuration.yaml` and restart Home Assistant:
 
 ```yaml
 frontend:
   extra_module_url:
-    - /hacsfiles/quatt-cards/quatt-cards.js?v=0.7.1
+    - /hacsfiles/quatt-cards/quatt-cards.js?v=0.8.0
 ```
 
-For a manual card installation, use `/local/quatt-cards.js?v=0.7.1` instead. Keep the same versioned URL in your dashboard resources and `extra_module_url` to reuse the loaded module. Do not create a second `frontend:` section if one already exists.
+For a manual card installation, use `/local/quatt-cards.js?v=0.8.0` instead. Keep the same versioned URL in your dashboard resources and `extra_module_url` to reuse the loaded module. Do not create a second `frontend:` section if one already exists.
 
 Example using a standard Home Assistant card:
 
@@ -140,7 +142,7 @@ entities:
 
 Search for `quatt` in the icon picker, or enter the full icon name. The icon represents equipment; its color follows the containing card's normal state-color rules.
 
-For icons without the cards, download the optional `quatt-icons.js` release asset to `/config/www/quatt-icons.js` and load `/local/quatt-icons.js?v=0.7.1` as a JavaScript module or via `frontend.extra_module_url`. Quatt Cards already includes these icons, so its users do not need this additional file.
+For icons without the cards, download the optional `quatt-icons.js` release asset to `/config/www/quatt-icons.js` and load `/local/quatt-icons.js?v=0.8.0` as a JavaScript module or via `frontend.extra_module_url`. Quatt Cards already includes these icons, so its users do not need this additional file.
 
 ## Configuration
 

@@ -1,14 +1,14 @@
 import {test,expect} from './fixtures';
 import {build} from 'vite';
 
-test('Quatt Cards registers six searchable, filled-outline HA icons',async({page})=>{
+test('Quatt Cards registers twelve searchable HA equipment icons',async({page})=>{
  await page.goto('/');
  const icons=await page.evaluate(async()=>{
   const w=window as any,provider=w.customIcons.quatt;
   const list=await provider.getIconList();
   return Promise.all(list.map(async(item:any)=>({...item,...await provider.getIcon(item.name),legacy:await w.customIconsets.quatt(item.name)})));
  });
- expect(icons.map(i=>i.name).sort()).toEqual(['chill-outline','heat-battery-boost','heat-battery-outline','heat-charger-boost','heat-charger-outline','quatt-outline']);
+ expect(icons.map(i=>i.name).sort()).toEqual(['chill-outline','chill-solid','heat-battery-boost','heat-battery-boost-solid','heat-battery-outline','heat-battery-solid','heat-charger-boost','heat-charger-boost-solid','heat-charger-outline','heat-charger-solid','quatt-outline','quatt-solid']);
  for(const icon of icons){
   expect(icon.keywords).toContain('quatt');
   expect(icon.legacy.path).toBe(icon.path);
@@ -38,5 +38,28 @@ test('standalone icon pack works without cards and preserves other icon namespac
   const w=window as any;
   return {list:await w.customIcons.quatt.getIconList(),hue:w.customIcons.hue,legacy:w.customIconsets.hue,card:!!customElements.get('quatt-overview-card')};
  });
- expect(result.list).toHaveLength(6);expect(result.hue).toEqual({sentinel:true});expect(result.legacy).toBe('existing');expect(result.card).toBe(false);
+ expect(result.list).toHaveLength(12);expect(result.hue).toEqual({sentinel:true});expect(result.legacy).toBe('existing');expect(result.card).toBe(false);
+});
+
+
+test('solid silhouettes have filled bodies and transparent detail cutouts',async({page})=>{
+ await page.goto('/');
+ const probes=[
+  {name:'quatt-solid',body:[12,18.5],cutout:[5,7]},
+  {name:'chill-solid',body:[12,16],cutout:[9,8]},
+  {name:'heat-battery-solid',body:[12,12],cutout:[12,4.75]},
+  {name:'heat-battery-boost-solid',body:[12,17],cutout:[12,10]},
+  {name:'heat-charger-solid',body:[12,18],cutout:[14,9.5]},
+  {name:'heat-charger-boost-solid',body:[8,18],cutout:[12,15]},
+ ];
+ for(const probe of probes){
+  const result=await page.evaluate(async probe=>{
+   const {path:d}=await (window as any).customIcons.quatt.getIcon(probe.name);
+   const svg=document.createElementNS('http://www.w3.org/2000/svg','svg'),path=document.createElementNS(svg.namespaceURI,'path') as SVGPathElement;
+   path.setAttribute('d',d);svg.append(path);document.body.append(svg);
+   const body=path.isPointInFill(new DOMPoint(...probe.body)),cutout=path.isPointInFill(new DOMPoint(...probe.cutout));
+   svg.remove();return {body,cutout};
+  },probe);
+  expect(result,probe.name).toEqual({body:true,cutout:false});
+ }
 });

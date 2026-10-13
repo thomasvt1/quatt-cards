@@ -24,4 +24,4 @@ for(const [type,element,name,description] of cards) {
   if(!window.customCards.some(card=>card.type===type)) window.customCards.push({type,name,description,preview:true});
 }
 if(!customElements.get('quatt-card-editor')) customElements.define('quatt-card-editor',QuattCardEditor);
-console.info('QUATT CARDS 0.7.1 · Heating insights and Chill controls');
+console.info('QUATT CARDS 0.8.0 · Heating insights and Chill controls');

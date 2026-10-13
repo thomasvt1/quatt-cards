@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.8.0
+
+- Add six solid icons: Quatt, Chill, Heat Battery, Heat Charger, and both boost variants. Names use the `-solid` suffix; all existing icons remain available.
+- Use filled silhouettes with transparent equipment details, include searchable keywords and SVG downloads, and expand light/dark previews. Test filled bodies and transparent cutouts as well as registration and bounds.
+
 ## 0.7.1
 
 - Build the standalone icon bundle in memory during its browser test, so browser and coverage tests work without a production build and cannot use stale `dist/` output.

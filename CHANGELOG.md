@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.7.0
+
+- Include four searchable Home Assistant outline icons: `quatt:quatt-outline`, `quatt:chill-outline`, `quatt:heat-battery-outline`, and `quatt:heat-charger-outline`.
+- Reuse the card equipment artwork and add a Heat Charger housing outline. Provide editable SVG sources, filled-path SVG downloads, and light/dark previews.
+- Register icons with the current icon-picker API and the legacy icon-set API. Include an optional standalone `quatt-icons.js` release asset and global frontend loading instructions.
+
 ## 0.6.5
 
 - Show the Overview heat-battery status dot in green when the status sensor reports Charging. Preserve gray for Off, unavailable, and unrecognized states.

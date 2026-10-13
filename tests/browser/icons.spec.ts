@@ -1,13 +1,14 @@
 import {test,expect} from './fixtures';
+import {build} from 'vite';
 
-test('Quatt Cards registers four searchable, filled-outline HA icons',async({page})=>{
+test('Quatt Cards registers six searchable, filled-outline HA icons',async({page})=>{
  await page.goto('/');
  const icons=await page.evaluate(async()=>{
   const w=window as any,provider=w.customIcons.quatt;
   const list=await provider.getIconList();
   return Promise.all(list.map(async(item:any)=>({...item,...await provider.getIcon(item.name),legacy:await w.customIconsets.quatt(item.name)})));
  });
- expect(icons.map(i=>i.name).sort()).toEqual(['chill-outline','heat-battery-outline','heat-charger-outline','quatt-outline']);
+ expect(icons.map(i=>i.name).sort()).toEqual(['chill-outline','heat-battery-boost','heat-battery-outline','heat-charger-boost','heat-charger-outline','quatt-outline']);
  for(const icon of icons){
   expect(icon.keywords).toContain('quatt');
   expect(icon.legacy.path).toBe(icon.path);
@@ -26,11 +27,16 @@ test('Quatt Cards registers four searchable, filled-outline HA icons',async({pag
 test('standalone icon pack works without cards and preserves other icon namespaces',async({page})=>{
  await page.setContent('<div>Standalone icons</div>');
  await page.evaluate(()=>{const w=window as any;w.customIcons={hue:{sentinel:true}};w.customIconsets={hue:'existing'};});
- await page.addScriptTag({type:'module',path:'dist/quatt-icons.js'});
+ // Build the current standalone entry in memory: no missing/stale dist dependency.
+ const bundle=await build({mode:'icons',build:{write:false},logLevel:'silent'});
+ const outputs=Array.isArray(bundle)?bundle:[bundle];
+ const chunks=outputs.flatMap(output=>'output' in output?output.output:[]).filter(output=>output.type==='chunk');
+ expect(chunks).toHaveLength(1);
+ await page.addScriptTag({type:'module',content:chunks[0].code});
  await expect.poll(()=>page.evaluate(()=>(window as any).customIcons.quatt!==undefined)).toBe(true);
  const result=await page.evaluate(async()=>{
   const w=window as any;
   return {list:await w.customIcons.quatt.getIconList(),hue:w.customIcons.hue,legacy:w.customIconsets.hue,card:!!customElements.get('quatt-overview-card')};
  });
- expect(result.list).toHaveLength(4);expect(result.hue).toEqual({sentinel:true});expect(result.legacy).toBe('existing');expect(result.card).toBe(false);
+ expect(result.list).toHaveLength(6);expect(result.hue).toEqual({sentinel:true});expect(result.legacy).toBe('existing');expect(result.card).toBe(false);
 });

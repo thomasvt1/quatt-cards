@@ -12,6 +12,6 @@ node scripts/preview-icons.mjs
 npm run build
 ```
 
-The preview script requires the project's Playwright Chromium installation. Ordinary builds and CI use committed generated paths and do not require Inkscape or Python. Generated icon paths must fit inside the viewBox, and registration must preserve other namespaces. Browser tests check these contracts and standalone loading.
+The preview script requires the project's Playwright Chromium installation. Ordinary builds and CI use committed generated paths and do not require Inkscape or Python. Generated icon paths must fit inside the viewBox, and registration must preserve other namespaces. Browser tests check these contracts and standalone loading. The standalone test builds the current source in memory with the normal Vite icons configuration; neither browser nor coverage tests require prebuilt files in `dist/`.
 
 The icons and source code use this repository's AGPL-3.0-or-later license. These are community illustrations, not official Quatt brand assets.

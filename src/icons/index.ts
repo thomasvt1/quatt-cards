@@ -1,6 +1,8 @@
 import paths from './paths.json';
 
 const keywords:Record<keyof typeof paths,string[]>={
+  'heat-battery-boost':['quatt','heat battery','boost','thermal storage','warmtebatterij'],
+  'heat-charger-boost':['quatt','heat charger','boost','heater','all electric'],
   'quatt-outline':['quatt','heat pump','warmtepomp','outdoor'],
   'chill-outline':['quatt','chill','cooling','koeling'],
   'heat-battery-outline':['quatt','heat battery','thermal storage','warmtebatterij','tank'],

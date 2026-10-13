@@ -304,7 +304,7 @@ fields:
   heatCharger.waterPressure: false
 ```
 
-The layout adapts automatically to one or two discovered heat pumps. Two pumps share a compact stacked Quatt Duo outline; a single pump keeps its individual icon. Unavailable Duo members are named below the icon. It preserves known offline units and uses upstream pump identifiers to order Duo pumps in series. A compact Heat Charger connector appears once, with optional electrical input underneath. The storage section moves below the loop on narrow cards. There are no domestic hot/cold-water pipes or equipment controls.
+The layout adapts automatically to one or two discovered heat pumps. Two pumps share a compact stacked Quatt Duo outline; a single pump keeps its individual icon. Unavailable Duo members are named below the icon. It preserves known offline units and uses upstream pump identifiers to order Duo pumps in series. The Heat Charger and Heat Battery sit inside the heating loop. On narrow cards they move beneath the Duo/Home row while remaining inside the blue return. The charger uses its equipment outline, with a dashed system relationship and an amber thermal connection to the battery. There are no domestic hot/cold-water pipes or equipment controls.
 
 The top summary is **heat-pump** input, output and reported COP, excluding the Heat Charger. Supply is the final pump outlet; return is the first pump inlet. ΔT is calculated from those normalized temperature readings; missing endpoints leave it unavailable. This is a schematic, not an installation drawing. The dashed amber connector expresses a thermal relationship, not a water pipe or measured live direction. No transfer heat is inferred from charger input. See [plumbing and telemetry research](docs/heating-circuit-research.md).
 

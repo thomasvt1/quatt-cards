@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.10.0
+
+- Integrate Heat Charger and Heat Battery inside the heating loop, with a responsive mobile layout and the Heat Charger equipment icon.
+- Align blue return connections with equipment sides, lower the mobile supply connection, center the charger relationship, and draw clear thermal arrowheads.
+
 ## 0.9.0
 
 - Add compact stacked `quatt:quatt-duo-outline` and `quatt:quatt-duo-solid` icons, available in both bundles and the Home Assistant icon picker.

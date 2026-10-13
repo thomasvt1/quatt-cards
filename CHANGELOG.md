@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.9.0
+
+- Add compact stacked `quatt:quatt-duo-outline` and `quatt:quatt-duo-solid` icons, available in both bundles and the Home Assistant icon picker.
+- Group two heat pumps into one Quatt Duo symbol in the heating circuit card, preserving endpoint readings and per-pump unavailable labels.
+
 ## 0.8.0
 
 - Add six solid icons: Quatt, Chill, Heat Battery, Heat Charger, and both boost variants. Names use the `-solid` suffix; all existing icons remain available.

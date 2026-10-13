@@ -2,7 +2,7 @@ import { test, expect } from './fixtures';
 import type { HomeAssistant } from '../../src/types';
 test('circuit adapts to one pump, optional storage, offline readings and configurable fields',async({page})=>{
   await page.goto('/');const card=page.locator('quatt-heating-circuit-card');
-  await expect(card.locator('.pump')).toHaveCount(2);
+  await expect(card.locator('.pump.duo')).toHaveCount(1);
   await expect(card.getByText('Heat Charger',{exact:true})).toHaveCount(1);
   await expect(card.getByText('Heat transfer',{exact:true})).toHaveCount(0);
   await expect(card.locator('.delta')).toContainText('4.8 °C');
@@ -18,8 +18,8 @@ test('circuit adapts to one pump, optional storage, offline readings and configu
   await expect(card.locator('.supply-reading')).toHaveCount(0);await expect(card.getByRole('meter')).toHaveCount(0);
   await editor.getByRole('button',{name:'Reset displayed fields'}).click();
   await page.evaluate(()=>window.demo.setScenario('offline'));
-  await expect(card.locator('.pump')).toHaveCount(2);await expect(card.locator('.delta')).toContainText('—');
-  await page.evaluate(()=>window.demo.setScenario('single'));await expect(card.locator('.pump')).toHaveCount(1);
+  await expect(card.locator('.pump.duo')).toHaveCount(1);await expect(card.getByText('Heat pump 2 unavailable',{exact:true})).toBeVisible();await expect(card.locator('.delta')).toContainText('—');
+  await page.evaluate(()=>window.demo.setScenario('single'));await expect(card.locator('.pump')).toHaveCount(1);await expect(card.locator('.icon-pump')).toHaveCount(1);await expect(card.locator('.duo')).toHaveCount(0);
   await card.evaluate(e=>{const c=e as HTMLElement&{hass:HomeAssistant};const entities=Object.fromEntries(Object.entries(c.hass.entities!).filter(([,v])=>!['demo-heat-battery','demo-heat-charger'].includes(v.device_id||'')));c.hass={...c.hass,connection:{},callWS:undefined,entities};});
   await expect(card.locator('.storage')).toHaveCount(0);
 });
@@ -28,7 +28,7 @@ for(const width of [1200,820,390])for(const theme of ['light','dark'] as const)t
   const card=page.locator('quatt-heating-circuit-card');
   for(const scenario of ['heating','single']){
     await page.evaluate(s=>window.demo.setScenario(s),scenario);
-    await expect(card.locator('.pump')).toHaveCount(scenario==='single'?1:2);
+    await expect(card.locator('.pump')).toHaveCount(1);
     const clipped=await card.locator('.diagram,.loop,.storage,.battery,.summary,.value,.unit-name').evaluateAll(es=>es.filter(e=>e.scrollWidth>e.clientWidth+1).map(e=>e.className));expect(clipped).toEqual([]);
     if(width===390){const loop=(await card.locator('.loop').boundingBox())!,storage=(await card.locator('.storage').boundingBox())!,reading=(await card.locator('.return-reading').boundingBox())!;expect(storage.y).toBeGreaterThanOrEqual(loop.y+loop.height);expect(reading.y+reading.height).toBeLessThanOrEqual(storage.y);}
     await card.screenshot({path:`.impeccable/review/circuit-${scenario}-${width}-${theme}.png`});

@@ -18,6 +18,7 @@ Compact Home Assistant dashboard cards for the [Quatt integration by marcoboers]
 | Performance history | `custom:quatt-history-card` | Recorded heat output, electrical input, COP, and a slim operating-mode timeline over the last 6, 12, 24, or 48 hours. |
 | Heat pumps | `custom:quatt-heat-pump-card` | All heat pumps or one selected unit, with power, temperatures, and available operating details. |
 | Heat battery | `custom:quatt-heat-battery-card` | Thermal charge level, available shower time, temperatures, and available charging information. |
+| Quatt Duo | [`quatt:quatt-duo-outline`](icons/quatt-duo-outline.svg) | [`quatt:quatt-duo-solid`](icons/quatt-duo-solid.svg) |
 | Chill | `custom:quatt-chill-card` | All Chill units or one selected unit, with available temperature, fan, operating information, and native controls. |
 | Heating circuit | `custom:quatt-heating-circuit-card` | One or two pumps in series, supply/return, flow, ΔT, inline Heat Charger and thermal storage. |
 | System status | `custom:quatt-status-card` | Reported operating state, connectivity, defrost, limits, and available faults. |
@@ -303,7 +304,7 @@ fields:
   heatCharger.waterPressure: false
 ```
 
-The A3b layout adapts automatically to one or two discovered heat pumps. It preserves known offline units and uses upstream pump identifiers to order Duo pumps in series. A compact Heat Charger connector appears once, with optional electrical input underneath. The storage section moves below the loop on narrow cards. There are no domestic hot/cold-water pipes or equipment controls.
+The layout adapts automatically to one or two discovered heat pumps. Two pumps share a compact stacked Quatt Duo outline; a single pump keeps its individual icon. Unavailable Duo members are named below the icon. It preserves known offline units and uses upstream pump identifiers to order Duo pumps in series. A compact Heat Charger connector appears once, with optional electrical input underneath. The storage section moves below the loop on narrow cards. There are no domestic hot/cold-water pipes or equipment controls.
 
 The top summary is **heat-pump** input, output and reported COP, excluding the Heat Charger. Supply is the final pump outlet; return is the first pump inlet. ΔT is calculated from those normalized temperature readings; missing endpoints leave it unavailable. This is a schematic, not an installation drawing. The dashed amber connector expresses a thermal relationship, not a water pipe or measured live direction. No transfer heat is inferred from charger input. See [plumbing and telemetry research](docs/heating-circuit-research.md).
 

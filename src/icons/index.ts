@@ -9,6 +9,8 @@ const keywords:Record<keyof typeof paths,string[]>={
   'heat-charger-boost-solid':['quatt', 'solid', 'filled', 'heat charger', 'boost'],
   'heat-battery-boost':['quatt','heat battery','boost','thermal storage','warmtebatterij'],
   'heat-charger-boost':['quatt','heat charger','boost','heater','all electric'],
+  'quatt-duo-solid':['quatt','duo','two','heat pumps','warmtepomp','solid','filled'],
+  'quatt-duo-outline':['quatt','duo','two','heat pumps','warmtepomp','outline'],
   'quatt-outline':['quatt','heat pump','warmtepomp','outdoor'],
   'chill-outline':['quatt','chill','cooling','koeling'],
   'heat-battery-outline':['quatt','heat battery','thermal storage','warmtebatterij','tank'],

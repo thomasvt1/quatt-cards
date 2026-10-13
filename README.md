@@ -81,14 +81,14 @@ HACS normally registers the module automatically. If your resources are managed 
 
 1. Build the asset with `npm ci` and `npm run build`.
 2. Copy `dist/quatt-cards.js` to `/config/www/quatt-cards.js` on Home Assistant.
-3. Add a dashboard resource with URL `/local/quatt-cards.js?v=0.6.4` and resource type **JavaScript Module**.
+3. Add a dashboard resource with URL `/local/quatt-cards.js?v=0.6.5` and resource type **JavaScript Module**.
 4. Reload the browser. In **Add card**, search for **Quatt**.
 
 For dashboards with YAML-managed resources:
 
 ```yaml
 resources:
-  - url: /local/quatt-cards.js?v=0.6.4
+  - url: /local/quatt-cards.js?v=0.6.5
     type: module
 ```
 
@@ -203,7 +203,7 @@ Open the card editor and expand **Displayed fields** to show or hide readings, h
 
 Chill combines status and mode in one badge on its clickable device ring, replacing both text rows. Off and idle use a gray ring with a power symbol; cooling uses bright blue with a snowflake; heating uses red with heat waves. Unavailable units use a neutral ring and warning badge; unknown status uses a question mark. Off/idle status takes precedence over the selected mode. Tooltips and accessible descriptions retain the reported status and selected mode. **Operating status** and **Operating mode** under Displayed fields toggle the information in this single indicator: with only mode enabled, it shows the selected mode; with only status enabled, it uses neutral status symbols. Theme authors can override `--quatt-chill-cooling-color` (default `#00a9ed`) and `--quatt-chill-heating-color` (default `#e34d59`).
 
-Overview includes a heat-battery summary when that equipment is discovered: thermal charge with a progress bar, shower time, and operating status. In the Detailed layout, its header status is a small dot: green for On and gray for Off, unavailable, or other states. Hover or inspect the accessible label for the reported status; selecting the dot opens sensor details. The Heat battery · status field controls its visibility. Tank temperatures, charging/hot-water indicators, charger input, and water pressure can be enabled separately. Missing charge never becomes a fabricated percentage.
+Overview includes a heat-battery summary when that equipment is discovered: thermal charge with a progress bar, shower time, and operating status. In the Detailed layout, its header status is a small dot: green for On or Charging and gray for Off, unavailable, or other states. Hover or inspect the accessible label for the reported status; selecting the dot opens sensor details. The Heat battery · status field controls its visibility. Tank temperatures, charging/hot-water indicators, charger input, and water pressure can be enabled separately. Missing charge never becomes a fabricated percentage.
 
 ```yaml
 type: custom:quatt-overview-card

@@ -91,3 +91,25 @@ test('circuit optional readings, missing devices and uncertain topology do not f
  await card.evaluate(e=>{const c=e as Card;const entities=Object.fromEntries(Object.entries(c.hass.entities!).filter(([,r])=>r.device_id!=='demo-hp-1'));c.hass={...c.hass,connection:{},callWS:undefined,entities};});
  await expect(card.getByText(/Pump order unavailable/)).toBeVisible();await expect(card.locator('.pipes')).toHaveCount(0);await expect(card.locator('.delta')).toContainText('—');
 });
+
+test('overview heat battery dot is green for Charging and returns to gray when inactive',async({page})=>{
+ await page.goto('/');
+ const card=page.locator('quatt-overview-card'),dot=card.locator('.battery-status .status-dot');
+ await card.evaluate(e=>{e.style.setProperty('--success-color','#43a047');e.style.setProperty('--disabled-text-color','#9e9e9e');});
+ for(const status of ['Off','Charging','Ready','CHARGING','unavailable',' charging ','On','Discharging','Not charging','unknown','Off']){
+  await card.evaluate((e,status)=>{
+   const c=e as Card,states={...c.hass.states};
+   for(const [id,s] of Object.entries(states))if(id.endsWith('heatbatterystatus'))states[id]={...s,state:status};
+   c.hass={...c.hass,states};
+  },status);
+  const active=['on','charging'].includes(status.trim().toLowerCase());
+  await expect(dot).toHaveCSS('background-color',active?'rgb(67, 160, 71)':'rgb(158, 158, 158)');
+  const label=['unknown','unavailable'].includes(status)?'Unavailable':status.trim();
+  await expect(card.locator('.battery-status')).toHaveAttribute('title',`Heat battery status: ${label}`);
+ }
+ await page.evaluate(()=>document.addEventListener('hass-more-info',e=>{document.body.dataset.entity=(e as CustomEvent).detail.entityId;}));
+ await card.locator('.battery-status').click();
+ await expect(page.locator('body')).toHaveAttribute('data-entity',/heatbatterystatus$/);
+ await page.evaluate(()=>window.demo.setConfig('overview',{fields:{'heatBattery.status':false}}));
+ await expect(dot).toHaveCount(0);
+});

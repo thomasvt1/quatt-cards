@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.5
+
+- Show the Overview heat-battery status dot in green when the status sensor reports Charging. Preserve gray for Off, unavailable, and unrecognized states.
+
 ## 0.6.4
 
 - Hide the heating-system conflict warning when a Chill unit is off. Use its power sensor, with the climate Off state as a fallback, and show the gray power badge instead. Apply the same rule to the Status card.

@@ -32,7 +32,7 @@ export class QuattOverviewCard extends BaseCard {
   private batteryStatus(battery:QuattDevice) {
     const reading=battery.metrics.status,text=battery.available?this.reading(reading):'Unavailable';
     const normalized=text.trim().toLowerCase();
-    const state=!battery.available?'unknown':['on','true','1'].includes(normalized)?'on':['off','false','0'].includes(normalized)?'off':'unknown';
+    const state=!battery.available?'unknown':['on','true','1','charging'].includes(normalized)?'on':['off','false','0'].includes(normalized)?'off':'unknown';
     const label=`Heat battery status: ${text==='—'?'Unavailable':text}`;
     const dot=html`<span class=${`status-dot ${state}`} aria-hidden="true"></span>`;
     return reading?.entityId&&/^(sensor|binary_sensor)\./.test(reading.entityId)

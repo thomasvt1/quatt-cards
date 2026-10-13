@@ -20,9 +20,9 @@ export class QuattHeatingCircuitCard extends BaseCard {
     .home .unit-name{transform:translateX(-8px);background:transparent}
     .unit.offline .icon{color:var(--qc-secondary)}.unavailable{position:relative;font-size:11px;color:var(--qc-secondary);display:block;background:var(--ha-card-background,var(--card-background-color,#fff))}
     .pipes{position:absolute;pointer-events:none;z-index:-1}.supply-pipe{top:50px;left:57px;right:57px;height:28px;border:3px solid var(--qc-supply);border-bottom:0;border-radius:8px 8px 0 0}
-    .return-pipe{top:135px;bottom:85px;left:12px;right:12px;border:3px solid var(--qc-return);border-top:0;border-radius:0 0 8px 8px}
-    .home::after{content:'';position:absolute;top:57px;left:calc(50% + 18px);right:0;height:30px;border-right:3px solid var(--qc-return);border-top:3px solid var(--qc-return);border-radius:0 8px 0 0;z-index:-1}
-    .loop:not(.ordered) .home::after{display:none}.pump::before{content:'';position:absolute;top:57px;left:0;width:15px;height:30px;border-left:3px solid var(--qc-return);border-top:3px solid var(--qc-return);border-radius:8px 0 0 0;z-index:-1}.loop:not(.ordered) .pump::before{display:none}
+    .return-pipe{top:130.25px;bottom:85px;left:55.5px;right:42.5833px;border:3px solid var(--qc-return);border-top:0;border-radius:0 0 8px 8px}
+    .pump::before{content:'';position:absolute;top:77.67px;left:calc(50% - 1.5px);height:4px;border-left:3px solid var(--qc-return);z-index:-1}
+    .loop:not(.ordered) .pump::before,.loop:not(.ordered) .home::after{display:none}
     .supply-reading{grid-row:1;grid-column:1/-1;height:50px;text-align:center;display:grid;justify-items:center;align-content:start}
     .inline-readings{grid-row:3;grid-column:1/-1;display:flex;justify-content:center;align-items:center;gap:12px;font-size:13px;padding-top:24px;height:48px;white-space:nowrap}
     .inline-readings .value{font-size:13px;font-weight:500}.delta{display:flex;gap:4px}
@@ -48,7 +48,8 @@ export class QuattHeatingCircuitCard extends BaseCard {
       .inline-readings{grid-row:4}.return-reading{grid-row:5}
       .storage{--thermal-gap:28px;grid-row:3;grid-column:1/-1;margin:0 8px;padding:35px 0 30px;gap:28px;min-height:190px}
       .has-storage .unit{min-height:140px}.unit .icon{width:62px}.return-pipe{left:4px;right:4px;top:135px}
-      .pump::before{width:10px}
+      .home::after{content:'';position:absolute;top:57px;left:calc(50% + 18px);right:0;height:30px;border-right:3px solid var(--qc-return);border-top:3px solid var(--qc-return);border-radius:0 8px 0 0;z-index:-1}
+      .pump::before{top:57px;left:0;width:10px;height:30px;border-top:3px solid var(--qc-return);border-radius:8px 0 0 0}
       .relationship{height:118px;}.charger{flex-basis:80px}.battery{flex-basis:165px;gap:7px}.battery>.icon{width:35px}
     }
     @container(max-width:380px){.summary-item>.icon{width:17px}.summary{gap:6px 12px}.summary-item .label{font-size:11px}.summary-item .value{font-size:14px}.storage{--thermal-gap:22px;gap:22px;margin:0 6px}.charger{flex-basis:75px}.battery{flex-basis:150px}.tank-reading{gap:4px}.tank-reading .value{font-size:12px}}

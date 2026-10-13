@@ -55,12 +55,12 @@
     "status-mobile-light.png",
     "status-mobile-dark.png"
   ],
-  "inputDigest": "3dd1f31c33dfa95035c4af0ac1bd7f78a4a500fe89fa6a89dd827c77debb8628",
+  "inputDigest": "d940d94bdcbb82929dda446c91cc2fd834dd57610f6e36a1237de68e32c1195e",
   "pngSha256": {
-    "desktop-light.png": "271f3cbdb1bbfc333e6c31ddd2faa6062db109a6c098e73bc1cbfbcccf881586",
+    "desktop-light.png": "013a478f7f3830458398420570c982985bc8b3bd2751a51e63313091949690fc",
     "mobile-dark.png": "b20776abf22b88783a3311a012fd49a6905f96ac99243b35bd1c54bc04e6276b",
-    "heating-circuit-light.png": "4caa43444992356c7ecc2df633abf01dec04e250ecfd304c382261b967181a50",
-    "heating-circuit-dark.png": "9837ad0dfdafc044979c342af1969a85447f5424fcc90829ffb455758e4726a3",
+    "heating-circuit-light.png": "a2a37adbc9ff416be2ad6365ecad24e104a1646aa1b12b7338b8950a79c716a3",
+    "heating-circuit-dark.png": "3b09d0a1e5b9da325c326fafb2ce55dd07734fc11668bec38afd9376795f1356",
     "heating-circuit-mobile-light.png": "aa5548b226220da4ab143eead9acd10b361ade32567dd5e829aa079150f0f621",
     "heating-circuit-mobile-dark.png": "80441addd4c389538638c7d0c613fa14a0bb6b087adda19dc21b19b7e4ba79a5",
     "heating-circuit-single-mobile-light.png": "a29a656b3bad4f009a210b087853a211ebee17732ed3089d7997c79fc60f40ff",

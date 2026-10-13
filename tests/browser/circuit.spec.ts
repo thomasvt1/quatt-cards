@@ -36,7 +36,7 @@ for(const width of [1200,820,390])for(const theme of ['light','dark'] as const)t
     const chargerIcon=(await card.locator('.icon-heat-charger').boundingBox())!,relationship=(await card.locator('.relationship').boundingBox())!;
     expect(Math.abs(relationship.x-(chargerIcon.x+chargerIcon.width/2))).toBeLessThanOrEqual(1);
     // Mobile return connections enter both equipment icons from their outer sides at the same height.
-    {
+    if(width===390){
       const attachment=async(selector:string,pseudo:string)=>card.locator(selector).evaluate((e,pseudo)=>{
         const c=getComputedStyle(e,pseudo),r=e.getBoundingClientRect();
         return {y:r.y+parseFloat(c.top),height:parseFloat(c.height),border:parseFloat(c.borderTopWidth)};
@@ -45,11 +45,13 @@ for(const width of [1200,820,390])for(const theme of ['light','dark'] as const)t
       expect(house).toEqual(pump);expect(house.border).toBe(3);
       const home=(await card.locator('.home .icon').boundingBox())!;
       expect(Math.abs(house.y-(home.y+home.height/2))).toBeLessThan(2);
-      if(width===390){
-      const supply=(await card.locator('.supply-pipe').boundingBox())!
+      const supply=(await card.locator('.supply-pipe').boundingBox())!;
       expect(Math.abs(supply.y-house.y)).toBeLessThan(2);
       expect(Math.abs(supply.x+supply.width-(home.x+home.width*5/24))).toBeLessThan(2);
-      }
+    }else if(width===1200){
+      const home=(await card.locator('.home .icon').boundingBox())!,pipe=(await card.locator('.return-pipe').boundingBox())!;
+      expect(Math.abs(pipe.y-(home.y+home.height*21/24))).toBeLessThan(1);
+      expect(Math.abs(pipe.x+pipe.width-1.5-(home.x+home.width*17/24))).toBeLessThan(1);
     }
 
     await card.screenshot({path:`.impeccable/review/circuit-${scenario}-${width}-${theme}.png`});

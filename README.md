@@ -81,14 +81,14 @@ HACS normally registers the module automatically. If your resources are managed 
 
 1. Build the asset with `npm ci` and `npm run build`.
 2. Copy `dist/quatt-cards.js` to `/config/www/quatt-cards.js` on Home Assistant.
-3. Add a dashboard resource with URL `/local/quatt-cards.js?v=0.6.5` and resource type **JavaScript Module**.
+3. Add a dashboard resource with URL `/local/quatt-cards.js?v=0.7.0` and resource type **JavaScript Module**.
 4. Reload the browser. In **Add card**, search for **Quatt**.
 
 For dashboards with YAML-managed resources:
 
 ```yaml
 resources:
-  - url: /local/quatt-cards.js?v=0.6.5
+  - url: /local/quatt-cards.js?v=0.7.0
     type: module
 ```
 
@@ -99,6 +99,44 @@ The bundle contains Lit and SVG chart code. It requires no external runtime asse
 `hacs.json` declares `quatt-cards.js` as the release asset. Tagged releases run the included checks and attach the self-contained bundle to the [GitHub release](https://github.com/thomasvt1/quatt-cards/releases/latest).
 
 Avoid loading both a manual `/local/` resource and a HACS resource for the same package. This is a HACS custom repository; submission to HACS's default catalog is separate.
+
+## Quatt icons for Home Assistant
+
+Quatt Cards includes four outline icons for use in standard Home Assistant cards, entity customization, and the icon picker. They inherit the icon color from Home Assistant, including theme and state colors.
+
+![Quatt outline icons in light and dark themes](docs/quatt-icons-preview.png)
+
+| Equipment | Icon name | SVG |
+| --- | --- | --- |
+| Quatt heat pump | `quatt:quatt-outline` | [Download](icons/quatt-outline.svg) |
+| Chill | `quatt:chill-outline` | [Download](icons/chill-outline.svg) |
+| Heat Battery | `quatt:heat-battery-outline` | [Download](icons/heat-battery-outline.svg) |
+| Heat Charger | `quatt:heat-charger-outline` | [Download](icons/heat-charger-outline.svg) |
+
+The icons register automatically when the Quatt Cards dashboard resource loads. For availability throughout the Home Assistant frontend, including entity settings before a dashboard has loaded, merge this into your existing `configuration.yaml` and restart Home Assistant:
+
+```yaml
+frontend:
+  extra_module_url:
+    - /hacsfiles/quatt-cards/quatt-cards.js?v=0.7.0
+```
+
+For a manual card installation, use `/local/quatt-cards.js?v=0.7.0` instead. Keep the same versioned URL in your dashboard resources and `extra_module_url` to reuse the loaded module. Do not create a second `frontend:` section if one already exists.
+
+Example using a standard Home Assistant card:
+
+```yaml
+type: entities
+state_color: true
+entities:
+  - entity: sensor.heat_battery_status
+    name: Heat battery
+    icon: quatt:heat-battery-outline
+```
+
+Search for `quatt` in the icon picker, or enter the full icon name. The icon represents equipment; its color follows the containing card's normal state-color rules.
+
+For icons without the cards, download the optional `quatt-icons.js` release asset to `/config/www/quatt-icons.js` and load `/local/quatt-icons.js?v=0.7.0` as a JavaScript module or via `frontend.extra_module_url`. Quatt Cards already includes these icons, so its users do not need this additional file.
 
 ## Configuration
 

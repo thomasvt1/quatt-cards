@@ -31,6 +31,10 @@ export const cardStyles = css`
   .icon { width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; flex: 0 0 auto; }
   .icon-pump { stroke-width:1.05; }
   .muted { color: var(--qc-secondary); } .good { color: var(--qc-good); } .warning { color: var(--qc-warning); } .error { color: var(--qc-error); }
+    .battery-status{margin-left:auto;width:44px;height:36px;padding:0;border:0;background:transparent;display:grid;place-items:center;border-radius:6px;flex-shrink:0}
+    .status-dot{width:9px;height:9px;border-radius:50%;background:var(--disabled-text-color,#9e9e9e)}
+    .status-dot.on{background:var(--success-color,#43a047)}.status-dot.off{background:var(--disabled-text-color,#9e9e9e)}
+    button.battery-status:hover{background:var(--qc-subtle)}
   .reading { border:0; padding:0; border-radius:3px; background:transparent; text-align:inherit; font:inherit; }
   .reading:hover { text-decoration:underline; text-underline-offset:3px; }
   .value { color:var(--primary-text-color,#202530); font-weight:600; font-size:16px; overflow-wrap:anywhere; }

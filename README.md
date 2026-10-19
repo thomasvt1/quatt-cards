@@ -272,7 +272,7 @@ Omitted keys use their defaults. An empty `fields: {}` also uses defaults. Expli
 | `custom:quatt-heat-battery-card` | `charge`, `showerMinutes`, `topTemperature`, `middleTemperature`, `bottomTemperature`, `status`, `heaterPower`, `waterPressure`, `charging`, `hotWater`, `boost` |
 | `custom:quatt-chill-card` | `roomTemperature`, `targetTemperature`, `fanMode`, `status`, `mode`, `waterWarning` |
 | `custom:quatt-history-card` | `electricPower`, `cop`, `heatPower`, `mode` |
-| `custom:quatt-status-card` | `mode`, `connectivity`, `defrost`, `heatBattery`, `limits`, `alerts` |
+| `custom:quatt-status-card` | `mode`, `connectivity`, `defrost`, `heatBattery`, `heatCharger`, `limits`, `alerts` |
 
 ### Minimal heat battery in Overview
 

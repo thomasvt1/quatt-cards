@@ -13,7 +13,12 @@ export function buildStatus(snapshot: Snapshot): StatusRow[] {
   if (snapshot.heatPumps.length && snapshot.heatPumps.every(d => d.available && d.metrics.defrost?.value === 0)) rows.push({key:'no-defrost',title:'No defrost reported',detail:'All heat pumps report defrost off',tone:'neutral',icon:'snow'});
   const chills = snapshot.chills.filter(d => d.available && d.metrics.status?.text && d.metrics.status.text.toLowerCase() !== 'offline');
   if (chills.length) rows.push({key:'chills-available',title:`${chills.length} Chill unit${chills.length===1?'':'s'} available`,detail:'Operating states are available',tone:'good',icon:'chill'});
-  if (snapshot.heatBattery?.available && snapshot.heatBattery.metrics.status?.text) rows.push({key:'battery-status',title:`Heat battery ${snapshot.heatBattery.metrics.status.text.toLowerCase()}`,detail:'Reported thermal storage state',tone:'neutral',icon:'tank',entityId:snapshot.heatBattery.metrics.status.entityId});
+  const battery = snapshot.heatBattery, charger = snapshot.heatCharger;
+  const charging = battery?.available && battery.metrics.charging?.value === 1;
+  const batteryState = charging ? 'charging' : battery?.metrics.status?.text?.toLowerCase();
+  if (battery?.available && batteryState) rows.push({key:'battery-status',title:`Heat battery ${batteryState}`,detail:'Reported thermal storage state',tone:charging||batteryState==='charging'?'good':'neutral',icon:'tank',entityId:charging?battery.metrics.charging?.entityId:battery.metrics.status?.entityId});
+  const chargerPower = charger?.metrics.heaterPower;
+  if (charger?.available) rows.push({key:'charger-status',title:'Heat charger',detail:chargerPower?.value!=null?`Electrical input: ${chargerPower.value} ${chargerPower.unit}`:'Electrical input unavailable',tone:'neutral',icon:'heat-charger',entityId:chargerPower?.entityId});
   if (system.silent?.value === 1) rows.push({ key: 'silent-system', title: 'Silent mode active', detail: 'Quatt reports a system sound limit.', tone: 'neutral', icon: 'mdi:volume-low', entityId: system.silent.entityId });
   const check = (device: QuattDevice) => {
     const m = device.metrics, prefix = device.name;
@@ -27,8 +32,6 @@ export function buildStatus(snapshot: Snapshot): StatusRow[] {
     if (m.waterWarning?.value === 1) rows.push({ key: `${device.id}-water`, title: `${prefix} water tank warning`, detail: 'Quatt reports a water tank level warning.', tone: 'warning', icon: 'mdi:water-alert-outline', entityId: m.waterWarning.entityId });
   };
   [...snapshot.heatPumps, ...snapshot.chills, ...[snapshot.heatBattery, snapshot.heatCharger].filter((device): device is QuattDevice => !!device)].forEach(check);
-  const battery = snapshot.heatBattery;
-  if (battery?.metrics.charging?.value === 1) rows.push({ key: 'battery-charging', title: 'Heat battery charging', tone: 'good', icon: 'mdi:battery-charging', entityId: battery.metrics.charging.entityId });
   if (battery?.metrics.hotWater?.value === 1) rows.push({ key: 'hot-water', title: 'Domestic hot water active', tone: 'neutral', icon: 'mdi:shower', entityId: battery.metrics.hotWater.entityId });
   if (!rows.length) rows.push({ key: 'no-status', title: 'Status unavailable', detail: 'No supported operating or diagnostic states are available.', tone: 'neutral', icon: 'mdi:information-outline' });
   return rows;

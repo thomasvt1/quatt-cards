@@ -2,6 +2,8 @@
 
 ## 0.10.1
 
+- Combine duplicate Heat Battery status/charging entries and add a separate Heat Charger row showing its own electrical input.
+
 - Replace the Heat Battery card status text with the same green/grey dot used by Overview. Share status mapping, theme colors, accessible descriptions, and sensor-detail interaction between the cards.
 
 ## 0.10.0

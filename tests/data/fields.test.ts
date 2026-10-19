@@ -26,7 +26,8 @@ describe('displayed fields',()=>{
   expect(statusField('arbitrary-id-offline')).toBe('connectivity');
   expect(statusField('arbitrary-id-defrost')).toBe('defrost');
   expect(statusField('arbitrary-id-limited')).toBe('limits');
-  expect(statusField('battery-charging')).toBe('heatBattery');
+  expect(statusField('battery-status')).toBe('heatBattery');
+  expect(statusField('charger-status')).toBe('heatCharger');
   expect(statusField('arbitrary-id-water')).toBe('alerts');
  });
 });

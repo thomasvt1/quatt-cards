@@ -14,7 +14,7 @@ export const cardFields:Record<CardType,FieldOption[]>={
   'custom:quatt-heat-battery-card': [field('charge','Thermal charge'),field('showerMinutes','Shower time'),field('topTemperature','Top temperature'),field('middleTemperature','Middle temperature'),field('bottomTemperature','Bottom temperature'),field('status','Operating status'),field('heaterPower','Charger input'),field('waterPressure','Water pressure'),field('charging','Storage charging'),field('hotWater','Hot-water use'),field('boost','Boost')],
   'custom:quatt-chill-card': [field('roomTemperature','Room temperature'),field('targetTemperature','Target temperature'),field('fanMode','Fan speed'),field('status','Operating status'),field('mode','Operating mode'),field('waterWarning','Water tank warning')],
   'custom:quatt-history-card': [...power,field('mode','Operating-mode timeline')],
-  'custom:quatt-status-card': [field('mode','Operating mode'),field('connectivity','Connectivity and availability'),field('defrost','Defrost'),field('heatBattery','Heat battery and hot water'),field('limits','COP limits and silent mode'),field('alerts','Faults and water warnings')],
+  'custom:quatt-status-card': [field('mode','Operating mode'),field('connectivity','Connectivity and availability'),field('defrost','Defrost'),field('heatBattery','Heat battery and hot water'),field('heatCharger','Heat charger'),field('limits','COP limits and silent mode'),field('alerts','Faults and water warnings')],
 };
 export function fieldVisible(config:CardConfig,key:string):boolean {
   return config.fields?.[key] ?? cardFields[config.type]?.find(f=>f.key===key)?.default ?? true;
@@ -32,6 +32,7 @@ export function statusField(key:string):string {
   if(key==='mode')return 'mode';
   if(key==='no-defrost'||key.endsWith('-defrost'))return 'defrost';
   if(key==='controller'||key==='pumps-connected'||key==='chills-available'||key.endsWith('-offline'))return 'connectivity';
+  if(key==='charger-status')return 'heatCharger';
   if(key.startsWith('battery-')||key==='hot-water')return 'heatBattery';
   if(key==='silent-system'||key.endsWith('-silent')||key.endsWith('-limited'))return 'limits';
   return 'alerts';

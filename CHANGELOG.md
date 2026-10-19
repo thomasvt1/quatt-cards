@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.10.1
+
+- Replace the Heat Battery card status text with the same green/grey dot used by Overview. Share status mapping, theme colors, accessible descriptions, and sensor-detail interaction between the cards.
+
 ## 0.10.0
 
 - Integrate Heat Charger and Heat Battery inside the heating loop, with a responsive mobile layout and the Heat Charger equipment icon.

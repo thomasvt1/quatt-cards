@@ -10,7 +10,8 @@ export class QuattHeatBatteryCard extends BaseCard {
     .meter{height:10px;border-radius:5px;background:var(--qc-line);overflow:hidden}.fill{height:100%;background:var(--qc-heat);border-radius:inherit}
     .shower{font-size:12px;margin-top:10px}.shower .value{font-size:12px;font-weight:400}
     .temperatures{display:grid;grid-template-columns:repeat(var(--count,3),minmax(0,1fr));padding:20px 0;border-top:1px solid var(--qc-line)}.temperatures .stat{align-items:center;text-align:center;padding:0 8px}.temperatures .stat+.stat{border-left:1px solid var(--qc-line)}
-    .temperatures .value{font-size:14px}.temperatures .label{font-size:11px}.state-line{margin-top:auto;padding-top:18px;font-size:13px}.state-line .icon{width:22px;height:22px;color:var(--qc-good)}
+    .temperatures .value{font-size:14px}.temperatures .label{font-size:11px}
+    .battery-heading{display:flex;align-items:center;gap:10px;margin-bottom:18px}.battery-heading .ob-header{flex:1;min-width:0;margin-bottom:0}
     .details{margin-top:15px;font-size:12px;color:var(--qc-secondary)}summary{cursor:pointer}.details .stat-grid{margin-top:14px}.details .value{font-size:13px}
     @container(max-width:350px){.charge{grid-template-columns:60px minmax(0,1fr);gap:14px}.tank .icon{width:60px;height:110px}.charge .value{font-size:28px}.shower .value{font-size:12px}}
     ha-card.custom-fields{min-height:0}
@@ -23,11 +24,11 @@ export class QuattHeatBatteryCard extends BaseCard {
     const selected=temperatures.filter(([key])=>this.showField(key));
     const details: [MetricRole,string,typeof m.charge][]=[['heaterPower','Charger input',c?.heaterPower||c?.electricPower],['waterPressure','Water pressure',c?.waterPressure],['charging','Storage charging',m.charging],['hotWater','Hot-water use',m.hotWater],['boost','Boost',m.boost]];
     const selectedDetails=details.filter(([key,,reading])=>this.showField(key)&&reading);
-    return html`<ha-card class=${this.config.fields?'custom-fields':''}>${this.renderHeader('Heat battery')}${this.renderNotice()}${this.showField('charge')||this.showField('showerMinutes')?html`<div class="charge"><span class="tank">${icon('tank')}</span><div>
+    return html`<ha-card class=${this.config.fields?'custom-fields':''}><div class="battery-heading">${this.renderHeader('Heat battery')}${this.showField('status')?this.batteryStatus(device):nothing}</div>${this.renderNotice()}${this.showField('charge')||this.showField('showerMinutes')?html`<div class="charge"><span class="tank">${icon('tank')}</span><div>
       <div class="charge-title">${this.value(charge!=null?m.charge:this.showField('showerMinutes')?m.showerMinutes:undefined,charge!=null?'Thermal charge':this.showField('showerMinutes')?'Shower time remaining':'Thermal charge','value',0)}</div>
       ${charge!=null?html`<div class="meter" role="meter" aria-label="Thermal charge" aria-valuemin="0" aria-valuemax="100" aria-valuenow=${charge}><div class="fill" style=${`width:${charge}%`}></div></div>${this.showField('showerMinutes')?html`<div class="shower">${this.value(m.showerMinutes,'Shower time','value',0)} shower time</div>`:nothing}`:html`<span class="label">${this.showField('showerMinutes')?'Shower time remaining':'Thermal charge unavailable'}</span>`}
     </div></div>`:nothing}${selected.length?html`<div class="temperatures" style=${`--count:${selected.length}`}>${selected.map(([key,label])=>this.metric(label,m[key]))}</div>`:nothing}
-    ${this.showField('status')?html`<div class="state-line">${icon(device.available?'check':'warning')}<span>${!device.available?'Unavailable':m.status?.text|| (this.on(m.charging)?'Charging':'Status unavailable')}</span></div>`:nothing}
+
     ${selectedDetails.length?html`<details class="details"><summary>Storage details</summary><div class="stat-grid">${selectedDetails.map(([,label,reading])=>this.metric(label,reading,true))}</div></details>`:nothing}
     </ha-card>`;
   }

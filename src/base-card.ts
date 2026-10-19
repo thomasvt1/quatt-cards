@@ -1,5 +1,5 @@
 import { LitElement, html, type PropertyValues, type CSSResultGroup } from 'lit';
-import type { CardConfig, HomeAssistant, RegistryData, Snapshot, Reading } from './types';
+import type { CardConfig, HomeAssistant, RegistryData, Snapshot, Reading, QuattDevice } from './types';
 import { buildSnapshot } from './data';
 import { loadRegistry, watchRegistry } from './connection';
 import { cardStyles, icon } from './ui';
@@ -20,6 +20,17 @@ export abstract class BaseCard extends LitElement {
   private timer?: ReturnType<typeof setInterval>;
   private registryGeneration = 0;
   private trackedIds = new Set<string>();
+
+  protected batteryStatus(battery:QuattDevice) {
+    const reading=battery.metrics.status,text=battery.available?this.reading(reading):'Unavailable';
+    const normalized=text.trim().toLowerCase();
+    const state=!battery.available?'unknown':['on','true','1','charging'].includes(normalized)?'on':['off','false','0'].includes(normalized)?'off':'unknown';
+    const label=`Heat battery status: ${text==='—'?'Unavailable':text}`;
+    const dot=html`<span class=${`status-dot ${state}`} aria-hidden="true"></span>`;
+    return reading?.entityId&&/^(sensor|binary_sensor)\./.test(reading.entityId)
+      ? html`<button class="battery-status" title=${label} aria-label=${`${label}. Show details`} @click=${()=>this.moreInfo(reading.entityId)}>${dot}</button>`
+      : html`<span class="battery-status" role="img" title=${label} aria-label=${label}>${dot}</span>`;
+  }
 
   get hass(): HomeAssistant { return this._hass || { states: {} }; }
   set hass(value: HomeAssistant) {

@@ -49,11 +49,12 @@ test('battery missing charge, status and optional sensors stay truthful',async({
  await page.evaluate(()=>{window.demo.setScenario('partial');window.demo.setConfig('heat-battery',{fields:{showerMinutes:false}});});
  await expect(card.getByText('Thermal charge unavailable',{exact:true})).toBeVisible();await expect(card.getByRole('meter')).toHaveCount(0);
  await card.evaluate(e=>{const c=e as Card,states={...c.hass.states};for(const [id,s] of Object.entries(states)){if(id.endsWith('heatbatterystatus'))states[id]={...s,state:'unavailable'};if(id.endsWith('isheatbatterycharging'))states[id]={...s,state:'on'};}c.hass={...c.hass,states};});
- await expect(card.locator('.state-line')).toHaveText('Charging');
+ await expect(card.locator('.battery-status')).toHaveAttribute('title','Heat battery status: Unavailable');
+ await expect(card.locator('.status-dot')).not.toHaveClass(/\bon\b/);
  await card.evaluate(e=>{const c=e as Card,states={...c.hass.states};for(const [id,s] of Object.entries(states))if(id.endsWith('isheatbatterycharging'))states[id]={...s,state:'off'};c.hass={...c.hass,states};});
- await expect(card.locator('.state-line')).toHaveText('Status unavailable');
+ await expect(card.locator('.battery-status')).toHaveAttribute('title','Heat battery status: Unavailable');
  await card.evaluate(e=>{const c=e as Card,states={...c.hass.states};for(const [id,s] of Object.entries(states))if(id.includes('heat_battery'))states[id]={...s,state:'unavailable'};c.hass={...c.hass,states};});
- await expect(card.locator('.state-line')).toHaveText('Unavailable');
+ await expect(card.locator('.battery-status')).toHaveAttribute('title','Heat battery status: Unavailable');
 });
 
 test('pump status opt-in handles defrost, offline, unknown status and unknown device selection',async({page})=>{
@@ -92,9 +93,9 @@ test('circuit optional readings, missing devices and uncertain topology do not f
  await expect(card.getByText(/Pump order unavailable/)).toBeVisible();await expect(card.locator('.pipes')).toHaveCount(0);await expect(card.locator('.delta')).toContainText('—');
 });
 
-test('overview heat battery dot is green for Charging and returns to gray when inactive',async({page})=>{
+for(const type of ['overview','heat-battery'])test(`${type} heat battery dot is green for Charging and returns to gray when inactive`,async({page})=>{
  await page.goto('/');
- const card=page.locator('quatt-overview-card'),dot=card.locator('.battery-status .status-dot');
+ const card=page.locator(`quatt-${type}-card`),dot=card.locator('.battery-status .status-dot');
  await card.evaluate(e=>{e.style.setProperty('--success-color','#43a047');e.style.setProperty('--disabled-text-color','#9e9e9e');});
  for(const status of ['Off','Charging','Ready','CHARGING','unavailable',' charging ','On','Discharging','Not charging','unknown','Off']){
   await card.evaluate((e,status)=>{
@@ -110,6 +111,6 @@ test('overview heat battery dot is green for Charging and returns to gray when i
  await page.evaluate(()=>document.addEventListener('hass-more-info',e=>{document.body.dataset.entity=(e as CustomEvent).detail.entityId;}));
  await card.locator('.battery-status').click();
  await expect(page.locator('body')).toHaveAttribute('data-entity',/heatbatterystatus$/);
- await page.evaluate(()=>window.demo.setConfig('overview',{fields:{'heatBattery.status':false}}));
+ await page.evaluate(type=>window.demo.setConfig(type,{fields:{[type==='overview'?'heatBattery.status':'status']:false}}),type);
  await expect(dot).toHaveCount(0);
 });

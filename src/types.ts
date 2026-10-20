@@ -29,7 +29,7 @@ export interface CardConfig {
   type: CardType; title?: string; integration_id?: string; device?: string;
   fields?: Record<string, boolean>;
   heat_battery_layout?: 'detailed' | 'minimal';
-  entities?: Record<string, string>; hours?: number; layout?: 'columns' | 'stacked' | 'compact'; show_controls?: boolean;
+  entities?: Record<string, string>; hours?: number; layout?: 'columns' | 'stacked' | 'compact' | 'slim'; show_controls?: boolean;
 }
 export type MetricRole = 'heatPower' | 'electricPower' | 'cop' | 'roomTemperature' | 'targetTemperature' |
   'outdoorTemperature' | 'supplyTemperature' | 'returnTemperature' | 'flowRate' |

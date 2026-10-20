@@ -92,3 +92,15 @@ test('resetting slim fields preserves hidden Detailed preferences',async({page})
  await editor.getByLabel('Layout',{exact:true}).selectOption('columns');
  await expect(editor.getByRole('checkbox',{name:'Top temperature',exact:true})).not.toBeChecked();
 });
+
+test('offline slim battery respects hidden reading fields',async({page})=>{
+ await page.goto('/');await page.evaluate(()=>window.demo.setConfig('heat-battery',{layout:'slim',fields:{charge:false,showerMinutes:false,status:false}}));
+ const card=page.locator('quatt-heat-battery-card');
+ await card.evaluate(element=>{
+  const card=element as HTMLElement & {hass:import('../../src/types').HomeAssistant};
+  const id='sensor.demo_heat_battery_allestatus_heatbatterystatus';
+  card.hass={...card.hass,states:{...card.hass.states,[id]:{...card.hass.states[id],state:'offline'}}};
+ });
+ await expect(card.getByText(/No fields selected/)).toBeVisible();
+ await expect(card.getByText('Unavailable',{exact:true})).toHaveCount(0);
+});

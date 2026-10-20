@@ -43,6 +43,7 @@ export class QuattHeatBatteryCard extends BaseCard {
   }
 
   private slimReadings(device: QuattDevice) {
+    if (!this.showField('charge') && !this.showField('showerMinutes')) return nothing;
     if (!device.available) return html`<span class="slim-shower">Unavailable</span>`;
     const m=device.metrics;
     return html`${this.showField('showerMinutes')?html`<span class="slim-shower">${this.value(m.showerMinutes,'Shower time','reading',0)} shower time</span>`:nothing}

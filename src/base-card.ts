@@ -4,7 +4,7 @@ import { buildSnapshot } from './data';
 import { loadRegistry, watchRegistry } from './connection';
 import { cardStyles, icon } from './ui';
 import { applyAppearance, validateAppearance } from './appearance';
-import { cardFields, fieldVisible, validateFields } from './fields';
+import { layoutFields, fieldVisible, validateFields } from './fields';
 
 export abstract class BaseCard extends LitElement {
   static styles: CSSResultGroup = cardStyles;
@@ -67,7 +67,7 @@ export abstract class BaseCard extends LitElement {
   setConfig(config: CardConfig) {
     if (!config || !config.type?.startsWith('custom:quatt-')) throw new Error('Select a Quatt card type.');
     if (config.entities && (typeof config.entities !== 'object' || Array.isArray(config.entities))) throw new Error('entities must map data roles to entity IDs.');
-    if (config.layout && !['columns','stacked','compact',...(config.type==='custom:quatt-chill-card'?['slim']:[])].includes(config.layout)) throw new Error('layout must be columns, stacked, compact, or slim (Chill only).');
+    if (config.layout && !['columns','stacked','compact',...(['custom:quatt-chill-card','custom:quatt-heat-battery-card'].includes(config.type)?['slim']:[])].includes(config.layout)) throw new Error('layout must be columns, stacked, compact, or slim (Chill or Heat Battery only).');
     if (config.show_controls !== undefined && typeof config.show_controls !== 'boolean') throw new Error('show_controls must be true or false.');
     if (config.hours !== undefined && (!Number.isFinite(config.hours) || config.hours < 1 || config.hours > 48)) throw new Error('hours must be between 1 and 48.');
     validateFields(config);
@@ -160,7 +160,7 @@ export abstract class BaseCard extends LitElement {
   protected renderNotice() {
     const error = this.registryError || this.snapshot.error;
     if (error) return html`<div class="notice error" role="status">${error}</div>`;
-    if(!cardFields[this.config.type]?.some(field=>this.showField(field.key)))return html`<p class="notice">No fields selected. Choose Displayed fields in the card editor.</p>`;
+    if(!layoutFields(this.config).some(field=>this.showField(field.key)))return html`<p class="notice">No fields selected. Choose Displayed fields in the card editor.</p>`;
     return this.snapshot.warnings.length ? html`<details class="notice"><summary>Data availability</summary>${this.snapshot.warnings.map(w => html`<p>${w}</p>`)}</details>` : html``;
   }
 }

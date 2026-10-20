@@ -47,6 +47,7 @@ Synthetic readings only. Regenerate these images with `npm run update:examples`.
 | Quatt Heat Pumps · stacked | ![Quatt Heat Pumps · stacked, light](examples/heat-pump-stacked-light.png) | ![Quatt Heat Pumps · stacked, dark](examples/heat-pump-stacked-dark.png) |
 | Quatt Heat Pumps · compact | ![Quatt Heat Pumps · compact, light](examples/heat-pump-compact-light.png) | ![Quatt Heat Pumps · compact, dark](examples/heat-pump-compact-dark.png) |
 | Quatt Heat Battery | ![Quatt Heat Battery, light](examples/heat-battery-light.png) | ![Quatt Heat Battery, dark](examples/heat-battery-dark.png) |
+| Heat Battery · slim | ![Heat Battery · slim, light](examples/heat-battery-slim-light.png) | ![Heat Battery · slim, dark](examples/heat-battery-slim-dark.png) |
 | Quatt Chill Rooms | ![Quatt Chill Rooms, light](examples/chill-light.png) | ![Quatt Chill Rooms, dark](examples/chill-dark.png) |
 | Quatt Chill Rooms · stacked | ![Quatt Chill Rooms · stacked, light](examples/chill-stacked-light.png) | ![Quatt Chill Rooms · stacked, dark](examples/chill-stacked-dark.png) |
 | Quatt Chill Rooms · compact | ![Quatt Chill Rooms · compact, light](examples/chill-compact-light.png) | ![Quatt Chill Rooms · compact, dark](examples/chill-compact-dark.png) |
@@ -178,7 +179,7 @@ layout: columns
 | `heat_battery_layout` | Overview | `detailed` | `detailed` keeps the separate section and charge bar; `minimal` puts battery readings in the main reading grid. |
 | `fields` | All cards | Card defaults | Map field keys to `true` or `false`; also available under **Displayed fields** in the visual editor. |
 | `show_controls` | Chill | `true` | Make each Chill icon clickable to open controls. Set `false` to keep the icon decorative and the card display-only. |
-| `layout` | Heat pumps, Chill | `columns` | `columns`, `stacked`, or `compact`; Chill also supports `slim` for one room. |
+| `layout` | Heat pumps, Chill, Heat Battery | `columns` | Heat pumps/Chill: `columns`, `stacked`, or `compact`. Chill supports `slim` for one room; Heat Battery supports `slim` or its default detailed layout (`columns`). |
 | `hours` | History | `24` | Recorded window: `6`, `12`, `24`, or `48`. |
 | `entities` | All | Automatic | Map supported metric roles to explicit sensor entity IDs. |
 
@@ -360,3 +361,14 @@ Colors accept CSS colors and variables such as `var(--primary-color)`. Numeric s
 Clickable controls use the theme’s primary color for hover (8% tint), pressed feedback (16% tint), and keyboard focus. Hover feedback is enabled only on devices with hover support; display-only and disabled controls remain inert. The slim Chill row is one clickable control; other cards highlight their individual controls.
 
 **Advanced colors** optionally overrides `hover_color`, `pressed_color`, `focus_color`, `heating_color`, `cooling_color`, `warning_color`, `success_color` (on status), and `inactive_color` (off status). Equipment colors remain independent of interaction colors. Heating/cooling overrides also apply to the circuit’s supply/return lines. Existing themes and layouts keep their defaults when no appearance settings are supplied.
+
+### Slim Heat Battery
+
+Choose **Layout → Slim · charge and shower time** in the Heat Battery card editor for a compact row matching the slim Chill card. It shows the tank icon, title, thermal charge/progress bar, shower time and shared green/grey status dot. Readings and the status dot retain their native Home Assistant sensor-detail actions.
+
+```yaml
+type: custom:quatt-heat-battery-card
+layout: slim
+```
+
+The slim layout supports the same Appearance settings as all other cards. Displayed fields offers charge, shower time and operating status; detailed-layout temperature and storage selections are preserved when switching layouts. Missing charge shows a dash without a fabricated progress bar, and offline equipment shows Unavailable instead of stale readings.

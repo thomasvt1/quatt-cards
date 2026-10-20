@@ -6,14 +6,14 @@ export class QuattHeatBatteryCard extends BaseCard {
   static getStubConfig() { return {type:'custom:quatt-heat-battery-card'}; }
   static styles=[BaseCard.styles,css`
     ha-card{min-height:385px;display:flex;flex-direction:column}.charge{display:grid;grid-template-columns:70px minmax(0,1fr);gap:18px;align-items:center;margin:18px 0 28px}
-    .tank .icon{width:70px;height:119px;stroke-width:.5}.charge .value{font-size:31px}.charge-title{margin-bottom:7px}
+    .tank .icon{width:70px;height:119px;stroke-width:.5}.charge .value{font-size:var(--qc-value-size,31px)}.charge-title{margin-bottom:7px}
     .meter{height:10px;border-radius:5px;background:var(--qc-line);overflow:hidden}.fill{height:100%;background:var(--qc-heat);border-radius:inherit}
-    .shower{font-size:12px;margin-top:10px}.shower .value{font-size:12px;font-weight:400}
+    .shower{font-size:12px;margin-top:10px}.shower .value{font-size:var(--qc-value-size,12px);font-weight:400}
     .temperatures{display:grid;grid-template-columns:repeat(var(--count,3),minmax(0,1fr));padding:20px 0;border-top:1px solid var(--qc-line)}.temperatures .stat{align-items:center;text-align:center;padding:0 8px}.temperatures .stat+.stat{border-left:1px solid var(--qc-line)}
-    .temperatures .value{font-size:14px}.temperatures .label{font-size:11px}
+    .temperatures .value{font-size:var(--qc-value-size,14px)}.temperatures .label{font-size:11px}
     .battery-heading{display:flex;align-items:center;gap:10px;margin-bottom:18px}.battery-heading .ob-header{flex:1;min-width:0;margin-bottom:0}
-    .details{margin-top:15px;font-size:12px;color:var(--qc-secondary)}summary{cursor:pointer}.details .stat-grid{margin-top:14px}.details .value{font-size:13px}
-    @container(max-width:350px){.charge{grid-template-columns:60px minmax(0,1fr);gap:14px}.tank .icon{width:60px;height:110px}.charge .value{font-size:28px}.shower .value{font-size:12px}}
+    .details{margin-top:15px;font-size:12px;color:var(--qc-secondary)}summary{cursor:pointer}.details .stat-grid{margin-top:14px}.details .value{font-size:var(--qc-value-size,13px)}
+    @container(max-width:350px){.charge{grid-template-columns:60px minmax(0,1fr);gap:14px}.tank .icon{width:60px;height:110px}.charge .value{font-size:var(--qc-value-size,28px)}.shower .value{font-size:var(--qc-value-size,12px)}}
     ha-card.custom-fields{min-height:0}
   `];
   protected render() {

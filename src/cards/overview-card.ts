@@ -8,22 +8,22 @@ export class QuattOverviewCard extends BaseCard {
     ha-card{min-height:385px;display:flex;flex-direction:column}
     .flow{display:grid;grid-template-columns:1fr 23px 1fr 23px 1fr;align-items:start;margin:20px 0 24px}
     .node{display:flex;flex-direction:column;align-items:center;gap:5px;text-align:center;min-width:0}
-    .node .value{font-size:18px;white-space:nowrap}.node .label{font-size:11px}
+    .node .value{font-size:var(--qc-value-size,18px);white-space:nowrap}.node .label{font-size:11px}
     .symbol{height:47px;display:grid;place-items:center;margin-bottom:6px}.symbol .icon{width:49px;height:42px;stroke-width:1.1}
     .circle{width:47px;border:1.5px solid currentColor;border-radius:50%}.circle .icon{width:27px;height:27px;stroke-width:1.6}
     .electric{color:var(--qc-electric)}.heat{color:var(--qc-heat)}
     .arrow{width:23px;height:24px;margin-top:12px;fill:none;stroke:currentColor;stroke-width:1.5}
     .stat-grid{margin:0;padding:20px 0;border-top:1px solid var(--qc-line);gap:20px 14px}
-    .device-field{gap:9px}.device-field .label{order:-1;font-size:12px}.device-field .value{font-size:15px}
+    .device-field{gap:9px}.device-field .label{order:-1;font-size:12px}.device-field .value{font-size:var(--qc-value-size,15px)}
     .mode{margin-top:auto;padding-top:18px;color:var(--qc-secondary);font-size:12px}
     .flow.partial{grid-template-columns:repeat(var(--count),minmax(0,1fr))}
     .battery{border-top:1px solid var(--qc-line);padding-top:18px;margin-top:4px}
     .battery-header{display:flex;align-items:center;gap:10px;margin-bottom:14px}.battery-header .icon{width:23px;height:36px;color:var(--qc-heat)}
-    h3{font-size:14px;font-weight:600;margin:0}.battery-header .label{font-size:11px}
-    .battery-readings{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.battery-readings .stat{gap:3px}.battery-readings .value{font-size:16px}
+    h3{font-size:var(--qc-title-size,14px);font-weight:600;margin:0}.battery-header .label{font-size:11px}
+    .battery-readings{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.battery-readings .stat{gap:3px}.battery-readings .value{font-size:var(--qc-value-size,16px)}
     .charge-track{height:6px;border-radius:3px;background:var(--qc-line);overflow:hidden;margin-top:14px}.charge-fill{height:100%;background:var(--qc-heat);border-radius:inherit}
     ha-card.custom-fields{min-height:0}
-    @container(max-width:350px){.node .value{font-size:16px}.flow{grid-template-columns:1fr 16px 1fr 16px 1fr}.arrow{width:16px}.symbol .icon{width:43px}.circle .icon{width:27px}}
+    @container(max-width:350px){.node .value{font-size:var(--qc-value-size,16px)}.flow{grid-template-columns:1fr 16px 1fr 16px 1fr}.arrow{width:16px}.symbol .icon{width:43px}.circle .icon{width:27px}}
   `];
   protected render() {
     const s=this.snapshot,m=s.system;

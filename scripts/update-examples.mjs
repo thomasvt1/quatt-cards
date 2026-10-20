@@ -65,6 +65,7 @@ try {
       variants.push({type, name: `${name}-${layout}`, title: `${title} · ${layout}`, scenario: name === 'chill' ? 'cooling' : 'heating', config: {layout}, mobile: true});
     }
     if (name === 'chill') variants.push({type, name:'chill-slim', title:'Chill · slim individual room', scenario:'cooling', mobile:true, config:{layout:'slim',device:'demo-chill-1'}});
+    if (name === 'chill') variants.push({type, name:'chill-styled', title:'Chill · custom appearance', scenario:'cooling', mobile:true, config:{layout:'slim',device:'demo-chill-1',appearance:{background:'#20303c',text_color:'#ffffff',secondary_text_color:'#b0bec5',border_color:'#405565',border_radius:16,padding:12,title_size:14,value_size:22}}});
     if (name === 'overview') variants.push({type, name: 'overview-minimal', title: 'Overview · minimal heat battery', scenario: 'heating', mobile: false, config: {heat_battery_layout: 'minimal', fields: {flowRate: false, 'heatBattery.showerMinutes': false, 'heatBattery.status': false}}});
     if (name === 'heating-circuit') variants.push({type, name: 'heating-circuit-single-mobile', title: 'Heating circuit · single pump, phone', scenario: 'single', mobile: true});
   }

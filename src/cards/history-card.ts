@@ -26,24 +26,24 @@ export class QuattHistoryCard extends BaseCard {
     .period { color:var(--qc-secondary); font-size:12px; }
     .ranges { display:flex; flex-shrink:0; gap:2px; padding:3px; background:var(--qc-subtle); border-radius:8px; }
     .ranges button { border:0; background:transparent; padding:5px 9px; border-radius:5px; font-size:12px; }
-    .ranges button[aria-pressed=true] { background:var(--ha-card-background,var(--card-background-color,#fff)); color:var(--primary-color,#0288d1); }
+    :where(.ranges) button[aria-pressed=true] { background:var(--qc-background,var(--ha-card-background,var(--card-background-color,#fff))); color:var(--primary-color,#0288d1); }
     .chart { border-radius:4px; touch-action:pan-y; }
     .chart svg { display:block; width:100%; overflow:visible; }
     .chart text { font-family:inherit; font-size:11px; fill:var(--qc-secondary); }
     .axis { stroke:var(--qc-line); stroke-width:1; }
     .line { fill:none; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; }
-    .selected { stroke:var(--primary-text-color,#202530); stroke-width:1; stroke-opacity:.5; }
+    .selected { stroke:var(--qc-text,var(--primary-text-color,#202530)); stroke-width:1; stroke-opacity:.5; }
     .legend { display:flex; flex-wrap:wrap; gap:8px 18px; font-size:12px; color:var(--qc-secondary); margin-top:12px; }
     .legend button { display:flex; gap:6px; align-items:center; padding:0; border:0; background:none; color:inherit; font-size:inherit; }
     .dot { width:8px; height:8px; border-radius:50%; background:var(--color); }
     .inspector { border-top:1px solid var(--qc-line); margin-top:14px; padding-top:11px; display:flex; gap:6px 18px; flex-wrap:wrap; font-size:12px; }
     .inspector strong { font-weight:600; }
     .inspector button { border:0; padding:0; background:none; color:var(--qc-secondary); font-size:inherit; }
-    .value { color:var(--primary-text-color,#202530); }
+    .value { color:var(--qc-text,var(--primary-text-color,#202530)); }
     .inspect-hint,.footnote { color:var(--qc-secondary); font-size:11px; margin:11px 0 0; }
     .footnote { line-height:1.5; }
     .empty { min-height:200px; display:grid; place-content:center; gap:8px; text-align:center; color:var(--qc-secondary); font-size:13px; padding:10px; }
-    .empty strong { color:var(--primary-text-color,#202530); font-size:16px; }
+    .empty strong { color:var(--qc-text,var(--primary-text-color,#202530)); font-size:16px; }
     @container(max-width:450px) { .topline{margin-bottom:7px;gap:8px;} .period{font-size:11px;} .ranges button{padding:5px 8px;} .legend{gap:8px 13px;} .inspector{gap:7px 12px;} }
   `];
 

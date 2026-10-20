@@ -1,8 +1,9 @@
 import { LitElement, css, html, nothing, type PropertyValues } from 'lit';
 import { loadRegistry, watchRegistry } from './connection';
 import { buildSnapshot } from './data';
+import { appearanceFields, basicAppearanceFields, advancedAppearanceFields, validateAppearance } from './appearance';
 import { cardFields, fieldVisible } from './fields';
-import type { CardConfig, HomeAssistant, MetricRole, RegistryData } from './types';
+import type { Appearance, CardConfig, HomeAssistant, MetricRole, RegistryData } from './types';
 
 type Override = readonly [key: MetricRole, label: string, help?: string];
 const energy: Override[] = [
@@ -141,6 +142,49 @@ export class QuattCardEditor extends LitElement {
     const config={...this.config};delete config.fields;this.emitConfig(config);
   }
 
+  private updateAppearance(key: keyof Appearance, event: Event) {
+    if (!this.config) return;
+    const input = event.target as HTMLInputElement;
+    const appearance = { ...this.config.appearance };
+    if (!input.value.trim()) delete appearance[key];
+    else Object.assign(appearance, { [key]: input.type === 'number' ? Number(input.value) : input.value.trim() });
+    try { validateAppearance(appearance); input.setCustomValidity(''); }
+    catch (error) { input.setCustomValidity((error as Error).message); input.reportValidity(); return; }
+    const config = { ...this.config };
+    if (Object.keys(appearance).length) config.appearance = appearance;
+    else delete config.appearance;
+    this.emitConfig(config);
+  }
+
+  private appearanceField(field: typeof appearanceFields[number]) {
+    const [key, label, type] = field;
+    const value = this.config?.appearance?.[key];
+    return html`<label class="field" for=${`appearance-${key}`}><span>${label}${type === 'number' ? ' (px)' : ''}</span>
+      <div class="appearance-input">
+        <input id=${`appearance-${key}`} type=${type === 'number' ? 'number' : 'text'}
+          min=${type === 'number' ? field[4] : nothing} max=${type === 'number' ? field[5] : nothing} step="any"
+          .value=${value === undefined ? '' : String(value)} placeholder=${type === 'shadow' ? 'Theme default · e.g. none or 0 2px 8px #0003' : 'Theme default'}
+          @input=${(e: Event)=>(e.target as HTMLInputElement).setCustomValidity('')}
+          @change=${(e: Event)=>this.updateAppearance(key,e)} />
+        ${type === 'color' ? html`<input class="color-picker" type="color" aria-label=${`Pick ${label.toLowerCase()}`}
+          .value=${typeof value === 'string' && /^#[0-9a-f]{6}$/i.test(value) ? value : '#03a9f4'}
+          @input=${(e: Event)=>this.updateAppearance(key,e)} />` : nothing}
+      </div>
+    </label>`;
+  }
+
+  private renderAppearance() {
+    return html`<details><summary>Appearance</summary>
+      <p class="help">Leave fields empty to follow your theme. Colors accept hex, CSS variables, or transparent. Hover and pressed feedback use your theme’s primary color.</p>
+      ${basicAppearanceFields.map(field=>this.appearanceField(field))}
+      <details class="advanced-appearance"><summary>Advanced colors</summary>
+        <p class="help">Optional interaction and equipment-state overrides. Hover is a light primary-color tint; pressed is stronger. Focus uses the primary color.</p>
+        ${advancedAppearanceFields.map(field=>this.appearanceField(field))}
+      </details>
+      <button class="reset-fields" @click=${()=>{const config={...this.config!};delete config.appearance;this.emitConfig(config);}}>Reset appearance to theme</button>
+    </details>`;
+  }
+
   private entityField([key, label, help]: Override) {
     return html`<label class="field" for=${key}>
       <span id=${`${key}-label`}>${label}</span>
@@ -221,6 +265,7 @@ export class QuattCardEditor extends LitElement {
           ${[6, 12, 24, 48].map(hours => html`<option value=${hours} .selected=${(config.hours ?? 24) === hours}>Last ${hours} hours</option>`)}
         </select>
       </label>` : nothing}
+      ${this.renderAppearance()}
       <details><summary>Displayed fields</summary>
         <p class="help">Choose which readings to show. Missing optional equipment is omitted. Hiding a field does not change the equipment.</p>${isChill?html`<p class="help">Operating status and mode share one icon badge. Gray power means off or idle; blue snowflake means cooling; red heat waves mean heating. Tap the icon for controls.</p>`:nothing}
         <div class="field-options">${(cardFields[config.type]||[]).map(field=>html`<label class="field-option"><input type="checkbox" aria-label=${field.label} .checked=${fieldVisible(config,field.key)} @change=${(event:Event)=>this.toggleField(field.key,(event.target as HTMLInputElement).checked)} /><span>${field.label}</span></label>`)}</div>
@@ -238,6 +283,7 @@ export class QuattCardEditor extends LitElement {
 
   static styles = css`
     :host { display: block; color: var(--primary-text-color, #202523); font-family: var(--paper-font-body1_-_font-family, inherit); }
+    .appearance-input{display:flex;gap:8px}.appearance-input input:first-child{flex:1}.appearance-input .color-picker{width:48px;flex:none;padding:4px}.advanced-appearance{margin-top:16px}
     .editor { display: grid; gap: 16px; padding: 4px 0 12px; }
     p { margin: 0; line-height: 1.5; }
     .intro, .help, small { color: var(--secondary-text-color, #68716b); font-size: 13px; }

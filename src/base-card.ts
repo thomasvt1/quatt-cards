@@ -66,7 +66,7 @@ export abstract class BaseCard extends LitElement {
   setConfig(config: CardConfig) {
     if (!config || !config.type?.startsWith('custom:quatt-')) throw new Error('Select a Quatt card type.');
     if (config.entities && (typeof config.entities !== 'object' || Array.isArray(config.entities))) throw new Error('entities must map data roles to entity IDs.');
-    if (config.layout && !['columns','stacked','compact'].includes(config.layout)) throw new Error('layout must be columns, stacked, or compact.');
+    if (config.layout && !['columns','stacked','compact',...(config.type==='custom:quatt-chill-card'?['slim']:[])].includes(config.layout)) throw new Error('layout must be columns, stacked, compact, or slim (Chill only).');
     if (config.show_controls !== undefined && typeof config.show_controls !== 'boolean') throw new Error('show_controls must be true or false.');
     if (config.hours !== undefined && (!Number.isFinite(config.hours) || config.hours < 1 || config.hours > 48)) throw new Error('hours must be between 1 and 48.');
     validateFields(config);

@@ -200,8 +200,9 @@ export class QuattCardEditor extends LitElement {
             <option value="columns" .selected=${(config.layout ?? 'columns') === 'columns'}>C · Columns (default)</option>
             <option value="stacked" .selected=${config.layout === 'stacked'}>A · Stacked</option>
             <option value="compact" .selected=${config.layout === 'compact'}>B · Compact</option>
+            ${!isPump?html`<option value="slim" .selected=${config.layout==='slim'}>Slim · individual room</option>`:nothing}
           </select>
-          <small id="layout-help">Columns shows up to three units per row. Additional units wrap onto a new row.</small>
+          <small id="layout-help">${config.layout==='slim'?'Select one Chill device for a slim room row.':'Columns shows up to three units per row. Additional units wrap onto a new row.'}</small>
         </label>` : nothing}
       ${config.type==='custom:quatt-overview-card'?html`<label class="field" for="heat-battery-layout"><span>Heat battery layout</span>
         <select id="heat-battery-layout" aria-label="Heat battery layout" @change=${(event:Event)=>this.updateConfig('heat_battery_layout',this.inputValue(event))}>

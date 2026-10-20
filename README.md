@@ -50,6 +50,7 @@ Synthetic readings only. Regenerate these images with `npm run update:examples`.
 | Quatt Chill Rooms | ![Quatt Chill Rooms, light](examples/chill-light.png) | ![Quatt Chill Rooms, dark](examples/chill-dark.png) |
 | Quatt Chill Rooms · stacked | ![Quatt Chill Rooms · stacked, light](examples/chill-stacked-light.png) | ![Quatt Chill Rooms · stacked, dark](examples/chill-stacked-dark.png) |
 | Quatt Chill Rooms · compact | ![Quatt Chill Rooms · compact, light](examples/chill-compact-light.png) | ![Quatt Chill Rooms · compact, dark](examples/chill-compact-dark.png) |
+| Chill · slim individual room | ![Chill · slim individual room, light](examples/chill-slim-light.png) | ![Chill · slim individual room, dark](examples/chill-slim-dark.png) |
 | Quatt Status | ![Quatt Status, light](examples/status-light.png) | ![Quatt Status, dark](examples/status-dark.png) |
 
 Phone previews: Quatt Heating Circuit ([light](examples/heating-circuit-mobile-light.png), [dark](examples/heating-circuit-mobile-dark.png)) · Quatt Overview ([light](examples/overview-mobile-light.png), [dark](examples/overview-mobile-dark.png)) · Quatt Performance ([light](examples/history-mobile-light.png), [dark](examples/history-mobile-dark.png)) · Quatt Heat Pumps ([light](examples/heat-pump-mobile-light.png), [dark](examples/heat-pump-mobile-dark.png)) · Quatt Heat Battery ([light](examples/heat-battery-mobile-light.png), [dark](examples/heat-battery-mobile-dark.png)) · Quatt Chill Rooms ([light](examples/chill-mobile-light.png), [dark](examples/chill-mobile-dark.png)) · Quatt Status ([light](examples/status-mobile-light.png), [dark](examples/status-mobile-dark.png))
@@ -176,7 +177,7 @@ layout: columns
 | `heat_battery_layout` | Overview | `detailed` | `detailed` keeps the separate section and charge bar; `minimal` puts battery readings in the main reading grid. |
 | `fields` | All cards | Card defaults | Map field keys to `true` or `false`; also available under **Displayed fields** in the visual editor. |
 | `show_controls` | Chill | `true` | Make each Chill icon clickable to open controls. Set `false` to keep the icon decorative and the card display-only. |
-| `layout` | Heat pumps, Chill | `columns` | `columns`, `stacked`, or `compact`. |
+| `layout` | Heat pumps, Chill | `columns` | `columns`, `stacked`, or `compact`; Chill also supports `slim` for one room. |
 | `hours` | History | `24` | Recorded window: `6`, `12`, `24`, or `48`. |
 | `entities` | All | Automatic | Map supported metric roles to explicit sensor entity IDs. |
 
@@ -319,3 +320,15 @@ System entity overrides support `electricPower`, `heatPower`, `cop`, `supplyTemp
 Chill accepts both the reported **On working** status and raw **ON_WORKING** spelling, combined with the selected Cooling/Heating mode. **On target temperature reached** (`ON_TARGET_TEMPERATURE_REACHED`) remains enabled and maintaining, so it keeps the blue cooling/red heating badge. This is distinct from actively producing heating/cooling; the original status stays in the tooltip and accessible description. Missing mode uses a neutral tick. Off and other idle/standby states retain their gray power indicator; unfamiliar or missing reports remain distinct.
 
 Explicit warning/error/fault diagnostics use an amber warning badge. **Warning disconnected** also disables the native-control launcher and appears as unavailable in Status. Heating-system conflict warnings preserve their reason without claiming active cooling. See the [audited Chill state inventory and regression matrix](docs/chill-states.md) for every known state, precedence rules, sources and the limits of the free-form API. CI requires 100% unit coverage of the Chill state interpreter alongside the 81% minimum for every card.
+
+### Slim Chill room
+
+Select **Slim · individual room** under Layout and choose a **Chill device**. The whole row opens native climate controls; unavailable units disable controls. Existing status colors, warnings, field visibility, and `show_controls: false` apply.
+
+```yaml
+type: custom:quatt-chill-card
+layout: slim
+device: YOUR_CHILL_DEVICE_ID
+```
+
+If your installation has multiple Chills, select a device; the slim layout never picks an arbitrary room.

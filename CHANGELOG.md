@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.11.0
+
+- Add a Slim individual-room layout for Chill with current and target temperatures, operating status, fan speed, and tap-to-open native controls.
+- Add the layout to the visual editor, document single-device selection, and include light/dark previews and responsive browser coverage.
+
 ## 0.10.1
 
 - Combine duplicate Heat Battery status/charging entries and add a separate Heat Charger row showing its own electrical input.

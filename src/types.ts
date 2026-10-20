@@ -25,7 +25,14 @@ export interface HomeAssistant {
   connection?: { subscribeEvents?: (callback: (event: unknown) => void, eventType: string) => Promise<() => void> };
 }
 export type CardType = 'custom:quatt-heating-circuit-card' | 'custom:quatt-overview-card' | 'custom:quatt-history-card' | 'custom:quatt-heat-pump-card' | 'custom:quatt-heat-battery-card' | 'custom:quatt-chill-card' | 'custom:quatt-status-card';
+export interface Appearance {
+  background?: string; text_color?: string; secondary_text_color?: string; border_color?: string;
+  border_width?: number; border_radius?: number; padding?: number; title_size?: number; value_size?: number;
+  shadow?: string; hover_color?: string; pressed_color?: string; focus_color?: string;
+  heating_color?: string; cooling_color?: string; warning_color?: string; success_color?: string; inactive_color?: string;
+}
 export interface CardConfig {
+  appearance?: Appearance;
   type: CardType; title?: string; integration_id?: string; device?: string;
   fields?: Record<string, boolean>;
   heat_battery_layout?: 'detailed' | 'minimal';

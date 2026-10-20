@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.12.0
+
+- Add native Appearance controls to all seven cards: background, text, borders, padding, typography, shadow, and reset to theme defaults.
+- Derive hover/pressed feedback and keyboard focus from the primary theme color, with optional advanced interaction and equipment-state color overrides.
+
 ## 0.11.0
 
 - Add a Slim individual-room layout for Chill with current and target temperatures, operating status, fan speed, and tap-to-open native controls.

@@ -7,14 +7,14 @@ export class QuattHeatPumpCard extends BaseCard {
   static styles=[BaseCard.styles,css`
     ha-card{min-height:385px}.units{display:grid;grid-template-columns:repeat(var(--columns,2),minmax(0,1fr));gap:24px 0}
     .unit{min-width:0;padding:0 14px;border-left:1px solid var(--qc-line)}.unit.row-start{padding-left:0;border-left:0}.unit:last-child{padding-right:0}
-    h3{margin:0 0 16px;font-size:13px;font-weight:600;overflow-wrap:anywhere}
+    h3{margin:0 0 16px;font-size:var(--qc-title-size,13px);font-weight:600;overflow-wrap:anywhere}
     .fields{display:grid;gap:14px}
     .units.single.columns .fields{grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 18px}
     .units.single.columns h3{margin-bottom:24px}
     ha-card.single-device{min-height:0}ha-card.custom-fields{min-height:0}.fields:empty{display:none}
     .units.stacked,.units.compact{grid-template-columns:1fr;gap:0}.stacked .unit,.compact .unit{padding:15px 0;border-left:0;border-top:1px solid var(--qc-line)}.stacked .unit:first-child,.compact .unit:first-child{padding-top:0;border:0}
     .stacked .fields{grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.compact .fields{grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.compact .device-field>.icon{display:none}.compact h3{margin-bottom:12px}
-    @container(max-width:360px){.unit{padding:0 10px}.device-field{gap:7px}.device-field>.icon{width:19px}.device-field .value{font-size:14px}.device-field .label{font-size:10px}.fields{gap:15px}}
+    @container(max-width:360px){.unit{padding:0 10px}.device-field{gap:7px}.device-field>.icon{width:19px}.device-field .value{font-size:var(--qc-value-size,14px)}.device-field .label{font-size:10px}.fields{gap:15px}}
     .units.three .device-field>.icon{display:none}.units.three .unit{padding-right:8px;padding-left:10px}.units.three .row-start{padding-left:0}
   `];
   private unit(device:QuattDevice,index:number,columns:number) {

@@ -51,6 +51,7 @@ Synthetic readings only. Regenerate these images with `npm run update:examples`.
 | Quatt Chill Rooms · stacked | ![Quatt Chill Rooms · stacked, light](examples/chill-stacked-light.png) | ![Quatt Chill Rooms · stacked, dark](examples/chill-stacked-dark.png) |
 | Quatt Chill Rooms · compact | ![Quatt Chill Rooms · compact, light](examples/chill-compact-light.png) | ![Quatt Chill Rooms · compact, dark](examples/chill-compact-dark.png) |
 | Chill · slim individual room | ![Chill · slim individual room, light](examples/chill-slim-light.png) | ![Chill · slim individual room, dark](examples/chill-slim-dark.png) |
+| Chill · custom appearance | ![Chill · custom appearance, light](examples/chill-styled-light.png) | ![Chill · custom appearance, dark](examples/chill-styled-dark.png) |
 | Quatt Status | ![Quatt Status, light](examples/status-light.png) | ![Quatt Status, dark](examples/status-dark.png) |
 
 Phone previews: Quatt Heating Circuit ([light](examples/heating-circuit-mobile-light.png), [dark](examples/heating-circuit-mobile-dark.png)) · Quatt Overview ([light](examples/overview-mobile-light.png), [dark](examples/overview-mobile-dark.png)) · Quatt Performance ([light](examples/history-mobile-light.png), [dark](examples/history-mobile-dark.png)) · Quatt Heat Pumps ([light](examples/heat-pump-mobile-light.png), [dark](examples/heat-pump-mobile-dark.png)) · Quatt Heat Battery ([light](examples/heat-battery-mobile-light.png), [dark](examples/heat-battery-mobile-dark.png)) · Quatt Chill Rooms ([light](examples/chill-mobile-light.png), [dark](examples/chill-mobile-dark.png)) · Quatt Status ([light](examples/status-mobile-light.png), [dark](examples/status-mobile-dark.png))
@@ -332,3 +333,30 @@ device: YOUR_CHILL_DEVICE_ID
 ```
 
 If your installation has multiple Chills, select a device; the slim layout never picks an arbitrary room.
+
+### Appearance
+
+All seven cards have an **Appearance** section in the visual editor. No card-mod installation is needed. Set a background (including `transparent`), primary/secondary text colors, border color/width/radius, padding, title/value sizes, or a CSS box shadow. Leave a field empty to keep its existing theme/layout default; **Reset appearance to theme** removes only appearance overrides.
+
+```yaml
+type: custom:quatt-chill-card
+layout: slim
+device: YOUR_CHILL_DEVICE_ID
+appearance:
+  background: "#20303c"
+  text_color: "#ffffff"
+  secondary_text_color: "#b0bec5"
+  border_color: "#405565"
+  border_width: 1
+  border_radius: 16
+  padding: 12
+  title_size: 14
+  value_size: 22
+  shadow: "0 2px 8px #0003"
+```
+
+Colors accept CSS colors and variables such as `var(--primary-color)`. Numeric sizes are pixels: border width 0–8, radius/padding 0–48, title size 10–36, and value size 10–48. Larger sizes may need a wider card. Choose text colors with suitable contrast against your background. Shadows accept CSS `box-shadow` values (`none` disables them).
+
+Clickable controls use the theme’s primary color for hover (8% tint), pressed feedback (16% tint), and keyboard focus. Hover feedback is enabled only on devices with hover support; display-only and disabled controls remain inert. The slim Chill row is one clickable control; other cards highlight their individual controls.
+
+**Advanced colors** optionally overrides `hover_color`, `pressed_color`, `focus_color`, `heating_color`, `cooling_color`, `warning_color`, `success_color` (on status), and `inactive_color` (off status). Equipment colors remain independent of interaction colors. Heating/cooling overrides also apply to the circuit’s supply/return lines. Existing themes and layouts keep their defaults when no appearance settings are supplied.

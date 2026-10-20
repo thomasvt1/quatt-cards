@@ -8,24 +8,24 @@ export class QuattHeatingCircuitCard extends BaseCard {
   static getStubConfig() { return {type:'custom:quatt-heating-circuit-card'}; }
   getCardSize() { return 6; }
   static styles=[BaseCard.styles,css`
-    :host{--qc-supply:var(--quatt-supply-color,#e34d59);--qc-return:var(--quatt-return-color,#00a9ed)}
+    :host{--qc-supply:var(--qc-heating-override,var(--quatt-supply-color,#e34d59));--qc-return:var(--qc-cooling-override,var(--quatt-return-color,#00a9ed))}
     .ob-header{margin-bottom:14px}.summary{display:flex;flex-wrap:wrap;gap:8px 20px;margin-bottom:14px}
     .summary-item{display:flex;align-items:center;gap:7px;min-width:0}.summary-item .label{font-size:13px}
-    .summary-item .value{font-size:17px}.summary-item>.icon{width:20px;height:22px}
+    .summary-item .value{font-size:var(--qc-value-size,17px)}.summary-item>.icon{width:20px;height:22px}
     .summary-item.electric>.icon{color:var(--qc-return)}.summary-item.heat>.icon{color:var(--qc-supply)}
     .diagram{width:100%}.loop{position:relative;display:grid;grid-template-columns:90px minmax(0,1fr) 90px;grid-template-rows:50px auto 48px 51px;padding:0 12px;isolation:isolate}
     .equipment{display:contents}.unit{grid-row:2;text-align:center;min-width:0;position:relative;padding-top:26px;align-self:stretch}.pump{grid-column:1}.home{grid-column:3}
     .unit .icon{display:block;margin:auto;width:70px;height:62px;max-width:100%;stroke-width:1.05}
-    .unit.home .icon{width:62px;stroke-width:1.3}.unit-name{position:relative;display:table;margin:3px auto 0;background:var(--ha-card-background,var(--card-background-color,#fff));padding:0 4px;font-size:12px;line-height:1.35;overflow-wrap:anywhere;max-width:100%}
+    .unit.home .icon{width:62px;stroke-width:1.3}.unit-name{position:relative;display:table;margin:3px auto 0;background:var(--qc-background,var(--ha-card-background,var(--card-background-color,#fff)));padding:0 4px;font-size:12px;line-height:1.35;overflow-wrap:anywhere;max-width:100%}
     .home .unit-name{transform:translateX(-8px);background:transparent}
-    .unit.offline .icon{color:var(--qc-secondary)}.unavailable{position:relative;font-size:11px;color:var(--qc-secondary);display:block;background:var(--ha-card-background,var(--card-background-color,#fff))}
+    .unit.offline .icon{color:var(--qc-secondary)}.unavailable{position:relative;font-size:11px;color:var(--qc-secondary);display:block;background:var(--qc-background,var(--ha-card-background,var(--card-background-color,#fff)))}
     .pipes{position:absolute;pointer-events:none;z-index:-1}.supply-pipe{top:50px;left:57px;right:57px;height:28px;border:3px solid var(--qc-supply);border-bottom:0;border-radius:8px 8px 0 0}
     .return-pipe{top:130.25px;bottom:85px;left:55.5px;right:42.5833px;border:3px solid var(--qc-return);border-top:0;border-radius:0 0 8px 8px}
     .pump::before{content:'';position:absolute;top:77.67px;left:calc(50% - 1.5px);height:4px;border-left:3px solid var(--qc-return);z-index:-1}
     .loop:not(.ordered) .pump::before,.loop:not(.ordered) .home::after{display:none}
     .supply-reading{grid-row:1;grid-column:1/-1;height:50px;text-align:center;display:grid;justify-items:center;align-content:start}
     .inline-readings{grid-row:3;grid-column:1/-1;display:flex;justify-content:center;align-items:center;gap:12px;font-size:13px;padding-top:24px;height:48px;white-space:nowrap}
-    .inline-readings .value{font-size:13px;font-weight:500}.delta{display:flex;gap:4px}
+    .inline-readings .value{font-size:var(--qc-value-size,13px);font-weight:500}.delta{display:flex;gap:4px}
     .return-reading{grid-row:4;grid-column:1/-1;display:grid;justify-items:center;text-align:center;min-height:51px;padding-top:7px}.return-reading .label,.supply-reading .label{font-size:12px}
     .storage{--thermal-gap:38px;grid-row:2;grid-column:2;display:flex;justify-content:center;align-items:flex-start;gap:38px;padding:26px 10px 24px;min-width:0;min-height:185px}
     .charger{display:flex;flex-direction:column;align-items:center;position:relative;flex:0 0 85px;min-width:0;text-align:center}
@@ -35,15 +35,15 @@ export class QuattHeatingCircuitCard extends BaseCard {
     .thermal-shaft{position:absolute;top:7px;left:1px;right:1px;border-top:2px dashed currentColor}
     .thermal-line::before,.thermal-line::after{content:'';position:absolute;top:4px;width:6px;height:6px;border-top:2px solid currentColor;border-right:2px solid currentColor}
     .thermal-line::before{left:1px;transform:rotate(-135deg)}.thermal-line::after{right:1px;transform:rotate(45deg)}
-    .charger-input{display:flex;justify-content:center;flex-wrap:wrap;gap:0 4px;margin-top:4px;font-size:12px}.charger-input .value{font-size:13px;font-weight:500}
+    .charger-input{display:flex;justify-content:center;flex-wrap:wrap;gap:0 4px;margin-top:4px;font-size:12px}.charger-input .value{font-size:var(--qc-value-size,13px);font-weight:500}
     .battery{display:flex;gap:10px;align-items:flex-start;min-width:0;flex:0 1 190px;padding-top:20px;position:relative}.battery>.icon{width:42px;height:88px;stroke-width:1.05;flex:none}
     .battery-data{min-width:0;flex:1}.battery-title{position:absolute;top:0;left:0;font-size:12px;white-space:nowrap}
-    .charge .value{font-size:23px;line-height:1.25}.bar{height:7px;background:var(--qc-line);border-radius:8px;margin:8px 0 10px;overflow:hidden}.bar>span{display:block;height:100%;background:var(--qc-heat);border-radius:inherit}
-    .tank-reading{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-top:4px}.tank-reading .value{font-size:13px;white-space:nowrap}.tank-reading .label{font-size:11px}
+    .charge .value{font-size:var(--qc-value-size,23px);line-height:1.25}.bar{height:7px;background:var(--qc-line);border-radius:8px;margin:8px 0 10px;overflow:hidden}.bar>span{display:block;height:100%;background:var(--qc-heat);border-radius:inherit}
+    .tank-reading{display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin-top:4px}.tank-reading .value{font-size:var(--qc-value-size,13px);white-space:nowrap}.tank-reading .label{font-size:11px}
     .loop:not(.has-storage) .unit{min-height:155px}
     .extra{display:flex;flex-wrap:wrap;gap:12px 24px;margin-top:14px}.extra:empty{display:none}
     @container(max-width:620px){
-      .summary{gap:8px 14px}.summary-item{gap:5px}.summary-item .label{font-size:12px}.summary-item .value{font-size:15px}
+      .summary{gap:8px 14px}.summary-item{gap:5px}.summary-item .label{font-size:12px}.summary-item .value{font-size:var(--qc-value-size,15px)}
       .loop{grid-template-columns:76px minmax(0,1fr) 76px;grid-template-rows:50px auto auto 48px 51px;padding:0 4px}.supply-pipe{top:107px;left:70px;right:60px;height:0;border:0;border-top:3px solid var(--qc-supply);border-radius:0}.supply-reading{transform:translateY(30px)}
       .inline-readings{grid-row:4}.return-reading{grid-row:5}
       .storage{--thermal-gap:28px;grid-row:3;grid-column:1/-1;margin:0 8px;padding:35px 0 30px;gap:28px;min-height:190px}
@@ -52,7 +52,7 @@ export class QuattHeatingCircuitCard extends BaseCard {
       .pump::before{top:57px;left:0;width:10px;height:30px;border-top:3px solid var(--qc-return);border-radius:8px 0 0 0}
       .relationship{height:118px;}.charger{flex-basis:80px}.battery{flex-basis:165px;gap:7px}.battery>.icon{width:35px}
     }
-    @container(max-width:380px){.summary-item>.icon{width:17px}.summary{gap:6px 12px}.summary-item .label{font-size:11px}.summary-item .value{font-size:14px}.storage{--thermal-gap:22px;gap:22px;margin:0 6px}.charger{flex-basis:75px}.battery{flex-basis:150px}.tank-reading{gap:4px}.tank-reading .value{font-size:12px}}
+    @container(max-width:380px){.summary-item>.icon{width:17px}.summary{gap:6px 12px}.summary-item .label{font-size:11px}.summary-item .value{font-size:var(--qc-value-size,14px)}.storage{--thermal-gap:22px;gap:22px;margin:0 6px}.charger{flex-basis:75px}.battery{flex-basis:150px}.tank-reading{gap:4px}.tank-reading .value{font-size:var(--qc-value-size,12px)}}
   `];
   private summary(key:string,label:string,reading:Reading|undefined,symbol:string,tone='') {
     return this.showField(key)?html`<div class=${`summary-item ${tone}`}>${icon(symbol)}<span class="label">${label}</span>${this.value(reading,label,'value',key==='cop'?1:2)}</div>`:nothing;

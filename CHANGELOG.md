@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.13.0
+
+- Add a Slim Heat Battery layout with the tank icon, thermal charge and progress bar, shower time, and the shared green/grey status dot.
+- Preserve sensor-detail access, appearance settings and detailed-layout field choices; handle missing or offline equipment without stale readings.
+
 ## 0.12.0
 
 - Add native Appearance controls to all seven cards: background, text, borders, padding, typography, shadow, and reset to theme defaults.

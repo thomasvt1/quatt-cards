@@ -16,6 +16,11 @@ export const cardFields:Record<CardType,FieldOption[]>={
   'custom:quatt-history-card': [...power,field('mode','Operating-mode timeline')],
   'custom:quatt-status-card': [field('mode','Operating mode'),field('connectivity','Connectivity and availability'),field('defrost','Defrost'),field('heatBattery','Heat battery and hot water'),field('heatCharger','Heat charger'),field('limits','COP limits and silent mode'),field('alerts','Faults and water warnings')],
 };
+export function layoutFields(config: CardConfig): FieldOption[] {
+  const fields=cardFields[config.type]||[];
+  if (config.type!=='custom:quatt-heat-battery-card'||config.layout!=='slim') return fields;
+  return fields.filter(field=>['charge','showerMinutes','status'].includes(field.key));
+}
 export function fieldVisible(config:CardConfig,key:string):boolean {
   return config.fields?.[key] ?? cardFields[config.type]?.find(f=>f.key===key)?.default ?? true;
 }

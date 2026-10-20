@@ -2,7 +2,7 @@ import { LitElement, css, html, nothing, type PropertyValues } from 'lit';
 import { loadRegistry, watchRegistry } from './connection';
 import { buildSnapshot } from './data';
 import { appearanceFields, basicAppearanceFields, advancedAppearanceFields, validateAppearance } from './appearance';
-import { cardFields, fieldVisible } from './fields';
+import { layoutFields, fieldVisible } from './fields';
 import type { Appearance, CardConfig, HomeAssistant, MetricRole, RegistryData } from './types';
 
 type Override = readonly [key: MetricRole, label: string, help?: string];
@@ -139,7 +139,11 @@ export class QuattCardEditor extends LitElement {
   }
   private resetFields() {
     if(!this.config)return;
-    const config={...this.config};delete config.fields;this.emitConfig(config);
+    const config={...this.config},fields={...this.config.fields};
+    for(const field of layoutFields(config))delete fields[field.key];
+    if(Object.keys(fields).length)config.fields=fields;
+    else delete config.fields;
+    this.emitConfig(config);
   }
 
   private updateAppearance(key: keyof Appearance, event: Event) {
@@ -248,6 +252,12 @@ export class QuattCardEditor extends LitElement {
           </select>
           <small id="layout-help">${config.layout==='slim'?'Select one Chill device for a slim room row.':'Columns shows up to three units per row. Additional units wrap onto a new row.'}</small>
         </label>` : nothing}
+      ${isBattery ? html`<label class="field" for="layout"><span>Layout</span>
+        <select id="layout" aria-label="Layout" @change=${(event:Event)=>this.updateConfig('layout',this.inputValue(event))}>
+          <option value="columns" .selected=${config.layout!=='slim'}>Detailed (default)</option>
+          <option value="slim" .selected=${config.layout==='slim'}>Slim · charge and shower time</option>
+        </select><small>Slim shows charge, shower time and the status dot. Tank temperatures and storage details remain in Detailed.</small>
+      </label>` : nothing}
       ${config.type==='custom:quatt-overview-card'?html`<label class="field" for="heat-battery-layout"><span>Heat battery layout</span>
         <select id="heat-battery-layout" aria-label="Heat battery layout" @change=${(event:Event)=>this.updateConfig('heat_battery_layout',this.inputValue(event))}>
           <option value="detailed" .selected=${config.heat_battery_layout!=='minimal'}>Detailed · separate section</option>
@@ -268,7 +278,7 @@ export class QuattCardEditor extends LitElement {
       ${this.renderAppearance()}
       <details><summary>Displayed fields</summary>
         <p class="help">Choose which readings to show. Missing optional equipment is omitted. Hiding a field does not change the equipment.</p>${isChill?html`<p class="help">Operating status and mode share one icon badge. Gray power means off or idle; blue snowflake means cooling; red heat waves mean heating. Tap the icon for controls.</p>`:nothing}
-        <div class="field-options">${(cardFields[config.type]||[]).map(field=>html`<label class="field-option"><input type="checkbox" aria-label=${field.label} .checked=${fieldVisible(config,field.key)} @change=${(event:Event)=>this.toggleField(field.key,(event.target as HTMLInputElement).checked)} /><span>${field.label}</span></label>`)}</div>
+        <div class="field-options">${layoutFields(config).map(field=>html`<label class="field-option"><input type="checkbox" aria-label=${field.label} .checked=${fieldVisible(config,field.key)} @change=${(event:Event)=>this.toggleField(field.key,(event.target as HTMLInputElement).checked)} /><span>${field.label}</span></label>`)}</div>
         <button class="reset-fields" @click=${()=>this.resetFields()}>Reset displayed fields</button>
       </details>
       <details><summary>Entity overrides</summary>

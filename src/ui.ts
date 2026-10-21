@@ -16,6 +16,21 @@ export const cardStyles = css`
     border-radius: var(--qc-radius,var(--ha-card-border-radius, 12px)); background: var(--qc-background,var(--ha-card-background,var(--card-background-color,#fff)));
     box-shadow: var(--qc-shadow,none); overflow: hidden;
   }
+  .skeleton-content{animation:quatt-loading 1.5s ease-in-out infinite}
+  .skeleton-block{background:color-mix(in srgb,var(--qc-secondary) 18%,transparent);border-radius:6px}
+  .skeleton-title{width:42%;height:18px;margin-bottom:24px}
+  .skeleton-body{display:flex;align-items:center;gap:20px;min-height:150px}
+  .skeleton-icon{width:64px;height:100px;flex:none;border-radius:12px}
+  .skeleton-readings{display:grid;gap:14px;flex:1;min-width:0}.skeleton-value{width:55%;height:26px}.skeleton-line{width:85%;height:12px}
+  .skeleton-bar{height:8px;margin-top:20px;width:100%}
+  ha-card.slim-loading{min-height:0;padding:var(--qc-padding,12px 14px)}
+  .slim-loading .skeleton-content{display:grid;grid-template-columns:38px minmax(0,1fr);gap:8px 12px;min-height:64px}
+  .slim-loading .skeleton-title{grid-column:2;grid-row:1;height:13px;width:55%;margin:0}
+  .slim-loading .skeleton-body{display:contents}.slim-loading .skeleton-icon{grid-column:1;grid-row:1/4;width:32px;height:60px}
+  .slim-loading .skeleton-readings{grid-column:2;grid-row:2;display:flex;justify-content:space-between;align-items:center;gap:12px}
+  .slim-loading .skeleton-value{width:45%;height:11px}.slim-loading .skeleton-line{width:23%;height:20px}
+  .slim-loading .skeleton-bar{grid-column:2;grid-row:3;margin:0;height:6px}
+  @keyframes quatt-loading{0%,100%{opacity:.55}50%{opacity:1}}
   .ob-header { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 18px; }
   h2 { margin: 0; font-size:var(--qc-title-size,18px); line-height: 1.3; font-weight: 600; overflow-wrap: anywhere; letter-spacing: -.2px; }
   .subtitle { color: var(--qc-secondary); font-size: 12px; }

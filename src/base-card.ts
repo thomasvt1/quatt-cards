@@ -40,7 +40,7 @@ export abstract class BaseCard extends LitElement {
     const key = value.connection || value.callWS || value;
     if(this.connectionKey !== key) {
       this.connectionKey = key; this.registryStop?.(); this.registryStop = undefined;
-      this.registryLoaded = false; this.registryGeneration++; this.cached = undefined;
+      this.registryLoaded = false; this.registryError = ''; this.registryGeneration++; this.cached = undefined;
     }
     const relevant = !old || !this.cached || old.locale !== value.locale || old.language !== value.language || old.config !== value.config || old.themes !== value.themes
       || [...this.trackedIds].some(id => old.states[id] !== value.states[id]);
@@ -108,15 +108,40 @@ export abstract class BaseCard extends LitElement {
       const registry = await loadRegistry(this._hass);
       if (generation !== this.registryGeneration) return;
       this.registry = registry; this.registryLoaded = true; this.registryError = ''; this.invalidate();
-    } catch { this.registryError = 'Could not read the entity registry. Reload the dashboard to retry.'; this.invalidate(); }
+    } catch {
+      if (generation !== this.registryGeneration) return;
+      this.registryError = 'Could not read the entity registry. Reload the dashboard to retry.'; this.invalidate();
+    }
     finally {
       this.registryLoading = false;
       if(generation !== this.registryGeneration && this.isConnected) void this.ensureRegistry();
     }
   }
+  protected get discoveryReady() { return Boolean(this._hass && this.registryLoaded); }
+
+  protected abstract renderContent(): unknown;
+
+  protected render() {
+    if (!this.registryLoaded && !this.registryError) return this.renderSkeleton();
+    return this.renderContent();
+  }
+
+  private renderSkeleton() {
+    const slim=this.config.layout==='slim';
+    return html`<ha-card class=${`loading-card${slim?' slim-loading':''}`} role="status" aria-label="Loading Quatt data" aria-busy="true">
+      <div class="skeleton-content" aria-hidden="true">
+        <div class="skeleton-block skeleton-title"></div>
+        <div class="skeleton-body"><div class="skeleton-block skeleton-icon"></div><div class="skeleton-readings">
+          <div class="skeleton-block skeleton-value"></div><div class="skeleton-block skeleton-line"></div>
+        </div></div>
+        <div class="skeleton-block skeleton-bar"></div>
+      </div>
+    </ha-card>`;
+  }
+
   protected invalidate() { this.cached = undefined; this.requestUpdate(); }
   protected showField(key:string) { return fieldVisible(this.config,key); }
-  protected shouldUpdate(_changed: PropertyValues) { return Boolean(this.config && this._hass); }
+  protected shouldUpdate(_changed: PropertyValues) { return Boolean(this.config); }
   protected format(value: number | null, unit: string, digits = 1) {
     if (value == null || !Number.isFinite(value)) return '—';
     if (unit === 'W' && Math.abs(value) >= 1000) { value /= 1000; unit = 'kW'; }

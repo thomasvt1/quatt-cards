@@ -83,7 +83,7 @@ export class QuattHistoryCard extends BaseCard {
     });
   }
   private async refreshHistory() {
-    if (!this.isConnected || !this.config) return;
+    if (!this.isConnected || !this.config || !this.discoveryReady) return;
     const sources = this.series;
     const key = this.hass.connection || this.hass.callApi || this.hass;
     const signature = JSON.stringify([sources, this.rangeHours, Math.floor(Date.now() / 60_000)]);
@@ -173,7 +173,7 @@ export class QuattHistoryCard extends BaseCard {
     return source.kind==='mode'?(value==null?'—':historyModes[value]?.label||'—'):this.format(value,source.kind==='power'?'kW':'',2);
   }
 
-  protected render() {
+  protected renderContent() {
     const sources = this.series;
     const result = this.history;
     const hasData = result && sources.some(s=>(result.series[s.entityId]||[]).some(p=>p.value!=null));

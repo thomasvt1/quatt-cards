@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.13.1
+
+- Show theme-aware skeletons during initial discovery across all seven cards, including compact placeholders for Slim layouts.
+- Keep genuine registry errors visible after loading, ignore stale connection failures, and respect reduced-motion preferences.
+
 ## 0.13.0
 
 - Add a Slim Heat Battery layout with the tank icon, thermal charge and progress bar, shower time, and the shared green/grey status dot.

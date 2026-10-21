@@ -24,7 +24,7 @@ export class QuattHeatPumpCard extends BaseCard {
       ${this.selectedField('status','Status',{...m.status,value:null,text:status,unit:''},!device.available?'warning':this.on(m.defrost)?'snow':'dot','heat')}
     </div>${this.showField('compressorSpeed')&&m.compressorSpeed||this.showField('outdoorTemperature')&&m.outdoorTemperature?html`<details class="detail-readings"><summary>More readings</summary><div class="stat-grid">${this.showField('compressorSpeed')?this.metric('Compressor',m.compressorSpeed,true):nothing}${this.showField('outdoorTemperature')?this.metric('Outside',m.outdoorTemperature,true):nothing}</div></details>`:nothing}</article>`;
   }
-  protected render() {
+  protected renderContent() {
     const devices=this.snapshot.heatPumps.filter(d=>!this.config.device||d.id===this.config.device),columns=Math.min(3,Math.max(1,devices.length));
     return html`<ha-card class=${`${devices.length===1?'single-device':''} ${this.config.fields?'custom-fields':''}`}>${this.renderHeader('Heat pumps')}${this.renderNotice()}${devices.length?html`<div class=${`units ${this.config.layout||'columns'} ${columns===3?'three':''} ${devices.length===1?'single':''}`} style=${`--columns:${columns}`}>${devices.map((d,i)=>this.unit(d,i,columns))}</div>`:html`<p class="empty">No heat pump readings found. Select a Quatt installation${this.config.device?' or another device':''}.</p>`}</ha-card>`;
   }

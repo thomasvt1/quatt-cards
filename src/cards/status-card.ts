@@ -12,7 +12,7 @@ export class QuattStatusCard extends BaseCard {
     .row strong{font-size:13px;font-weight:500;display:block}.row small{display:block;color:var(--qc-secondary);font-size:12px;margin-top:3px;line-height:1.5}
     button.row:hover strong{text-decoration:underline;text-underline-offset:3px}.row>span:last-child{min-width:0;overflow-wrap:anywhere}
   `];
-  protected render() {
+  protected renderContent() {
     const rows=this.snapshot.status.filter(row=>this.showField(statusField(row.key)));
     return html`<ha-card class=${this.config.fields?'custom-fields':''}>${this.renderHeader('Status')}${this.renderNotice()}<div class="rows" role="list" aria-label="Quatt system status">${rows.map(row=>{
       const content=html`<span class=${`disc ${row.tone}`}>${icon(row.icon)}</span><span><strong>${row.title}</strong>${row.detail?html`<small>${row.detail}</small>`:''}</span>`;

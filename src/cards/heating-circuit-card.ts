@@ -60,7 +60,7 @@ export class QuattHeatingCircuitCard extends BaseCard {
   private tankReading(key:string,label:string,reading?:Reading) {
     return this.showField(`heatBattery.${key}`)&&reading?html`<div class="tank-reading"><span class="label">${label}</span>${this.value(reading,`Heat battery ${label}`)}</div>`:nothing;
   }
-  protected render() {
+  protected renderContent() {
     const snapshot=this.snapshot,{pumps,ordered,supply,returnTemperature,delta}=circuitReadings(snapshot,this.config);
     const battery=snapshot.heatBattery,charger=snapshot.heatCharger,m=battery?.metrics;
     const duo=pumps.length===2;

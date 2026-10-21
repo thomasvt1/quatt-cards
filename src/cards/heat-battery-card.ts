@@ -60,7 +60,7 @@ export class QuattHeatBatteryCard extends BaseCard {
     </div></ha-card>`;
   }
 
-  protected render() {
+  protected renderContent() {
     const s=this.snapshot,device=s.heatBattery,m=device?.metrics,c=s.heatCharger?.metrics;
     if(!m||!device)return html`<ha-card class=${this.config.layout==='slim'?'slim-card':''}>${this.renderHeader('Heat battery')}${this.renderNotice()}<p class="empty">No heat battery found. This card shows Quatt all-electric hot-water storage.</p></ha-card>`;
     if(this.config.layout==='slim')return this.slimBattery(device);

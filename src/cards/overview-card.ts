@@ -25,7 +25,7 @@ export class QuattOverviewCard extends BaseCard {
     ha-card.custom-fields{min-height:0}
     @container(max-width:350px){.node .value{font-size:var(--qc-value-size,16px)}.flow{grid-template-columns:1fr 16px 1fr 16px 1fr}.arrow{width:16px}.symbol .icon{width:43px}.circle .icon{width:27px}}
   `];
-  protected render() {
+  protected renderContent() {
     const s=this.snapshot,m=s.system;
     const nodes=[{key:'electricPower' as const,label:'Electric input',symbol:'electric',style:'circle electric',digits:2},{key:'cop' as const,label:'COP',symbol:'pump',style:'',digits:1},{key:'heatPower' as const,label:'Heat output',symbol:'heat',style:'circle heat',digits:2}].filter(n=>this.showField(n.key));
     const readings: [MetricRole,string,string][]=[['roomTemperature','Room','home'],['targetTemperature','Target','thermometer'],['outdoorTemperature','Outside','sun'],['flowRate','Water flow','water'],['supplyTemperature','Supply','thermometer']];

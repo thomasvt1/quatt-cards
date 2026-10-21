@@ -372,3 +372,7 @@ layout: slim
 ```
 
 The slim layout supports the same Appearance settings as all other cards. Displayed fields offers charge, shower time and operating status; detailed-layout temperature and storage selections are preserved when switching layouts. Missing charge shows a dash without a fabricated progress bar, and offline equipment shows Unavailable instead of stale readings.
+
+### Dashboard startup
+
+Cards show a theme-aware skeleton while Home Assistant and entity discovery load. Slim layouts use a compact placeholder, and reduced-motion preferences disable the pulse. Once discovery finishes, genuine missing-integration or registry errors remain visible. Background registry refreshes retain the loaded card.

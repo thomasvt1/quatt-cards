@@ -1,0 +1,38 @@
+name: Browser runner benchmark
+
+on:
+  push:
+    branches: [codex/benchmark-vitest-browser]
+
+permissions:
+  contents: read
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: ${{ github.workspace }}/.local/benchmark-browsers
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci --no-audit --no-fund
+      - run: npm install --no-save --no-audit --no-fund @vitest/browser-playwright@5.0.3
+      - name: Verify the shared runtime versions stayed locked
+        run: |
+          node --input-type=module -e 'import fs from "node:fs"; const lock=JSON.parse(fs.readFileSync("package-lock.json")); for(const name of ["vite","vitest","@playwright/test","playwright","playwright-core"]){ const actual=JSON.parse(fs.readFileSync(`node_modules/${name}/package.json`)).version; if(actual!==lock.packages[`node_modules/${name}`].version)throw new Error(`${name} drifted`); }'
+      - run: npx playwright install --only-shell chromium
+        timeout-minutes: 2
+      - run: node benchmarks/vitest-browser/generate.mjs
+      - run: node benchmarks/vitest-browser/benchmark.mjs
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: browser-runner-benchmark
+          path: |
+            benchmarks/vitest-browser/results.json
+            benchmarks/vitest-browser/*.log
+          retention-days: 7

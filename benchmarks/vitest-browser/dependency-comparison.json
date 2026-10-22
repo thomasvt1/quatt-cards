@@ -1,0 +1,20 @@
+{
+  "addedCount": 15,
+  "added": [
+    "node_modules/@blazediff/core",
+    "node_modules/@polka/url",
+    "node_modules/@vitest/browser",
+    "node_modules/@vitest/browser-playwright",
+    "node_modules/@vitest/pretty-format",
+    "node_modules/@vitest/ui",
+    "node_modules/@vitest/utils",
+    "node_modules/fflate",
+    "node_modules/flatted",
+    "node_modules/mrmime",
+    "node_modules/pathe",
+    "node_modules/pngjs",
+    "node_modules/sirv",
+    "node_modules/totalist",
+    "node_modules/ws"
+  ]
+}

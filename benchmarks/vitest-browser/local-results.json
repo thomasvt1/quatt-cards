@@ -1,0 +1,194 @@
+[
+  {
+    "runner": "playwright",
+    "round": 1,
+    "seconds": 7.48,
+    "rawFiles": 13,
+    "cardCoverage": {
+      "lines": {
+        "total": 25,
+        "covered": 21,
+        "skipped": 0,
+        "pct": 84
+      },
+      "functions": {
+        "total": 12,
+        "covered": 9,
+        "skipped": 0,
+        "pct": 75
+      },
+      "statements": {
+        "total": 36,
+        "covered": 31,
+        "skipped": 0,
+        "pct": 86.11
+      },
+      "branches": {
+        "total": 64,
+        "covered": 45,
+        "skipped": 0,
+        "pct": 70.31
+      }
+    }
+  },
+  {
+    "runner": "vitest",
+    "round": 1,
+    "seconds": 4.82,
+    "rawFiles": 13,
+    "cardCoverage": {
+      "lines": {
+        "total": 25,
+        "covered": 21,
+        "skipped": 0,
+        "pct": 84
+      },
+      "functions": {
+        "total": 12,
+        "covered": 9,
+        "skipped": 0,
+        "pct": 75
+      },
+      "statements": {
+        "total": 36,
+        "covered": 31,
+        "skipped": 0,
+        "pct": 86.11
+      },
+      "branches": {
+        "total": 64,
+        "covered": 45,
+        "skipped": 0,
+        "pct": 70.31
+      }
+    }
+  },
+  {
+    "runner": "vitest",
+    "round": 2,
+    "seconds": 5.37,
+    "rawFiles": 13,
+    "cardCoverage": {
+      "lines": {
+        "total": 25,
+        "covered": 21,
+        "skipped": 0,
+        "pct": 84
+      },
+      "functions": {
+        "total": 12,
+        "covered": 9,
+        "skipped": 0,
+        "pct": 75
+      },
+      "statements": {
+        "total": 36,
+        "covered": 31,
+        "skipped": 0,
+        "pct": 86.11
+      },
+      "branches": {
+        "total": 64,
+        "covered": 45,
+        "skipped": 0,
+        "pct": 70.31
+      }
+    }
+  },
+  {
+    "runner": "playwright",
+    "round": 2,
+    "seconds": 7.12,
+    "rawFiles": 13,
+    "cardCoverage": {
+      "lines": {
+        "total": 25,
+        "covered": 21,
+        "skipped": 0,
+        "pct": 84
+      },
+      "functions": {
+        "total": 12,
+        "covered": 9,
+        "skipped": 0,
+        "pct": 75
+      },
+      "statements": {
+        "total": 36,
+        "covered": 31,
+        "skipped": 0,
+        "pct": 86.11
+      },
+      "branches": {
+        "total": 64,
+        "covered": 45,
+        "skipped": 0,
+        "pct": 70.31
+      }
+    }
+  },
+  {
+    "runner": "playwright",
+    "round": 3,
+    "seconds": 8,
+    "rawFiles": 13,
+    "cardCoverage": {
+      "lines": {
+        "total": 25,
+        "covered": 21,
+        "skipped": 0,
+        "pct": 84
+      },
+      "functions": {
+        "total": 12,
+        "covered": 9,
+        "skipped": 0,
+        "pct": 75
+      },
+      "statements": {
+        "total": 36,
+        "covered": 31,
+        "skipped": 0,
+        "pct": 86.11
+      },
+      "branches": {
+        "total": 64,
+        "covered": 45,
+        "skipped": 0,
+        "pct": 70.31
+      }
+    }
+  },
+  {
+    "runner": "vitest",
+    "round": 3,
+    "seconds": 4.93,
+    "rawFiles": 13,
+    "cardCoverage": {
+      "lines": {
+        "total": 25,
+        "covered": 21,
+        "skipped": 0,
+        "pct": 84
+      },
+      "functions": {
+        "total": 12,
+        "covered": 9,
+        "skipped": 0,
+        "pct": 75
+      },
+      "statements": {
+        "total": 36,
+        "covered": 31,
+        "skipped": 0,
+        "pct": 86.11
+      },
+      "branches": {
+        "total": 64,
+        "covered": 45,
+        "skipped": 0,
+        "pct": 70.31
+      }
+    }
+  }
+]

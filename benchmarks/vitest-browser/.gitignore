@@ -1,0 +1,8 @@
+case-*.test.ts
+battery-cases.ts
+*.log
+raw/
+coverage*/
+attachments/
+__traces__/
+results.json

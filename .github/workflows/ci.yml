@@ -9,9 +9,15 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   check:
-    runs-on: ubuntu-latest
+    # This image already includes the shared libraries needed by headless Chromium.
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -19,11 +25,14 @@ jobs:
           node-version: 24
           cache: npm
       - run: npm ci
-      - run: npm run check
+      # build includes tsc --noEmit; avoid checking the same sources twice.
       - run: npm run build
-      - run: npx playwright install --with-deps chromium
-      - run: npm run test:coverage
       - run: npm run check:examples
+      # Avoid APT updates/font installs and downloading the unused headed browser.
+      - name: Install headless Chromium
+        run: npx playwright install --only-shell chromium
+        timeout-minutes: 2
+      - run: npm run test:coverage
       - run: npm run update:examples
       - uses: actions/upload-artifact@v4
         if: always()

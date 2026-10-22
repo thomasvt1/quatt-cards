@@ -29,6 +29,7 @@ class Locator {
  async screenshot(options:{path:string}){await commands.captureScreenshot(options,this.raw.selector);}
 }
 let navigation=0;
+let mousePressed=false;
 const documentListeners:Array<Parameters<Document['addEventListener']>>=[];
 beforeEach(()=>{
  const add=document.addEventListener.bind(document);
@@ -36,7 +37,8 @@ beforeEach(()=>{
 });
 const listeners:Array<(event:ErrorEvent)=>void>=[];
 export const page={
- async goto(_url:string){
+ // Vitest owns navigation; mount a fresh demo at the only URL used by this suite.
+ async goto(_url:'/'){
   document.body.replaceChildren();document.documentElement.removeAttribute('style');
   const entry=`/src/demo/main.ts?testNavigation=${++navigation}`;
   await import(/* @vite-ignore */ entry);
@@ -49,7 +51,10 @@ export const page={
  getByLabel(...args:Parameters<NativeLocator['getByLabelText']>){return new Locator(nativePage.getByLabelText(...args));},
  on(_event:'pageerror',callback:(error:Error)=>void){const listener=(event:ErrorEvent)=>callback(event.error??new Error(event.message));listeners.push(listener);window.addEventListener('error',listener);},
  keyboard:{press:(key:string)=>commands.pressKey(key)},
- mouse:{down:()=>commands.mouseButton('down'),up:()=>commands.mouseButton('up')},
+ mouse:{
+  async down(){mousePressed=true;await commands.mouseButton('down');},
+  async up(){await commands.mouseButton('up');mousePressed=false;},
+ },
  touchscreen:{tap:(x:number,y:number)=>commands.tapPoint(x,y)},
  screenshot:(options:{path:string;fullPage?:boolean})=>commands.captureScreenshot(options),
  emulateMedia:(options:{reducedMotion:'reduce'|'no-preference'})=>commands.setMedia(options),
@@ -85,5 +90,6 @@ afterEach(async()=>{
  for(const args of documentListeners)document.removeEventListener(...args);
  documentListeners.length=0;vi.restoreAllMocks();
  for(const attribute of [...document.body.attributes])document.body.removeAttribute(attribute.name);
+ if(mousePressed){await commands.mouseButton('up');mousePressed=false;}
  await commands.setMedia({reducedMotion:'no-preference'});await nativePage.viewport(1280,720);
 });

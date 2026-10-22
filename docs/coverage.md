@@ -35,6 +35,5 @@ Run `npm ci`, `npx playwright install --only-shell chromium`, then `npm run test
 
 The browser suite uses the same Istanbul instrumentation and unique raw-coverage directory as before. Source maps attribute counters back to TypeScript; the aggregate and per-card gates are unchanged. Failure screenshots and browser traces are retained in `test-results/`. `npm run test:browser` runs just the browser suite. No external demo server is needed.
 
-To benchmark against another checkout, run `node scripts/benchmark-browser.mjs <baseline-checkout>`. It alternates three full coverage runs per implementation and fails if any file loses covered lines, statements, functions or branches, or changes its coverage denominator. The manually dispatched **Browser suite benchmark** workflow performs the same comparison on one GitHub runner; it does not run on ordinary pushes or pull requests.
 
 Open `coverage/browser/index.html` and `coverage/data/index.html` for detailed reports. CI uploads both as a `test-coverage` artifact retained for 14 days. Generated reports are ignored by Git. The normal production build contains no coverage instrumentation or coverage runtime dependencies.

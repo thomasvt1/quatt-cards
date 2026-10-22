@@ -99,8 +99,8 @@ test('slim skeleton respects appearance and reduced motion on mobile',async({pag
  const box=await loader.boundingBox();expect(box!.height).toBeLessThan(120);expect(box!.width).toBeLessThanOrEqual(288);
 });
 
-test('History stays responsive before hass and loads after assignment',async({page})=>{
- test.setTimeout(10000);await page.goto('/');
+test('History stays responsive before hass and loads after assignment',{timeout:10000},async({page})=>{
+ await page.goto('/');
  await page.evaluate(()=>{
   const card=document.createElement('quatt-history-card') as HTMLElement&{setConfig(config:unknown):void};
   card.id='history-before-hass';card.setConfig({type:'custom:quatt-history-card'});document.body.append(card);

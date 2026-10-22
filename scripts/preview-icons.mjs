@@ -1,5 +1,5 @@
 import {readFile,writeFile} from 'node:fs/promises';
-import {chromium} from '@playwright/test';
+import {chromium} from 'playwright';
 const paths=JSON.parse(await readFile(new URL('../src/icons/paths.json',import.meta.url),'utf8'));
 const order=['quatt','quatt-duo','chill','heat-battery','heat-charger'].flatMap(name=>[`${name}-outline`,`${name}-solid`,`${name}-boost`,`${name}-boost-solid`]).filter(name=>name in paths);
 const panels=['light','dark'].map(theme=>`<section class="${theme}"><h2>${theme==='light'?'Light':'Dark'} theme</h2><div class="grid">${order.map(name=>[name,paths[name]]).map(([name,path])=>`<article><svg width="96" height="96" viewBox="0 0 24 24"><path fill="currentColor" d="${path}"/></svg><h3>${name.replaceAll('-',' ')}</h3><code>quatt:${name}</code><div class="sizes">${[24,32,48].map(size=>`<svg width="${size}" height="${size}" viewBox="0 0 24 24"><path fill="currentColor" d="${path}"/></svg>`).join('')}</div></article>`).join('')}</div></section>`).join('');

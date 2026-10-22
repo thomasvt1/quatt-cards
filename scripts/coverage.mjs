@@ -10,7 +10,7 @@ const root=process.cwd(),raw=path.join(root,'coverage','raw',randomUUID());
 fs.mkdirSync(raw,{recursive:true});
 const run=(script,args,env=process.env)=>{const result=spawnSync(process.execPath,[script,...args],{stdio:'inherit',env});if(result.status!==0)process.exit(result.status??1);};
 run('node_modules/vitest/vitest.mjs',['run','--coverage']);
-run('node_modules/@playwright/test/cli.js',['test'],{...process.env,QUATT_COVERAGE:'true',QUATT_COVERAGE_DIR:raw});
+run('node_modules/vitest/vitest.mjs',['run','--config','vitest.browser.config.ts'],{...process.env,QUATT_COVERAGE:'true',QUATT_COVERAGE_DIR:raw});
 const map=libCoverage.createCoverageMap({});
 for(const file of fs.readdirSync(raw))map.merge(JSON.parse(fs.readFileSync(path.join(raw,file),'utf8')));
 const remapped=await sourceMaps.createSourceMapStore().transformCoverage(map);

@@ -1,7 +1,7 @@
 import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { resolve } from 'node:path';
-import { chromium, expect } from '@playwright/test';
+import { chromium, expect } from 'playwright/test';
 import { createServer } from 'vite';
 import {exampleInputDigest, sha256} from './example-integrity.mjs';
 

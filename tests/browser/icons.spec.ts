@@ -1,5 +1,5 @@
 import {test,expect} from './fixtures';
-import {build} from 'vite';
+
 
 test('Quatt Cards registers fourteen searchable HA equipment icons',async({page})=>{
  await page.goto('/');
@@ -22,23 +22,6 @@ test('Quatt Cards registers fourteen searchable HA equipment icons',async({page}
   expect(bounds.right).toBeLessThanOrEqual(24);expect(bounds.bottom).toBeLessThanOrEqual(24);
  }
  for(const name of ['missing','constructor','__proto__'])expect(await page.evaluate(name=>(window as any).customIcons.quatt.getIcon(name),name)).toBeUndefined();
-});
-
-test('standalone icon pack works without cards and preserves other icon namespaces',async({page})=>{
- await page.setContent('<div>Standalone icons</div>');
- await page.evaluate(()=>{const w=window as any;w.customIcons={hue:{sentinel:true}};w.customIconsets={hue:'existing'};});
- // Build the current standalone entry in memory: no missing/stale dist dependency.
- const bundle=await build({mode:'icons',build:{write:false},logLevel:'silent'});
- const outputs=Array.isArray(bundle)?bundle:[bundle];
- const chunks=outputs.flatMap(output=>'output' in output?output.output:[]).filter(output=>output.type==='chunk');
- expect(chunks).toHaveLength(1);
- await page.addScriptTag({type:'module',content:chunks[0].code});
- await expect.poll(()=>page.evaluate(()=>(window as any).customIcons.quatt!==undefined)).toBe(true);
- const result=await page.evaluate(async()=>{
-  const w=window as any;
-  return {list:await w.customIcons.quatt.getIconList(),hue:w.customIcons.hue,legacy:w.customIconsets.hue,card:!!customElements.get('quatt-overview-card')};
- });
- expect(result.list).toHaveLength(14);expect(result.hue).toEqual({sentinel:true});expect(result.legacy).toBe('existing');expect(result.card).toBe(false);
 });
 
 

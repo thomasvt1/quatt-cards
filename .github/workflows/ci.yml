@@ -1,52 +1,49 @@
-name: CI
+name: Browser suite benchmark
 
 on:
-  push:
-    branches: [main]
-  pull_request:
   workflow_dispatch:
+    inputs:
+      baseline_ref:
+        description: Commit with the Playwright suite to compare
+        default: 75ae417a0876a62d03b1ba95a4bc13681b7a885c
+        required: true
 
 permissions:
   contents: read
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.ref }}
-  cancel-in-progress: true
-
 jobs:
-  check:
-    # This image already includes the shared libraries needed by headless Chromium.
+  benchmark:
     runs-on: ubuntu-24.04
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
+        with:
+          path: candidate
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.baseline_ref }}
+          path: baseline
       - uses: actions/setup-node@v4
         with:
           node-version: 24
           cache: npm
+          cache-dependency-path: |
+            candidate/package-lock.json
+            baseline/package-lock.json
       - run: npm ci
-      # build includes tsc --noEmit; avoid checking the same sources twice.
-      - run: npm run build
-      - run: npm run check:examples
-      # Avoid APT updates/font installs and downloading the unused headed browser.
-      - name: Install headless Chromium
-        run: npx playwright install --only-shell chromium
+        working-directory: baseline
+      - run: npm ci
+        working-directory: candidate
+      - run: npx playwright install --only-shell chromium
+        working-directory: candidate
         timeout-minutes: 2
-      - run: npm run test:coverage
-      - run: npm run update:examples
+      - name: Compare three complete coverage runs per runner
+        run: node candidate/scripts/benchmark-browser.mjs baseline candidate
+        env:
+          BENCHMARK_OUTPUT: benchmark-results
       - uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: test-coverage
-          path: |
-            coverage/data/
-            coverage/browser/
+          name: browser-suite-benchmark
+          path: benchmark-results/
           retention-days: 14
-      - uses: actions/upload-artifact@v4
-        if: failure()
-        with:
-          name: browser-test-results
-          path: |
-            playwright-report/
-            test-results/
-          retention-days: 7

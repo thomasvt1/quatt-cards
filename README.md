@@ -6,7 +6,7 @@
 
 Compact Home Assistant dashboard cards for the [Quatt integration by marcoboers](https://github.com/marcoboers/home-assistant-quatt). The collection continues the typography, compact layouts, inline charts, and Home Assistant theme support of [Omnibattery Cards](https://github.com/thomasvt1/omnibattery-cards), with visual inspiration from [EMHASS Companion](https://github.com/smefa/emhass-ha-companion).
 
-[![CI](https://github.com/thomasvt1/quatt-cards/actions/workflows/ci.yml/badge.svg)](https://github.com/thomasvt1/quatt-cards/actions/workflows/ci.yml) [![Release](https://img.shields.io/github/v/release/thomasvt1/quatt-cards)](https://github.com/thomasvt1/quatt-cards/releases/latest)
+[![CI](https://github.com/thomasvt1/quatt-cards/actions/workflows/ci.yml/badge.svg)](https://github.com/thomasvt1/quatt-cards/actions/workflows/ci.yml) [![HACS](https://github.com/thomasvt1/quatt-cards/actions/workflows/hacs.yml/badge.svg)](https://github.com/thomasvt1/quatt-cards/actions/workflows/hacs.yml) [![Release](https://img.shields.io/github/v/release/thomasvt1/quatt-cards)](https://github.com/thomasvt1/quatt-cards/releases/latest)
 
 [![Add to HACS](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=thomasvt1&repository=quatt-cards&category=plugin)
 

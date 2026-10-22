@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.13.2
+
+- Validate HACS plugin requirements on pull requests, main pushes, and a daily schedule, with no ignored checks.
+- Require HACS validation to pass before publishing release assets.
+- Declare the Netherlands in the HACS manifest for Quatt's supported market.
+
 ## 0.13.1
 
 - Show theme-aware skeletons during initial discovery across all seven cards, including compact placeholders for Slim layouts.

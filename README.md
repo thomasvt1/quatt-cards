@@ -70,16 +70,24 @@ The data adapter targets the upstream entity contract at [commit ac6d26ab5ee8083
 
 ## Install through HACS
 
-Use the **Add to HACS** button above to open this repository in your Home Assistant instance, or add it manually:
+Quatt Cards is included in the HACS default catalog.
 
-1. Open **HACS → Custom repositories**.
-2. Add `https://github.com/thomasvt1/quatt-cards` with type **Dashboard**.
-3. Find **Quatt Cards** and download the latest release.
-4. Reload Home Assistant, then search for **Quatt** in **Add card**.
+1. Open **HACS** and search for **Quatt Cards**.
+2. Open **Quatt Cards** and download the latest release.
+3. Reload your browser, then search for **Quatt** in **Add card** on your dashboard.
 
 [Open this repository in HACS](https://my.home-assistant.io/redirect/hacs_repository/?owner=thomasvt1&repository=quatt-cards&category=plugin)
 
 HACS normally registers the module automatically. If your resources are managed manually, add `/hacsfiles/quatt-cards/quatt-cards.js` as a **JavaScript Module**, with a version query when updating. Avoid duplicate manual and HACS resources.
+
+### If Quatt Cards doesn't appear in search
+
+Use the **Add to HACS** button above, or add the repository manually as a fallback:
+
+1. Open **HACS → Custom repositories**.
+2. Add `https://github.com/thomasvt1/quatt-cards` with type **Dashboard**.
+3. Find **Quatt Cards** and download the latest release.
+4. Reload your browser, then search for **Quatt** in **Add card** on your dashboard.
 
 ## Install manually
 
@@ -102,7 +110,7 @@ The bundle contains Lit and SVG chart code. It requires no external runtime asse
 
 `hacs.json` declares `quatt-cards.js` as the release asset. Tagged releases run the included checks and attach the self-contained bundle to the [GitHub release](https://github.com/thomasvt1/quatt-cards/releases/latest).
 
-Avoid loading both a manual `/local/` resource and a HACS resource for the same package. This is a HACS custom repository; submission to HACS's default catalog is separate.
+Avoid loading both a manual `/local/` resource and a HACS resource for the same package.
 
 ## Quatt icons for Home Assistant
 

@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.13.3
+
+- Fill the whole Slim Chill card with hover and pressed feedback instead of an inset area inside the card padding.
+
 ## 0.13.2
 
 - Validate HACS plugin requirements on pull requests, main pushes, and a daily schedule, with no ignored checks.

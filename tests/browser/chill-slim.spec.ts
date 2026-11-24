@@ -26,6 +26,8 @@ for(const width of [320,390,1200])for(const theme of ['light','dark'] as const)t
  await page.evaluate(theme=>{window.demo.setScenario('cooling');window.demo.setTheme(theme);window.demo.setConfig('chill',{layout:'slim',device:'demo-chill-1'});},theme);
  const card=page.locator('quatt-chill-card');await expect(card.locator('.slim-row')).toBeVisible();
  const bounds=(await card.boundingBox())!;expect(bounds.height).toBeLessThanOrEqual(100);
+ const gaps=await card.locator('ha-card').evaluate(c=>{const r=c.querySelector('button.slim-row')!.getBoundingClientRect(),b=c.getBoundingClientRect(),s=getComputedStyle(c);return [r.left-b.left-parseFloat(s.borderLeftWidth),b.right-r.right-parseFloat(s.borderRightWidth),r.top-b.top-parseFloat(s.borderTopWidth),b.bottom-r.bottom-parseFloat(s.borderBottomWidth)].map(v=>Math.round(v));});
+ expect(gaps,'hover and pressed feedback should fill the whole card').toEqual([0,0,0,0]);
  expect(await card.locator('ha-card,.slim-row').evaluateAll(es=>es.some(e=>e.scrollWidth>e.clientWidth+1))).toBe(false);
  await page.evaluate(()=>window.demo.setConfig('chill',{title:'A very long room name in the upstairs bedroom'}));
  expect(await card.locator('ha-card,.slim-row').evaluateAll(es=>es.some(e=>e.scrollWidth>e.clientWidth+1))).toBe(false);
